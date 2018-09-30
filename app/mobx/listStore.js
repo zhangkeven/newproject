@@ -29,6 +29,8 @@ class ObservableListStore {
     imagePath;
     @observable
     ipPath;
+    @observable
+    isLogin;
     @action
     getList=()=>{
         this.genderList=['男','女','保密'];
@@ -92,11 +94,12 @@ class ObservableListStore {
     @action
     isLogin=()=>{
         let data={
-            "loginNo": "asd",
-            "password": "123"
+            "loginNo": this.uName,
+            "password": this.UpWd
         };
         FetchUtil.post(this.ipPath+'/api/management/app/login',data).then(res=>{
-            console.log(res);
+            console.log(res.errmsg);
+            this.isLogin=res.errmsg;
         }).catch((error)=>{
             console.warn(error);
         });

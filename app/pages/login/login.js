@@ -50,13 +50,13 @@ export default class loginView extends Component {
             });
         })
         Promise.all([process1]).then(function (results) {
-           console.log(results[0][0].url);
+            console.log(results[0][0].url);
             ListStore.ipPath=results[0][0].url;
-           if(results && results.length>0 && ListStore.ipPath){
-               // ListStore.getData();
-               // ListStore.getProject();
-               ListStore.isLogin();
-           }
+            if(results && results.length>0 && ListStore.ipPath){
+                // ListStore.getData();
+                // ListStore.getProject();
+                // ListStore.isLogin();
+            }
         });
         //路由组件
         this.props.navigation.setParams({
@@ -68,33 +68,44 @@ export default class loginView extends Component {
         });
     }
     isLogin=()=>{
-        if(ListStore.uName==='123456' && ListStore.UpWd==='931103'){
-            Toast.show('登录成功', Toast.SHORT);
-            this.props.navigation.navigate('Index',{})
-            ListStore.uName='' ;
-            ListStore.UpWd='';
-            const resetAction = NavigationActions.reset({
-                index: 0,
-                actions: [
-                    NavigationActions.navigate({ routeName: 'Index'})
-                ]
-            })
-            this.props.navigation.dispatch(resetAction);
+        // ListStore.isLogin();
+        let data={
+            "loginNo": ListStore.uName,
+            "password": ListStore.UpWd
+        };
+        FetchUtil.post(ListStore.ipPath+'/api/management/app/login',data).then(res=>{
+            if(res.errmsg==='成功'){
+                Toast.show('登录成功', Toast.SHORT);
+                this.props.navigation.navigate('Index',{})
+                ListStore.uName='' ;
+                ListStore.UpWd='';
+                const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: 'Index'})
+                    ]
+                })
+                this.props.navigation.dispatch(resetAction);
 
-        }else{
-            Toast.show('账号或密码错误', Toast.SHORT);
-        }
+            }else{
+                Toast.show('账号或密码错误', Toast.SHORT);
+            }
+            console.log(res.errmsg);
+            this.isLogin=res.errmsg;
+        }).catch((error)=>{
+            console.warn(error);
+        });
     }
     render() {
         return (
             <View style={styles.container}>
                 <Image source={require('../../img/teaser15.png')} style={styles.tgIconStyle}/>
-                <TextInput placeholder={'请输入用户名'} underlineColorAndroid="transparent" style={styles.tgTextInputStyle} onChangeText={(newText) => ListStore.updateUName(newText)} maxLength={6}/>
+                <TextInput placeholder={'请输入用户名'} underlineColorAndroid="transparent" style={styles.tgTextInputStyle} onChangeText={(newText) => ListStore.updateUName(newText)} maxLength={128}/>
                 <TextInput placeholder={'请输入密码'}  secureTextEntry={true}  underlineColorAndroid="transparent" style={styles.tgTextInputStyle} onChangeText={(newText) => ListStore.updateUpWd(newText)} maxLength={6}/>
                 <TouchableOpacity onPress={()=>{this.isLogin()}}>
-                <View style={styles.tgLoginBtnStyle}>
+                    <View style={styles.tgLoginBtnStyle}>
                         <Text style={{color:'white'}}>登录</Text>
-                </View>
+                    </View>
                 </TouchableOpacity>
             </View>
         );
