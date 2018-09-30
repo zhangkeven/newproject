@@ -51,6 +51,7 @@ class ReactNativeMobX extends Component {
         ListStore.getList();
         let data={};
         FetchUtil.post('http://www.kevenzhang.com/data/index/getUrl.php',data).then(res=>{
+            ListStore.name=res[0].cid;
             if(res[0].cid==='404'){
                 this.props.navigation.navigate('Login',{})
                 ListStore.uName='' ;

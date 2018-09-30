@@ -73,7 +73,7 @@ class ObservableListStore {
             "currentPage": "1"};
         FetchUtil.post(this.ipPath+'/api/management/org/list',data).then(res=>{
             console.log(res);
-            this.name=res.data.result[0].orgName;
+            // this.name=res.data.result[0].orgName;
         }).catch((error)=>{
             console.warn(error);
         });
