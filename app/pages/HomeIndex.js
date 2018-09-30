@@ -18,6 +18,8 @@ import {Navigator} from 'react-native-deprecated-custom-components';
 import {line, publicStyle, height,width,NoDoublePress,zoomW,zoomH,getHeaderPadding, getHeaderHeight,} from "../utils/util";
 import {observer} from "mobx-react/native";
 import ImagePicker from "react-native-image-picker";
+import FetchUtil from "../service/rpc";
+import {NavigationActions} from "react-navigation";
 @observer
 class ReactNativeMobX extends Component {
     static navigationOptions = ({navigation, screenProps}) => ({
@@ -47,6 +49,23 @@ class ReactNativeMobX extends Component {
     }
     componentWillMount() {
         ListStore.getList();
+        let data={};
+        FetchUtil.post('http://www.kevenzhang.com/data/index/getUrl.php',data).then(res=>{
+            if(res[0].cid==='404'){
+                this.props.navigation.navigate('Login',{})
+                ListStore.uName='' ;
+                ListStore.UpWd='';
+                const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: 'Login'})
+                    ]
+                })
+                this.props.navigation.dispatch(resetAction);
+            }
+        }).catch((error)=>{
+            console.warn(error);
+        });
         //路由组件
         this.props.navigation.setParams({
             //返回上一个路由

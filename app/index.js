@@ -15,8 +15,8 @@ const styles = StyleSheet.create({
     }
 });
 const Navigator = StackNavigator({
-    Login:{screen:Login},
     Index: {screen: HomeIndex},
+    Login:{screen:Login},
     Choose:{screen: Choose}
 }, {
     // headerMode: 'none', // 导航栏的显示模式, screen: 有渐变透明效果, float: 无透明效果, none: 隐藏导航栏

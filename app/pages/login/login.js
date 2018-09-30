@@ -10,7 +10,8 @@ import {
     View,
     Image,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    BackHandler
 } from 'react-native';
 import ListStore from "../../mobx/listStore";
 import Toast from "react-native-simple-toast";
@@ -42,7 +43,7 @@ export default class loginView extends Component {
         ListStore.getList();
         const process1 = new Promise((resolve, reject) => {
             let data={};
-            FetchUtil.post('http://192.168.81.119/WEB/data/index/getUrl.php',data).then(res=>{
+            FetchUtil.post('http://www.kevenzhang.com/data/index/getUrl.php',data).then(res=>{
                 resolve(res);
                 //this.ipPath=res.data.result[0].orgName;
             }).catch((error)=>{
