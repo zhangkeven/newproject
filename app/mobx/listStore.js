@@ -31,6 +31,8 @@ class ObservableListStore {
     ipPath;
     @observable
     isLogin;
+    @observable
+    orderList=['订单1','订单2','订单3']
     @action
     getList=()=>{
         this.genderList=['男','女','保密'];

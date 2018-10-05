@@ -2,7 +2,7 @@
  * Created by DEV005 on 2017/8/23.
  */
 import { AppRegistry } from 'react-native';
-import main from './main.js';
+import main from './app.js';
 
 if (!__DEV__) {
     global.console = {
