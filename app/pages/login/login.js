@@ -60,7 +60,7 @@ export default class loginView extends Component {
     }
     isLogin=()=>{
         // ListStore.isLogin();
-        this.props.navigation.navigate('SampleInform',{})
+        this.props.navigation.navigate('orderDetail',{})
         let data={
             "loginNo": ListStore.uName,
             "password": ListStore.UpWd

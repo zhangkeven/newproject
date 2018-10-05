@@ -3,7 +3,9 @@ import {NavigationActions, StyleSheet, Touch, View} from 'react-native';
 
 import {getHeaderHeight, getHeaderPadding} from "./utils/util";
 import HomeIndex from './pages/HomeIndex';
-import SampleInform from './pages/sampleInform';
+import Restore from './pages/restore';
+import Lend from './pages/lend';
+import orderDetail from './pages/orderDetail';
 import  Choose from  './pages/choose';
 import Login from './pages/login/login';
 import {StackNavigator} from 'react-navigation';
@@ -17,7 +19,9 @@ const styles = StyleSheet.create({
 });
 const Navigator = StackNavigator({
     Index: {screen: HomeIndex},
-    SampleInform :{screen: SampleInform},
+    Restore :{screen: Restore},
+    Lend:{screen: Lend},
+    orderDetail:{screen: orderDetail},
     Choose:{screen: Choose}
 }, {
     // headerMode: 'none', // 导航栏的显示模式, screen: 有渐变透明效果, float: 无透明效果, none: 隐藏导航栏
