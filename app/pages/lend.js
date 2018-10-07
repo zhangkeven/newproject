@@ -52,6 +52,10 @@ class Lend extends Component {
             }
         });
     }
+    //跳转到立即借出页面
+    toLend=()=>{
+        this.props.navigation.navigate('ImmediatelyLend',{});
+    }
     //所属订单
     _keyExtractor = (item, index) => index;
     orderItem({ item, index }) {
@@ -223,7 +227,7 @@ class Lend extends Component {
                             </View>
                         </ScrollView>
                     </View>
-                    <TouchableOpacity style={listStyle.button}>
+                    <TouchableOpacity style={listStyle.button} onPress={()=>{this.toLend()}}>
                         <Text style={listStyle.textButton}>借出</Text>
                     </TouchableOpacity>
                 </View>

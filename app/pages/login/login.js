@@ -31,24 +31,24 @@ export default class loginView extends Component {
     }
     componentWillMount() {
         ListStore.getList();
-        const process1 = new Promise((resolve, reject) => {
-            let data={};
-            FetchUtil.post('http://www.kevenzhang.com/data/index/getUrl.php',data).then(res=>{
-                resolve(res);
-                //this.ipPath=res.data.result[0].orgName;
-            }).catch((error)=>{
-                console.warn(error);
-            });
-        })
-        Promise.all([process1]).then(function (results) {
-            console.log(results[0][0].url);
-            ListStore.ipPath=results[0][0].url;
-            if(results && results.length>0 && ListStore.ipPath){
-                // ListStore.getData();
-                // ListStore.getProject();
-                // ListStore.isLogin();
-            }
-        });
+        // const process1 = new Promise((resolve, reject) => {
+        //     let data={};
+        //     FetchUtil.post('http://www.kevenzhang.com/data/index/getUrl.php',data).then(res=>{
+        //         resolve(res);
+        //         //this.ipPath=res.data.result[0].orgName;
+        //     }).catch((error)=>{
+        //         console.warn(error);
+        //     });
+        // })
+        // Promise.all([process1]).then(function (results) {
+        //     console.log(results[0][0].url);
+        //     ListStore.ipPath=results[0][0].url;
+        //     if(results && results.length>0 && ListStore.ipPath){
+        //         // ListStore.getData();
+        //         // ListStore.getProject();
+        //         // ListStore.isLogin();
+        //     }
+        // });
         //路由组件
         this.props.navigation.setParams({
             //返回上一个路由

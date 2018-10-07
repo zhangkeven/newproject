@@ -5,6 +5,7 @@ import {getHeaderHeight, getHeaderPadding} from "./utils/util";
 import HomeIndex from './pages/HomeIndex';
 import Restore from './pages/restore';
 import Lend from './pages/lend';
+import ImmediatelyLend from './pages/ImmediatelyLend';
 import Scan from './pages/scan';
 import SearchOrder from './pages/searchOrder';
 import OrderDetail from './pages/orderDetail';
@@ -22,6 +23,7 @@ const styles = StyleSheet.create({
 const Navigator = StackNavigator({
     Restore :{screen: Restore},
     Lend:{screen: Lend},
+    ImmediatelyLend:{screen: ImmediatelyLend},
     Scan:{screen: Scan},
     SearchOrder:{screen: SearchOrder},
     OrderDetail:{screen: OrderDetail},
