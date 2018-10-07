@@ -28,8 +28,7 @@ class orderDetail extends Component {
         headerLeft: (<View style={{flexDirection: 'row', flex: 1}}>
             <TouchableOpacity
                 style={{flexDirection: 'column', justifyContent: 'center', paddingRight: 15, paddingLeft: 10}} onPress={() => navigation.state.params.operaGoBack()}>
-                <Image style={{width: 16, height: 16}} source={require('../img/head_back2x.png')}
-                       resizeMode="contain"/>
+                <Image style={{width: 25/zoomW*2, height:25}} source={require('../img/icon_arrow_left_passion_blue_idle_25x25@xhdi.png')} resizeMode="contain"/>
             </TouchableOpacity>
         </View>),
         headerRight:(<View/>)
@@ -61,7 +60,7 @@ class orderDetail extends Component {
                     <Text style={listStyle.listTitle}>{item}</Text>
                 </View>
                 <View style={listStyle.itemChoose}>
-                    <Image style={{width: 8/zoomW*2,height: 12}} source={require('../img/icon.png')}/>
+                    <Image style={{width: 25/zoomW*2,height: 25}} source={require('../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')} resizeMode="contain"/>
                 </View>
             </TouchableOpacity>
         );
@@ -243,7 +242,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>样品操作记录</Text>
                                     </View>
                                     <View style={listStyle.itemChoose}>
-                                        <Image style={{width: 8/zoomW*2,height: 12}} source={require('../img/icon.png')}/>
+                                        <Image style={{width: 8/zoomW*2,height: 12}} source={require('../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')}/>
                                     </View>
                                 </TouchableOpacity>
                             </View>
@@ -253,7 +252,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>样品报修</Text>
                                     </View>
                                     <View style={listStyle.itemChoose}>
-                                        <Image style={{width: 8/zoomW*2,height: 12}} source={require('../img/icon.png')}/>
+                                        <Image style={{width: 8/zoomW*2,height: 12}} source={require('../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')}/>
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={listStyle.item}>
@@ -261,7 +260,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>样品移交</Text>
                                     </View>
                                     <View style={listStyle.itemChoose}>
-                                        <Image style={{width: 8/zoomW*2,height: 12}} source={require('../img/icon.png')}/>
+                                        <Image style={{width: 8/zoomW*2,height: 12}} source={require('../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')}/>
                                     </View>
                                 </TouchableOpacity>
                             </View>

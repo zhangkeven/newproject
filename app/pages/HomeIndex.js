@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import App from './App';
 import ListStore from '../mobx/listStore'
-
 import {
     AppRegistry,
     FlatList,
@@ -21,18 +20,7 @@ import ImagePicker from "react-native-image-picker";
 import FetchUtil from "../service/rpc";
 import {NavigationActions} from "react-navigation";
 @observer
-class ReactNativeMobX extends Component {
-    static navigationOptions = ({navigation, screenProps}) => ({
-        title: '信息编辑',
-        headerLeft: (<View style={{flexDirection: 'row', flex: 1}}>
-            <TouchableOpacity
-                style={{flexDirection: 'column', justifyContent: 'center', paddingRight: 15, paddingLeft: 10}} onPress={() => navigation.state.params.operaGoBack()}>
-                <Image style={{width: 16, height: 16}} source={require('../img/head_back2x.png')}
-                       resizeMode="contain"/>
-            </TouchableOpacity>
-        </View>),
-        headerRight:(<View/>)
-    });
+class Index extends Component {
     // logic = new ListStore();
     constructor () {
         super()
@@ -75,6 +63,50 @@ class ReactNativeMobX extends Component {
                 goBack();
             }
         });
+    }
+    //跳转到订单搜索页面
+    toSearchOrder=()=>{
+        this.props.navigation.navigate('SearchOrder',{});
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'SearchOrder'})
+            ]
+        })
+        this.props.navigation.dispatch(resetAction);
+    }
+    //跳转我的样品
+    toMySample=()=>{
+        this.props.navigation.navigate('Lend',{});
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Lend'})
+            ]
+        })
+        this.props.navigation.dispatch(resetAction);
+    }
+    //跳转到库位查询
+    toLocationSearch=()=>{
+        this.props.navigation.navigate('Restore',{});
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Restore'})
+            ]
+        })
+        this.props.navigation.dispatch(resetAction);
+    }
+    //跳转到扫一扫页面
+    toScan=()=>{
+        // this.props.navigation.navigate('Scan',{});
+        // const resetAction = NavigationActions.reset({
+        //                 index: 0,
+        //                 actions: [
+        //                     NavigationActions.navigate({ routeName: 'Scan'})
+        //                 ]
+        //             })
+        //             this.props.navigation.dispatch(resetAction);
     }
     selectItem=(item)=>{
         if(item==='性别'){
@@ -155,90 +187,45 @@ class ReactNativeMobX extends Component {
     }
     render () {
         return (
-            <View style={{flex:1}}>
-                <View style={styles.container}>
-                    <View style={styles.content}>
-                        <TouchableOpacity style={styles.avatarContainer} onPress={() => NoDoublePress.onPress(() => { this.selectImage(); })}>
-                            <View style={styles.avatarText}>
-                                <Text style={{fontSize: 17,color:'#000'}}>个人头像</Text>
-                            </View>
-                            {ListStore.imagePath===''?<View style={styles.avatar}>
-
-                            </View>:<Image style={{width: 80,height: 56}} source={{uri: ListStore.imagePath }} />
-
-                            }
-                            <View style={styles.avatarIcon}>
-                                <Image style={{width: 16,height: 26}} source={require('../img/icon.png')}/>
-                            </View>
-                        </TouchableOpacity>
-                        <View style={styles.edit}>
-                                <View style={styles.formViewItem}>
-                                    <View style={styles.formViewItemLabel}>
-                                        <Text style={styles.formViewItemLabelFont}>姓名</Text>
-                                    </View>
-                                    <View style={styles.formViewItemRdom}>
-                                        <TextInput style={styles.formViewItemsInput} underlineColorAndroid="transparent" maxLength={50}  placeholderTextColor="#BBBBBB"
-                                             value={ListStore.name}   onChangeText={(newText) => ListStore.updateName(newText)}/>
-                                    </View>
-                                </View>
-                            <TouchableOpacity onPress={() =>{this.selectItem('性别')}}>
-                                <View style={styles.item}>
-                                    <View style={styles.itemDesc}>
-                                        <Text style={{color:'#000'}}>性别</Text>
-                                    </View>
-                                    <View>
-                                        <Text>{ListStore.gender}</Text>
-                                    </View>
-                                    <View style={styles.itemChoose}>
-                                        <Image style={{width: 16,height: 26}} source={require('../img/icon.png')}/>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() =>{this.selectItem('家庭住址')}}>
-                                <View style={styles.item}>
-                                    <View style={styles.itemDesc}>
-                                        <Text style={{color:'#000'}}>家庭住址</Text>
-                                    </View>
-                                    <View>
-                                        <Text>{ListStore.address}</Text>
-                                    </View>
-                                    <View style={styles.itemChoose}>
-                                        <Image style={{width: 16,height: 26}} source={require('../img/icon.png')}/>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() =>{this.selectItem('工作经验')}}>
-                                <View style={styles.item}>
-                                    <View style={styles.itemDesc}>
-                                        <Text style={{color:'#000'}}>工作经验</Text>
-                                    </View>
-                                    <View>
-                                        <Text>{ListStore.work}</Text>
-                                    </View>
-                                    <View style={styles.itemChoose}>
-                                        <Image style={{width: 16,height: 26}} source={require('../img/icon.png')}/>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() =>{this.selectItem('手机号码')}}>
-                                <View style={styles.item}>
-                                    <View style={styles.itemDesc}>
-                                        <Text style={{color:'#000'}}>手机号码</Text>
-                                    </View>
-                                    <View>
-                                        <Text>{ListStore.phone}</Text>
-                                    </View>
-                                    <View style={styles.itemChoose}>
-                                        <Image style={{width: 16,height: 26}} source={require('../img/icon.png')}/>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <TouchableOpacity style={styles.save}>
-                        <Text style={styles.saveText}>保存</Text>
-                    </TouchableOpacity>
+            <View style={{flex:1,position:'relative',height:'100%'}}>
+                <View style={{width:'100%',height:'100%',flex:1}}>
+                    <Image source={require('../img/bg_home_375x667.png')} style={{width:'100%',height:600}} />
                 </View>
+                <Text style={{opacity:0.5,width:1/zoomW*2,height:200,borderWidth: 1,borderColor: '#E6E6E6',position:'absolute',left:130/zoomW*2,top:240}}>
+
+                </Text>
+                <Text style={{opacity:0.5,width:1/zoomW*2,height:200,borderWidth: 1,borderColor: '#E6E6E6',position:'absolute',left:230/zoomW*2,top:240}}>
+
+                </Text>
+                <Text style={{opacity:0.5,width:300/zoomW*2,height:1,borderWidth: 1,borderColor: '#E6E6E6',position:'absolute',left:30/zoomW*2,top:340}}>
+
+                </Text>
+                <TouchableOpacity style={{position:'absolute',left:60/zoomW*2,top:260,justifyContent:'center',alignItems:'center'}} onPress={()=>{this.toSearchOrder()}}>
+                    <Image source={require('../img/icon_dingdan_40x40.png')} style={styles.navIcon} resizeMode='contain'/>
+                    <Text style={styles.navText}>订单查询</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{position:'absolute',left:160/zoomW*2,top:260,justifyContent:'center',alignItems:'center'}} onPress={()=>{this.toMySample()}}>
+                    <Image source={require('../img/icon_kucun_40x40.png')} style={styles.navIcon} resizeMode='contain'/>
+                    <Text style={styles.navText}>我的样品</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{position:'absolute',left:260/zoomW*2,top:260,justifyContent:'center',alignItems:'center'}} onPress={()=>{this.toLocationSearch()}}>
+                    <Image source={require('../img/icon_home_kucun_40x40.png')} style={styles.navIcon} resizeMode='contain'/>
+                    <Text style={styles.navText}>库位查询</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{position:'absolute',left:60/zoomW*2,top:360,justifyContent:'center',alignItems:'center'}}>
+                    <Image source={require('../img/icon_help_40x40.png')} style={styles.navIcon} resizeMode='contain'/>
+                    <Text style={styles.navText}>使用帮助</Text>
+                </TouchableOpacity>
+                <View style={{position:'absolute',left:110/zoomW*2,top:150,justifyContent:'center',alignItems:'center'}}>
+                    <Text style={styles.titleText}>安徽创源文化</Text>
+                </View>
+                <View style={{position:'absolute',left:25/zoomW*2,top:30,justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
+                    <Image source={require('../img/icon_me_40x40.png')} style={styles.navIcon} resizeMode='contain'/>
+                    <Text style={[styles.titleText,{marginLeft: 14/zoomW*2}]}>Hi ~ 张三</Text>
+                </View>
+                <TouchableOpacity style={{width:'100%',height:100,justifyContent:'center',alignItems:'center'}} onPress={()=>{ this.toScan()}}>
+                    <Image source={require('../img/saoma_100x100.png')} style={{width:75/zoomW*2,height:75}} resizeMode='contain'/>
+                </TouchableOpacity>
             </View>
         )
 
@@ -263,117 +250,26 @@ const options = {
 };
 
 const styles = StyleSheet.create({
-    formViewItem: {
-        flexDirection: 'row',
-        marginTop: 10,
-        paddingLeft: 10 ,
-        paddingRight: 10,
-        height: 44,
-        backgroundColor: '#ffffff',
-        borderWidth: 0.5,
-        borderColor: '#DDDDDD',
-        borderRadius: 4 ,
-    },
-    formViewItemLabel: {
-        flex:0.2,
-        justifyContent: 'center'
-    },
-    formViewItemLabelFont: {
-        fontSize: 14,
-        color: '#333333'
-    },
-    formViewItemRdom: {
-        flex: 0.8,
-        justifyContent: 'center'
-    },
-    formViewItemsInput: {
-        textAlign:'right',
-        color:'#BBB',
-        padding: 0,
-        fontSize:14
-    },
-    container: {
-        width: '100%',
-        height: '100%',
-        backgroundColor: '#F5F5F5',
-    },
-    content: {
-        flex: 1
-    },
-    titleContainer: {
-        height: 44,
-        flexDirection: 'row',
-        backgroundColor: '#ffffff',
-        alignItems: 'center',
-    },
-    back: {
-        width: 40,
-        marginLeft: 10,
-    },
-    title: {
-        flex: 1,
-        color: '#000000',
-        alignItems: 'center',
-        justifyContent: "center"
-    },
-    share: {
-        width: 40
-    },
-    avatarContainer: {
-        height: 86,
-        marginTop: 10,
-        marginBottom: 10,
-        flexDirection: 'row',
-        backgroundColor: '#ffffff',
-        alignItems: 'center'
-    },
-    avatarText: {
-        marginLeft: 10,
-        flex: 1,
-    },
-    avatar: {
-        height: 56,
-        width: 56,
-        backgroundColor: '#d8d8d8',
-        marginRight: 10,
-    },
-    avatarIcon: {
-        width: 8,
-        marginRight: 10
-    },
-    item: {
-        height: 40,
-        backgroundColor: '#ffffff',
-        borderBottomWidth:1,
-        borderBottomColor:"#ddd",
-        borderStyle:"solid",
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    name: {
-        flex: 3.5,
-        marginLeft: 10
-    },
-    nameText: {
-       flex:1,
-        marginRight: 10
-    },
-    itemDesc: {
-        flex:1,
-        marginLeft: 10
-    },
-    itemChoose: {
-        marginRight: 10
-    },
-
-    save: {
-        height: 48,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#28C35A'
-    },
-    saveText: {
-        color: '#fff'
+   titleText:{
+       fontFamily: 'MFLiHei_Noncommercial-Regular',
+        fontSize:24,
+        color: 'rgba(255,255,255,0.87)',
+        letterSpacing: 0,
+        textAlign: 'center',
+        lineHeight: 25
+   },
+    navIcon:{
+       width:40/zoomW*2,
+       height:40
+   },
+    navText:{
+        fontFamily: 'PingFangSC-Medium',
+        fontSize: 10.6,
+        color: '#4A4A4A',
+        letterSpacing: 0,
+        textAlign: 'center',
+        lineHeight: 11.36,
+        marginTop: 11
     }
 })
-export default ReactNativeMobX;
+export default Index;

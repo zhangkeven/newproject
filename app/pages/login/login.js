@@ -60,11 +60,18 @@ export default class loginView extends Component {
     }
     isLogin=()=>{
         // ListStore.isLogin();
-        this.props.navigation.navigate('orderDetail',{})
-        let data={
-            "loginNo": ListStore.uName,
-            "password": ListStore.UpWd
-        };
+        this.props.navigation.navigate('Index',{})
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Index'})
+            ]
+        })
+        this.props.navigation.dispatch(resetAction);
+        // let data={
+        //     "loginNo": ListStore.uName,
+        //     "password": ListStore.UpWd
+        // };
         // FetchUtil.post(ListStore.ipPath+'/api/management/app/login',data).then(res=>{
         //     if(res.errmsg==='成功'){
         //         Toast.show('登录成功', Toast.SHORT);
@@ -91,11 +98,14 @@ export default class loginView extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Image source={require('../../img/teaser15.png')} style={styles.tgIconStyle}/>
+                <Image source={require('../../img/brand_cre8_full_colour_logo_450x200@xhdi.png')} style={styles.topImage} resizeMode='contain'/>
                 <View style={styles.nameTextInput}>
                     <View style={styles.textIcon}>
-                        <Text>123</Text>
+                        <Image source={require('../../img/User@xhdi.png')} style={styles.leftIcon} resizeMode='contain'/>
                     </View>
+                    <Text style={styles.line}>
+
+                    </Text>
                     <TextInput style={styles.tgTextInputStyle}
                                    underlineColorAndroid='transparent'
                                    placeholder={'请输入用户名'}
@@ -104,8 +114,11 @@ export default class loginView extends Component {
                 </View>
                 <View style={[styles.nameTextInput,{marginBottom:50}]}>
                     <View style={styles.textIcon}>
-                        <Text>123</Text>
+                        <Image source={require('../../img/Unlock@xhdi.png')} style={styles.leftIcon} resizeMode='contain'/>
                     </View>
+                    <Text style={styles.line}>
+
+                    </Text>
                     <TextInput style={styles.tgTextInputStyle}
                                underlineColorAndroid='transparent'
                                placeholder={'请输入密码'}
@@ -125,10 +138,14 @@ export default class loginView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems:'center'
+        alignItems:'center',
+        height:'100%',
+        width:'100%'
     },
     nameTextInput: {
         flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
         width:300/zoomW*2,
         height:45,
         borderColor: '#3788E4',
@@ -142,13 +159,23 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center'
     },
+    line:{
+        width:1/zoomW*2,
+        height:15,
+        backgroundColor: '#D8D8D8'
+    },
+    leftIcon:{
+        width:20/zoomW*2,
+        height:20
+    },
     tgTextInputStyle:{
         width:254/zoomW*2,
         height:45,
         padding: 0,
         color:'#000',
         textAlign:'left',
-        alignSelf:'center'
+        alignSelf:'center',
+        marginLeft: 11/zoomW*2
     },
     textInput: {
         width: 310 / zoomW * 2,
@@ -156,14 +183,11 @@ const styles = StyleSheet.create({
         fontSize:14,
         padding: 0
     },
-    tgIconStyle:{
-        width:80,
-        height:80,
-        marginTop:60,
-        marginBottom:30,
-        borderRadius:40,
-        borderWidth:1,
-        borderColor:'grey'
+    topImage:{
+        width:115/zoomW*2,
+        height:96,
+        marginTop:133,
+        marginBottom:19,
     },
     tgLoginBtnStyle:{
         height:45,

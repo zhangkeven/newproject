@@ -28,7 +28,7 @@ class Restore extends Component {
         headerLeft: (<View style={{flexDirection: 'row', flex: 1}}>
             <TouchableOpacity
                 style={{flexDirection: 'column', justifyContent: 'center', paddingRight: 15, paddingLeft: 10}} onPress={() => navigation.state.params.operaGoBack()}>
-                <Image style={{width: 16, height: 16}} source={require('../img/head_back2x.png')}
+                <Image style={{width: 25/zoomW*2, height: 25}} source={require('../img/icon_arrow_left_passion_blue_idle_25x25@xhdi.png')}
                        resizeMode="contain"/>
             </TouchableOpacity>
         </View>),
@@ -61,7 +61,7 @@ class Restore extends Component {
                     <Text style={listStyle.listTitle}>{item}</Text>
                 </View>
                 <View style={listStyle.itemChoose}>
-                    <Image style={{width: 8/zoomW*2,height: 12}} source={require('../img/icon.png')}/>
+                    <Image style={{width: 8/zoomW*2,height: 12}} source={require('../img/icon.png')} resizeMode="contain"/>
                 </View>
             </TouchableOpacity>
         );
