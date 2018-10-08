@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ListStore from '../mobx/listStore'
+import ListStore from '../../mobx/listStore'
 import {
     AppRegistry,
     FlatList,
@@ -13,7 +13,7 @@ import {
     ScrollView,
     Alert,
 } from 'react-native'
-import {line, publicStyle, height,width,NoDoublePress,zoomW,zoomH,getHeaderPadding, getHeaderHeight,} from "../utils/util";
+import {line, publicStyle, height,width,NoDoublePress,zoomW,zoomH,getHeaderPadding, getHeaderHeight,} from "../../utils/util";
 import {observer} from "mobx-react/native";
 @observer
 class Scan extends Component {
@@ -22,7 +22,7 @@ class Scan extends Component {
         headerLeft: (<View style={{flexDirection: 'row', flex: 1}}>
             <TouchableOpacity
                 style={{flexDirection: 'column', justifyContent: 'center', paddingRight: 15, paddingLeft: 10}} onPress={() => navigation.state.params.operaGoBack()}>
-                <Image style={{width: 25/zoomW*2, height: 25}} source={require('../img/icon_arrow_left_passion_blue_idle_25x25@xhdi.png')}
+                <Image style={{width: 25/zoomW*2, height: 25}} source={require('../../img/icon_arrow_left_passion_blue_idle_25x25@xhdi.png')}
                        resizeMode="contain"/>
             </TouchableOpacity>
         </View>),

@@ -3,19 +3,19 @@ import {NavigationActions, StyleSheet, Touch, View} from 'react-native';
 
 import {getHeaderHeight, getHeaderPadding} from "./utils/util";
 import HomeIndex from './pages/HomeIndex';
-import Restore from './pages/restore';
-import Lend from './pages/lend';
-import ImmediatelyLend from './pages/ImmediatelyLend';
-import Scan from './pages/scan';
-import SearchOrder from './pages/searchOrder';
-import OrderDetail from './pages/orderDetail';
-import storageLocationSearch from './pages/storageLocationSearch';
-import storageLocationDetail from './pages/storageLocationDetail';
+import Restore from './pages/sampleInformation/restore';
+import Lend from './pages/sampleInformation/lend';
+import ImmediatelyLend from './pages/sampleInformation/ImmediatelyLend';
+import Scan from './pages/order/scan';
+import SearchOrder from './pages/order/searchOrder';
+import OrderDetail from './pages/order/orderDetail';
+import storageLocationSearch from './pages/LocationInformation/storageLocationSearch';
+import storageLocationDetail from './pages/LocationInformation/storageLocationDetail';
 import  Choose from  './pages/choose';
 import Login from './pages/login/login';
 import {StackNavigator} from 'react-navigation';
 import {fromBottomLikeAndroid} from "./utils/NavigationUtil";
-import ImmediatelyRestore from "./pages/ImmediatelyRestore";
+import ImmediatelyRestore from "./pages/sampleInformation/ImmediatelyRestore";
 const styles = StyleSheet.create({
     tabIcon: {
         height: 24,

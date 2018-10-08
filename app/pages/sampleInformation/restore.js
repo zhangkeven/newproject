@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import App from './App';
-import ListStore from '../mobx/listStore'
-import listStyle from './listStyle/listStyle';
+import App from '../App';
+import ListStore from '../../mobx/listStore'
+import listStyle from '../listStyle/listStyle';
 import {
     AppRegistry,
     FlatList,
@@ -16,10 +16,10 @@ import {
     ScrollView
 } from 'react-native'
 import {Navigator} from 'react-native-deprecated-custom-components';
-import {line, publicStyle, height,width,NoDoublePress,zoomW,zoomH,getHeaderPadding, getHeaderHeight,} from "../utils/util";
+import {line, publicStyle, height,width,NoDoublePress,zoomW,zoomH,getHeaderPadding, getHeaderHeight,} from "../../utils/util";
 import {observer} from "mobx-react/native";
 import ImagePicker from "react-native-image-picker";
-import FetchUtil from "../service/rpc";
+import FetchUtil from "../../service/rpc";
 import {NavigationActions} from "react-navigation";
 @observer
 class Restore extends Component {
@@ -28,7 +28,7 @@ class Restore extends Component {
         headerLeft: (<View style={{flexDirection: 'row', flex: 1}}>
             <TouchableOpacity
                 style={{flexDirection: 'column', justifyContent: 'center', paddingRight: 15, paddingLeft: 10}} onPress={() => navigation.state.params.operaGoBack()}>
-                <Image style={{width: 25/zoomW*2, height: 25}} source={require('../img/icon_arrow_left_passion_blue_idle_25x25@xhdi.png')}
+                <Image style={{width: 25/zoomW*2, height: 25}} source={require('../../img/icon_arrow_left_passion_blue_idle_25x25@xhdi.png')}
                        resizeMode="contain"/>
             </TouchableOpacity>
         </View>),
@@ -65,7 +65,7 @@ class Restore extends Component {
                     <Text style={listStyle.listTitle}>{item}</Text>
                 </View>
                 <View style={listStyle.itemChoose}>
-                    <Image style={{width: 8/zoomW*2,height: 12}} source={require('../img/icon.png')} resizeMode="contain"/>
+                    <Image style={{width: 8/zoomW*2,height: 12}} source={require('../../img/icon.png')} resizeMode="contain"/>
                 </View>
             </TouchableOpacity>
         );
@@ -225,7 +225,7 @@ class Restore extends Component {
                                         }}>查看详情</Text>
                                     </View>
                                     <View style={listStyle.itemChoose}>
-                                        <Image style={{width: 8/zoomW*2,height: 12}} source={require('../img/icon.png')}/>
+                                        <Image style={{width: 8/zoomW*2,height: 12}} source={require('../../img/icon.png')}/>
                                     </View>
                                 </TouchableOpacity>
                             </View>
@@ -235,7 +235,7 @@ class Restore extends Component {
                                     <Text style={listStyle.listTitle}>样品报修</Text>
                                 </View>
                                 <View style={listStyle.itemChoose}>
-                                    <Image style={{width: 8/zoomW*2,height: 12}} source={require('../img/icon.png')}/>
+                                    <Image style={{width: 8/zoomW*2,height: 12}} source={require('../../img/icon.png')}/>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity style={listStyle.item}>
@@ -243,7 +243,7 @@ class Restore extends Component {
                                     <Text style={listStyle.listTitle}>样品移交</Text>
                                 </View>
                                 <View style={listStyle.itemChoose}>
-                                    <Image style={{width: 8/zoomW*2,height: 12}} source={require('../img/icon.png')}/>
+                                    <Image style={{width: 8/zoomW*2,height: 12}} source={require('../../img/icon.png')}/>
                                 </View>
                             </TouchableOpacity>
                         </View>
