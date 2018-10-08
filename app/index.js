@@ -9,10 +9,13 @@ import ImmediatelyLend from './pages/ImmediatelyLend';
 import Scan from './pages/scan';
 import SearchOrder from './pages/searchOrder';
 import OrderDetail from './pages/orderDetail';
+import storageLocationSearch from './pages/storageLocationSearch';
+import storageLocationDetail from './pages/storageLocationDetail';
 import  Choose from  './pages/choose';
 import Login from './pages/login/login';
 import {StackNavigator} from 'react-navigation';
 import {fromBottomLikeAndroid} from "./utils/NavigationUtil";
+import ImmediatelyRestore from "./pages/ImmediatelyRestore";
 const styles = StyleSheet.create({
     tabIcon: {
         height: 24,
@@ -22,11 +25,14 @@ const styles = StyleSheet.create({
 });
 const Navigator = StackNavigator({
     Restore :{screen: Restore},
+    ImmediatelyRestore:{screen: ImmediatelyRestore},
     Lend:{screen: Lend},
     ImmediatelyLend:{screen: ImmediatelyLend},
     Scan:{screen: Scan},
     SearchOrder:{screen: SearchOrder},
     OrderDetail:{screen: OrderDetail},
+    storageLocationSearch:{screen: storageLocationSearch},
+    storageLocationDetail:{screen: storageLocationDetail},
     Choose:{screen: Choose}
 }, {
     // headerMode: 'none', // 导航栏的显示模式, screen: 有渐变透明效果, float: 无透明效果, none: 隐藏导航栏

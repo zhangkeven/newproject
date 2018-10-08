@@ -52,6 +52,10 @@ class Restore extends Component {
             }
         });
     }
+    //立即归还样品
+    toRestore=()=>{
+        this.props.navigation.navigate('ImmediatelyRestore',{});
+    }
     //所属订单
     _keyExtractor = (item, index) => index;
     orderItem({ item, index }) {
@@ -245,7 +249,7 @@ class Restore extends Component {
                         </View>
                         </ScrollView>
                     </View>
-                    <TouchableOpacity style={listStyle.button}>
+                    <TouchableOpacity style={listStyle.button} onPress={()=>{this.toRestore()}}>
                         <Text style={listStyle.textButton}>归还</Text>
                     </TouchableOpacity>
                 </View>

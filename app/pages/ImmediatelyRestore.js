@@ -21,6 +21,7 @@ import {observer} from "mobx-react/native";
 import ImagePicker from "react-native-image-picker";
 import FetchUtil from "../service/rpc";
 import {NavigationActions} from "react-navigation";
+import Communications from "react-native-communications";
 const options = {
     title: '请选择上传图片方式',
     storageOptions: {
@@ -39,9 +40,9 @@ const options = {
     currentIndex: 0,              // 当前被点击的图片
 };
 @observer
-class ImmediatelyLend extends Component {
+class ImmediatelyRestore extends Component {
     static navigationOptions = ({navigation, screenProps}) => ({
-        title: '借出样品',
+        title: '归还样品',
         headerLeft: (<View style={{flexDirection: 'row', flex: 1}}>
             <TouchableOpacity
                 style={{flexDirection: 'column', justifyContent: 'center', paddingRight: 15, paddingLeft: 10}} onPress={() => navigation.state.params.operaGoBack()}>
@@ -257,6 +258,24 @@ class ImmediatelyLend extends Component {
                                     <Image source={require('../img/icon_arrow_down_passion_blue_idle_25x25@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:20/zoomW*2}} resizeMode='contain'/>
                                 </View>
                             </View>
+                            <View style={[listStyle.Department,{marginBottom:17}]}>
+                                <View style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>库存区域</Text>
+                                    </View>
+                                    <View style={listStyle. itemDetail}>
+                                        <Text style={listStyle.listText}>D区</Text>
+                                    </View>
+                                </View>
+                                <View style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>库位编号</Text>
+                                    </View>
+                                    <View style={listStyle. itemDetail}>
+                                        <Text style={listStyle.listText}>D09-09-09</Text>
+                                    </View>
+                                </View>
+                            </View>
                             <View style={listStyle.remark}>
                                 <View style={{
                                     width:358/zoomW*2,
@@ -296,7 +315,7 @@ class ImmediatelyLend extends Component {
                                                 ref={'content'}
                                                 textAlignVertical="top"
                                                 onChangeText={(newText) => this.setState({other: newText})}/>
-                                                <Text
+                                            <Text
                                                 style={{
                                                     opacity: 0.5,
                                                     fontFamily:'PingFangSC-Regular',
@@ -306,14 +325,14 @@ class ImmediatelyLend extends Component {
                                                     textAlign: 'right',
                                                     lineHeight: 20
                                                 }}
-                                                >0/200字</Text>
+                                            >0/200字</Text>
                                         </View>
                                     </View>
                                 </View>
                             </View>
                             <View style={styles.formRepair}>
                                 <View style={styles.formRepairDivTitle}>
-                                    <Text style={styles.formRepairTitleLabel}>归还拍照</Text>
+                                    <Text style={styles.formRepairTitleLabel}>借出拍照</Text>
                                     <Text style={styles.formRepairTitleRemarks}>（选项，最多4张）</Text>
                                 </View>
                                 <View style={styles.formView}>
@@ -328,7 +347,7 @@ class ImmediatelyLend extends Component {
                         </View>
                     </ScrollView>
                     <TouchableOpacity style={listStyle.button}>
-                        <Text style={listStyle.textButton}>立即借出</Text>
+                        <Text style={listStyle.textButton}>立即归还</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -397,4 +416,4 @@ const styles = StyleSheet.create({
         color: '#666666'
     },
 });
-export default ImmediatelyLend;
+export default ImmediatelyRestore;

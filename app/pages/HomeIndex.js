@@ -88,11 +88,11 @@ class Index extends Component {
     }
     //跳转到库位查询
     toLocationSearch=()=>{
-        this.props.navigation.navigate('Restore',{});
+        this.props.navigation.navigate('storageLocationSearch',{});
         const resetAction = NavigationActions.reset({
             index: 0,
             actions: [
-                NavigationActions.navigate({ routeName: 'Restore'})
+                NavigationActions.navigate({ routeName: 'storageLocationSearch'})
             ]
         })
         this.props.navigation.dispatch(resetAction);
