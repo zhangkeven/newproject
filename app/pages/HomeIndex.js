@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import App from './App';
 import ListStore from '../mobx/listStore'
 import {
     AppRegistry,
@@ -77,14 +76,14 @@ class Index extends Component {
     }
     //跳转我的样品
     toMySample=()=>{
-        this.props.navigation.navigate('Lend',{});
-        const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({ routeName: 'Lend'})
-            ]
-        })
-        this.props.navigation.dispatch(resetAction);
+        // this.props.navigation.navigate('Lend',{});
+        // const resetAction = NavigationActions.reset({
+        //     index: 0,
+        //     actions: [
+        //         NavigationActions.navigate({ routeName: 'Lend'})
+        //     ]
+        // })
+        // this.props.navigation.dispatch(resetAction);
     }
     //跳转到库位查询
     toLocationSearch=()=>{
@@ -99,7 +98,7 @@ class Index extends Component {
     }
     //跳转到扫一扫页面
     toScan=()=>{
-        // this.props.navigation.navigate('Scan',{});
+         this.props.navigation.navigate('Scan',{});
         // const resetAction = NavigationActions.reset({
         //                 index: 0,
         //                 actions: [

@@ -22,4 +22,5 @@ allprojects {
             url "$rootDir/../node_modules/react-native/android"
         }
     }
+
 }

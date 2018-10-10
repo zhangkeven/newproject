@@ -1,50 +1,129 @@
-import React, { Component } from 'react'
-import ListStore from '../../mobx/listStore'
+import React, { Component } from 'react';
 import {
-    AppRegistry,
-    FlatList,
-    Image,
+    Platform,
     StyleSheet,
     Text,
-    TextInput,
-    TouchableOpacity,
     View,
-    Platform,
-    ScrollView,
-    Alert,
-} from 'react-native'
-import {line, publicStyle, height,width,NoDoublePress,zoomW,zoomH,getHeaderPadding, getHeaderHeight,} from "../../utils/util";
-import {observer} from "mobx-react/native";
-@observer
-class Scan extends Component {
+    Alert, TouchableOpacity, Image
+} from 'react-native';
+import Barcode from 'react-native-smart-barcode'
+import {zoomW} from "../../utils/util";
+import {NavigationActions} from "react-navigation";
+
+type Props = {};
+export default class Scan extends Component<Props> {
     static navigationOptions = ({navigation, screenProps}) => ({
         title: '扫一扫',
         headerLeft: (<View style={{flexDirection: 'row', flex: 1}}>
             <TouchableOpacity
                 style={{flexDirection: 'column', justifyContent: 'center', paddingRight: 15, paddingLeft: 10}} onPress={() => navigation.state.params.operaGoBack()}>
-                <Image style={{width: 25/zoomW*2, height: 25}} source={require('../../img/icon_arrow_left_passion_blue_idle_25x25@xhdi.png')}
+                <Image style={{width: 25/zoomW*2, height:25}} source={require('../../img/icon_arrow_left_passion_blue_idle_25x25@xhdi.png')}
                        resizeMode="contain"/>
             </TouchableOpacity>
         </View>),
         headerRight:(<View/>)
     });
-    constructor () {
-        super()
+    //构造方法
+    constructor(props) {
+        super(props);
         this.state = {
-            text: '',
-            showInput: false,
             viewAppear: false,
-        }
-    }
-    componentWillMount() {
+        };
+    } componentWillMount() {
         //路由组件
         this.props.navigation.setParams({
             //返回上一个路由
             operaGoBack: () => {
-                const { goBack } = this.props.navigation;
-                goBack();
+                this.props.navigation.navigate('Index',{});
+                const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: 'Index'})
+                    ]
+                })
+                this.props.navigation.dispatch(resetAction);
             }
         });
     }
+    componentDidMount() {
+        //启动定时器
+        this.timer = setTimeout(
+            () => this.setState({viewAppear: true}),
+            250
+        );
+    }
+    //组件销毁生命周期
+    componentWillUnmount() {
+        //清楚定时器
+        this.timer && clearTimeout(this.timer);
+    }
+
+    _onBarCodeRead = (e) => {
+        // console.log(`e.nativeEvent.data.type = ${e.nativeEvent.data.type}, e.nativeEvent.data.code = ${e.nativeEvent.data.code}`)
+        console.log(e.nativeEvent.data.code);
+        this._startScan(e.nativeEvent.data.code);
+        // Alert.alert("二维码", e.nativeEvent.data.code, [
+        //     {text: '确认', onPress: () => this._startScan()},
+        // ])
+    };
+
+    _startScan = (e) => {
+        if(e==='借出'){
+            this.props.navigation.navigate('Lend',{})
+            const resetAction = NavigationActions.reset({
+                index: 0,
+                actions: [
+                    NavigationActions.navigate({ routeName: 'Lend'})
+                ]
+            })
+            this.props.navigation.dispatch(resetAction);
+        }else if(e==='归还'){
+            this.props.navigation.navigate('Restore',{})
+            const resetAction = NavigationActions.reset({
+                index: 0,
+                actions: [
+                    NavigationActions.navigate({ routeName: 'Restore'})
+                ]
+            })
+            this.props.navigation.dispatch(resetAction);
+        }
+        // this._barCode.startScan()
+    };
+
+    _stopScan = (e) => {
+        this._barCode.stopScan()
+    }
+    render() {
+        return (
+            <View style={{flex: 1}}>
+                {this.state.viewAppear ?
+                    <Barcode style={{flex: 1}}
+                             ref={component => this._barCode = component}
+                             onBarCodeRead={this._onBarCodeRead}
+                             scannerRectCornerColor={'#107FE0'}
+                    />
+                    : null
+                }
+            </View>
+        )
+    }
 }
-export default Scan ;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF',
+    },
+    welcome: {
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10,
+    },
+    instructions: {
+        textAlign: 'center',
+        color: '#333333',
+        marginBottom: 5,
+    },
+});

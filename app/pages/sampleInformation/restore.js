@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import App from '../App';
 import ListStore from '../../mobx/listStore'
 import listStyle from '../listStyle/listStyle';
 import {
@@ -47,8 +46,14 @@ class Restore extends Component {
         this.props.navigation.setParams({
             //返回上一个路由
             operaGoBack: () => {
-                const { goBack } = this.props.navigation;
-                goBack();
+                this.props.navigation.navigate('Index',{});
+                const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: 'Index'})
+                    ]
+                })
+                this.props.navigation.dispatch(resetAction);
             }
         });
     }
