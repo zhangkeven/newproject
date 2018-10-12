@@ -10,7 +10,8 @@ import {
     TouchableOpacity,
     View,
     Alert,
-    Platform
+    Platform,
+    BackHandler
 } from 'react-native'
 import {Navigator} from 'react-native-deprecated-custom-components';
 import {line, publicStyle, height,width,NoDoublePress,zoomW,zoomH,getHeaderPadding, getHeaderHeight,} from "../utils/util";
@@ -18,6 +19,7 @@ import {observer} from "mobx-react/native";
 import ImagePicker from "react-native-image-picker";
 import FetchUtil from "../service/rpc";
 import {NavigationActions} from "react-navigation";
+import Toast from "react-native-simple-toast";
 @observer
 class Index extends Component {
     // logic = new ListStore();
@@ -62,6 +64,28 @@ class Index extends Component {
                 goBack();
             }
         });
+        BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
+        onBackAndroid = () => {
+            if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+                //最近2秒内按过back键，可以退出应用。
+                BackHandler.exitApp();
+                return;
+            }
+            this.lastBackPressed = Date.now();
+            Toast.show('再按一次退出应用',Toast.SHORT);
+            return true;
+        };
+    }
+    //跳转到用户详情页
+    toUser=()=>{
+        this.props.navigation.navigate('userDetail',{});
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'userDetail'})
+            ]
+        })
+        this.props.navigation.dispatch(resetAction);
     }
     //跳转到订单搜索页面
     toSearchOrder=()=>{
@@ -76,14 +100,14 @@ class Index extends Component {
     }
     //跳转我的样品
     toMySample=()=>{
-        // this.props.navigation.navigate('Lend',{});
-        // const resetAction = NavigationActions.reset({
-        //     index: 0,
-        //     actions: [
-        //         NavigationActions.navigate({ routeName: 'Lend'})
-        //     ]
-        // })
-        // this.props.navigation.dispatch(resetAction);
+        this.props.navigation.navigate('mySample',{});
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'mySample'})
+            ]
+        })
+        this.props.navigation.dispatch(resetAction);
     }
     //跳转到库位查询
     toLocationSearch=()=>{
@@ -99,13 +123,24 @@ class Index extends Component {
     //跳转到扫一扫页面
     toScan=()=>{
          this.props.navigation.navigate('Scan',{});
-        // const resetAction = NavigationActions.reset({
-        //                 index: 0,
-        //                 actions: [
-        //                     NavigationActions.navigate({ routeName: 'Scan'})
-        //                 ]
-        //             })
-        //             this.props.navigation.dispatch(resetAction);
+        const resetAction = NavigationActions.reset({
+                        index: 0,
+                        actions: [
+                            NavigationActions.navigate({ routeName: 'Scan'})
+                        ]
+                    })
+                    this.props.navigation.dispatch(resetAction);
+    }
+    //跳转帮助页面
+    toHelp=()=>{
+        this.props.navigation.navigate('Demo',{});
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Demo'})
+            ]
+        })
+        this.props.navigation.dispatch(resetAction);
     }
     selectItem=(item)=>{
         if(item==='性别'){
@@ -211,17 +246,17 @@ class Index extends Component {
                     <Image source={require('../img/icon_home_kucun_40x40.png')} style={styles.navIcon} resizeMode='contain'/>
                     <Text style={styles.navText}>库位查询</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{position:'absolute',left:60/zoomW*2,top:360,justifyContent:'center',alignItems:'center'}}>
+                <TouchableOpacity style={{position:'absolute',left:60/zoomW*2,top:360,justifyContent:'center',alignItems:'center'}} onPress={()=>{}}>
                     <Image source={require('../img/icon_help_40x40.png')} style={styles.navIcon} resizeMode='contain'/>
                     <Text style={styles.navText}>使用帮助</Text>
                 </TouchableOpacity>
                 <View style={{position:'absolute',left:110/zoomW*2,top:150,justifyContent:'center',alignItems:'center'}}>
                     <Text style={styles.titleText}>安徽创源文化</Text>
                 </View>
-                <View style={{position:'absolute',left:25/zoomW*2,top:30,justifyContent:'center',alignItems:'center',flexDirection:'row'}}>
+                <TouchableOpacity style={{position:'absolute',left:25/zoomW*2,top:30,justifyContent:'center',alignItems:'center',flexDirection:'row'}} onPress={()=>{this.toUser()}}>
                     <Image source={require('../img/icon_me_40x40.png')} style={styles.navIcon} resizeMode='contain'/>
                     <Text style={[styles.titleText,{marginLeft: 14/zoomW*2}]}>Hi ~ 张三</Text>
-                </View>
+                </TouchableOpacity>
                 <TouchableOpacity style={{width:'100%',height:100,justifyContent:'center',alignItems:'center'}} onPress={()=>{ this.toScan()}}>
                     <Image source={require('../img/saoma_100x100.png')} style={{width:75/zoomW*2,height:75}} resizeMode='contain'/>
                 </TouchableOpacity>

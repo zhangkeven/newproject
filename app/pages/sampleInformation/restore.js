@@ -251,6 +251,14 @@ class Restore extends Component {
                                     <Image style={{width: 8/zoomW*2,height: 12}} source={require('../../img/icon.png')}/>
                                 </View>
                             </TouchableOpacity>
+                            <TouchableOpacity style={listStyle.item}>
+                                <View style={listStyle.itemDesc}>
+                                    <Text style={listStyle.listTitle}>大货留样</Text>
+                                </View>
+                                <View style={listStyle.itemChoose}>
+                                    <Image style={{width: 8/zoomW*2,height: 12}} source={require('../../img/icon.png')}/>
+                                </View>
+                            </TouchableOpacity>
                         </View>
                         </ScrollView>
                     </View>

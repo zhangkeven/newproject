@@ -57,6 +57,10 @@ class Lend extends Component {
             }
         });
     }
+    //跳转到样品操作记录页面
+    operatingRecord=()=>{
+        this.props.navigation.navigate('ImmediatelyLend',{});
+    }
     //跳转到立即借出页面
     toLend=()=>{
         this.props.navigation.navigate('ImmediatelyLend',{});
@@ -203,7 +207,7 @@ class Lend extends Component {
                                 />
                             </View>
                             <View style={listStyle.record}>
-                            <TouchableOpacity style={listStyle.item}>
+                            <TouchableOpacity style={listStyle.item} onPress={()=>{this.operatingRecord()}}>
                             <View style={listStyle.itemDesc}>
                             <Text style={listStyle.listTitle}>样品操作记录</Text>
                             </View>
@@ -216,14 +220,6 @@ class Lend extends Component {
                                 <TouchableOpacity style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
                                         <Text style={listStyle.listTitle}>样品报修</Text>
-                                    </View>
-                                    <View style={listStyle.itemChoose}>
-                                        <Image style={{width: 8/zoomW*2,height: 12}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')}/>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>样品移交</Text>
                                     </View>
                                     <View style={listStyle.itemChoose}>
                                         <Image style={{width: 8/zoomW*2,height: 12}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')}/>

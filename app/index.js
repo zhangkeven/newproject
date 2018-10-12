@@ -3,6 +3,8 @@ import {NavigationActions, StyleSheet, Touch, View} from 'react-native';
 
 import {getHeaderHeight, getHeaderPadding} from "./utils/util";
 import HomeIndex from './pages/HomeIndex';
+import mySample from './pages/sampleInformation/mySample';
+import userDetail from './pages/user/userDetail';
 import Restore from './pages/sampleInformation/restore';
 import Lend from './pages/sampleInformation/lend';
 import ImmediatelyLend from './pages/sampleInformation/ImmediatelyLend';
@@ -12,6 +14,7 @@ import OrderDetail from './pages/order/orderDetail';
 import storageLocationSearch from './pages/LocationInformation/storageLocationSearch';
 import storageLocationDetail from './pages/LocationInformation/storageLocationDetail';
 import  Choose from  './pages/choose';
+import  Demo from  './pages/demo';
 import Login from './pages/login/login';
 import {StackNavigator} from 'react-navigation';
 import {fromBottomLikeAndroid} from "./utils/NavigationUtil";
@@ -24,6 +27,8 @@ const styles = StyleSheet.create({
     }
 });
 const Navigator = StackNavigator({
+    mySample :{screen: mySample},
+    userDetail :{screen: userDetail},
     Restore :{screen: Restore},
     ImmediatelyRestore:{screen: ImmediatelyRestore},
     Lend:{screen: Lend},
@@ -33,7 +38,7 @@ const Navigator = StackNavigator({
     OrderDetail:{screen: OrderDetail},
     storageLocationSearch:{screen: storageLocationSearch},
     storageLocationDetail:{screen: storageLocationDetail},
-    Choose:{screen: Choose}
+    Choose:{screen: Choose},
 }, {
     // headerMode: 'none', // 导航栏的显示模式, screen: 有渐变透明效果, float: 无透明效果, none: 隐藏导航栏
     navigationOptions: {
@@ -63,12 +68,16 @@ const Navigator = StackNavigator({
     }
 });
 export const BottomModal = StackNavigator({
+    // Demo:{screen: Demo},
     Login:{screen:Login},
     Index: {screen: HomeIndex},
     Navigator: {screen: Navigator},
 }, {
-    mode: 'modal',
+    // mode: 'modal',
     headerMode: 'none',
+    title: ' ', // 这里不给值
+    header: false, // 不显示导航栏
+    gesturesEnabled: false,
     transitionConfig: () => ({screenInterpolator: fromBottomLikeAndroid}),
     cardStyle: {
         backgroundColor: 'rgba(0,0,0,0)',
