@@ -57,6 +57,10 @@ class Restore extends Component {
             }
         });
     }
+    //跳转到移交页面
+    handover=()=>{
+        this.props.navigation.navigate('Handover',{});
+    }
     //立即归还样品
     toRestore=()=>{
         this.props.navigation.navigate('ImmediatelyRestore',{});
@@ -230,7 +234,7 @@ class Restore extends Component {
                                         }}>查看详情</Text>
                                     </View>
                                     <View style={listStyle.itemChoose}>
-                                        <Image style={{width: 8/zoomW*2,height: 12}} source={require('../../img/icon.png')}/>
+                                        <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon.png')} resizeMode={"contain"}/>
                                     </View>
                                 </TouchableOpacity>
                             </View>
@@ -240,15 +244,15 @@ class Restore extends Component {
                                     <Text style={listStyle.listTitle}>样品报修</Text>
                                 </View>
                                 <View style={listStyle.itemChoose}>
-                                    <Image style={{width: 8/zoomW*2,height: 12}} source={require('../../img/icon.png')}/>
+                                    <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon.png')} resizeMode={"contain"}/>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={listStyle.item}>
+                            <TouchableOpacity style={listStyle.item} onPress={()=>{this.handover()}}>
                                 <View style={listStyle.itemDesc}>
                                     <Text style={listStyle.listTitle}>样品移交</Text>
                                 </View>
                                 <View style={listStyle.itemChoose}>
-                                    <Image style={{width: 8/zoomW*2,height: 12}} source={require('../../img/icon.png')}/>
+                                    <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon.png')} resizeMode={"contain"}/>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity style={listStyle.item}>
@@ -256,7 +260,7 @@ class Restore extends Component {
                                     <Text style={listStyle.listTitle}>大货留样</Text>
                                 </View>
                                 <View style={listStyle.itemChoose}>
-                                    <Image style={{width: 8/zoomW*2,height: 12}} source={require('../../img/icon.png')}/>
+                                    <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon.png')} resizeMode={"contain"}/>
                                 </View>
                             </TouchableOpacity>
                         </View>

@@ -113,6 +113,7 @@ export default class loginView extends Component {
                     <View style={{
                         width:'100%',
                         backgroundColor:'#fff'
+
                     }}>
                         <TouchableOpacity style={listStyle.item}>
                             <View style={listStyle.itemDesc}>

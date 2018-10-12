@@ -11,6 +11,7 @@ import ImmediatelyLend from './pages/sampleInformation/ImmediatelyLend';
 import Scan from './pages/order/scan';
 import SearchOrder from './pages/order/searchOrder';
 import OrderDetail from './pages/order/orderDetail';
+import ChildOrderDetail from './pages/order/childrenOrderDetail';
 import storageLocationSearch from './pages/LocationInformation/storageLocationSearch';
 import storageLocationDetail from './pages/LocationInformation/storageLocationDetail';
 import  Choose from  './pages/choose';
@@ -19,6 +20,7 @@ import Login from './pages/login/login';
 import {StackNavigator} from 'react-navigation';
 import {fromBottomLikeAndroid} from "./utils/NavigationUtil";
 import ImmediatelyRestore from "./pages/sampleInformation/ImmediatelyRestore";
+import Handover from "./pages/sampleInformation/handover";
 const styles = StyleSheet.create({
     tabIcon: {
         height: 24,
@@ -33,9 +35,11 @@ const Navigator = StackNavigator({
     ImmediatelyRestore:{screen: ImmediatelyRestore},
     Lend:{screen: Lend},
     ImmediatelyLend:{screen: ImmediatelyLend},
+    Handover:{screen: Handover},
     Scan:{screen: Scan},
     SearchOrder:{screen: SearchOrder},
     OrderDetail:{screen: OrderDetail},
+    ChildOrderDetail:{screen: ChildOrderDetail},
     storageLocationSearch:{screen: storageLocationSearch},
     storageLocationDetail:{screen: storageLocationDetail},
     Choose:{screen: Choose},

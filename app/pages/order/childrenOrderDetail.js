@@ -22,9 +22,9 @@ import ImagePicker from "react-native-image-picker";
 import FetchUtil from "../../service/rpc";
 import {NavigationActions} from "react-navigation";
 @observer
-class orderDetail extends Component {
+class childOrderDetail extends Component {
     static navigationOptions = ({navigation, screenProps}) => ({
-        title: '订单详情',
+        title: '子订单详情',
         headerLeft: (<View style={{flexDirection: 'row', flex: 1}}>
             <TouchableOpacity
                 style={{flexDirection: 'column', justifyContent: 'center', paddingRight: 15, paddingLeft: 10}} onPress={() => navigation.state.params.operaGoBack()}>
@@ -51,14 +51,11 @@ class orderDetail extends Component {
             }
         });
     }
-    toChildOrderDetail=()=>{
-        this.props.navigation.navigate('ChildOrderDetail',{})
-    }
     //所属订单
     _keyExtractor = (item, index) => index;
     orderItem({ item, index }) {
         return (
-            <TouchableOpacity style={listStyle.item}  key={index} onPress={()=>{this.toChildOrderDetail()}}>
+            <TouchableOpacity style={listStyle.item}  key={index}>
                 <View style={listStyle.itemDesc}>
                     <Text style={listStyle.listTitle}>{item}</Text>
                 </View>
@@ -77,7 +74,7 @@ class orderDetail extends Component {
                             <View style={listStyle.sample}>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>订单编号</Text>
+                                        <Text style={listStyle.listTitle}>母订单编号</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
                                         <Text style={listStyle.listText}>YP180002939-1</Text>
@@ -85,18 +82,117 @@ class orderDetail extends Component {
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>客户代码</Text>
+                                        <Text style={listStyle.listTitle}>子订单编号</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>1.08.26</Text>
+                                        <Text style={listStyle.listText}>YP180002939-2</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>订单评级</Text>
+                                        <Text style={listStyle.listTitle}>返或意向编号</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>重要</Text>
+                                        <Text style={listStyle.listText}>YP180002939-3</Text>
+                                    </View>
+                                </View>
+                                <View style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>HS编码</Text>
+                                    </View>
+                                    <View style={listStyle. itemDetail}>
+                                        <Text style={listStyle.listText}>666888</Text>
+                                    </View>
+                                </View>
+                                <TouchableOpacity style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>样品编码</Text>
+                                    </View>
+                                    <View style={{
+
+                                    }}>
+                                        <Text style={{
+                                            fontFamily: 'PingFangSC-Regular',
+                                            fontSize: 14,
+                                            color: '#9B9B9B',
+                                            letterSpacing: 0,
+                                            textAlign: 'right'
+                                        }}>Ysdsad123132</Text>
+                                    </View>
+                                    <View style={listStyle.itemChoose}>
+                                        <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')} resizeMode="contain"/>
+                                    </View>
+                                </TouchableOpacity>
+                                <View style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>样品名称</Text>
+                                    </View>
+                                    <View style={listStyle. itemDetail}>
+                                        <Text style={listStyle.listText}>金砖</Text>
+                                    </View>
+                                </View>
+                                <View style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>订单数量</Text>
+                                    </View>
+                                    <View style={listStyle. itemDetail}>
+                                        <Text style={listStyle.listText}>11233</Text>
+                                    </View>
+                                </View>
+                                <View style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>大货留样</Text>
+                                    </View>
+                                    <View style={listStyle. itemDetail}>
+                                        <Text style={listStyle.listText}>89件</Text>
+                                    </View>
+                                </View>
+                                <View style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>大货留样时间</Text>
+                                    </View>
+                                    <View style={listStyle. itemDetail}>
+                                        <Text style={listStyle.listText}>2018/8/8</Text>
+                                    </View>
+                                </View>
+                                <View style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>研发留样</Text>
+                                    </View>
+                                    <View style={listStyle. itemDetail}>
+                                        <Text style={listStyle.listText}>89件</Text>
+                                    </View>
+                                </View>
+                                <View style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>FOB单价</Text>
+                                    </View>
+                                    <View style={listStyle. itemDetail}>
+                                        <Text style={listStyle.listText}>20元</Text>
+                                    </View>
+                                </View>
+                                <View style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>子订单金额</Text>
+                                    </View>
+                                    <View style={listStyle. itemDetail}>
+                                        <Text style={listStyle.listText}>￥768884</Text>
+                                    </View>
+                                </View>
+                                <View style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>单位料</Text>
+                                    </View>
+                                    <View style={listStyle. itemDetail}>
+                                        <Text style={listStyle.listText}>8.9</Text>
+                                    </View>
+                                </View>
+                                <View style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>单位工</Text>
+                                    </View>
+                                    <View style={listStyle. itemDetail}>
+                                        <Text style={listStyle.listText}>1.08</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -109,88 +205,33 @@ class orderDetail extends Component {
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>总金额</Text>
+                                        <Text style={listStyle.listTitle}>模型加成</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>￥72，380.00</Text>
+                                        <Text style={listStyle.listText}>8.9</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>付款方式</Text>
+                                        <Text style={listStyle.listTitle}>模型差异</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>完成70%</Text>
+                                        <Text style={listStyle.listText}>8.9</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>其他费用</Text>
+                                        <Text style={listStyle.listTitle}>有效产出率</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>￥72，380.00</Text>
-                                    </View>
-                                </View>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>预付款日期</Text>
-                                    </View>
-                                    <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>2018/09/20</Text>
-                                    </View>
-                                </View>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>结款日期</Text>
-                                    </View>
-                                    <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>2018/09/20</Text>
-                                    </View>
-                                </View>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>装运港</Text>
-                                    </View>
-                                    <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>大连港</Text>
-                                    </View>
-                                </View>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>卸货港</Text>
-                                    </View>
-                                    <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>北京港</Text>
-                                    </View>
-                                </View>
-                                <View style={{
-                                    width:358/zoomW*2,
-                                    backgroundColor: '#ffffff',
-                                    marginLeft:19/zoomW*2,
-                                }}>
-                                    <View style={[listStyle.itemDesc,{
-                                        marginTop: 11,
-                                    }]}>
-                                        <Text style={[listStyle.listTitle,{
-                                            color:'#000',
-                                            letterSpacing: 0.2
-                                        }]}>特殊条款</Text>
-                                    </View>
-                                    <View style={{
-                                        width:340/zoomW*2,
-                                        marginBottom:11,
-                                        marginTop:14
-                                    }}>
-                                        <Text style={listStyle.remarkText}>
-                                            从 2015 年 4 月起，Ant Design 在蚂蚁金服中后台产品线迅速推广，对接多条业务线，覆盖系统 800 个以上。定位于中台业务的 Ant Design 兼顾专业和非专业的设计人员，具有学习成本
-                                        </Text>
+                                        <Text style={listStyle.listText}>8.9</Text>
                                     </View>
                                 </View>
                             </View>
                             <View style={[listStyle.Department,{marginBottom:17}]}>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>客户部门</Text>
+                                        <Text style={listStyle.listTitle}>生产部门</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
                                         <Text style={listStyle.listText}>生产一部</Text>
@@ -198,7 +239,7 @@ class orderDetail extends Component {
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>客户负责人</Text>
+                                        <Text style={listStyle.listTitle}>生产负责人</Text>
                                     </View>
                                     <TouchableOpacity onPress={()=>{Communications.phonecall('123', true)}}>
                                         <Image source={require('../../img/椭圆形@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:11/zoomW*2}} resizeMode='contain'/>
@@ -211,7 +252,7 @@ class orderDetail extends Component {
                             <View style={[listStyle.Department,{marginBottom:17}]}>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>管理部门</Text>
+                                        <Text style={listStyle.listTitle}>品控部门</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
                                         <Text style={listStyle.listText}>生产一部</Text>
@@ -219,7 +260,7 @@ class orderDetail extends Component {
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>区域经理</Text>
+                                        <Text style={listStyle.listTitle}>品控负责人</Text>
                                     </View>
                                     <TouchableOpacity onPress={()=>{Communications.phonecall('123', true)}}>
                                         <Image source={require('../../img/椭圆形@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:11/zoomW*2}} resizeMode='contain'/>
@@ -228,57 +269,6 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listText}>张三</Text>
                                     </View>
                                 </View>
-                            </View>
-                            <View style={[listStyle.Department,{marginBottom:17}]}>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>财务部门</Text>
-                                    </View>
-                                    <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>财务部</Text>
-                                    </View>
-                                </View>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>财务评定员</Text>
-                                    </View>
-                                    <TouchableOpacity onPress={()=>{Communications.phonecall('123', true)}}>
-                                        <Image source={require('../../img/椭圆形@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:11/zoomW*2}} resizeMode='contain'/>
-                                    </TouchableOpacity>
-                                    <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>张三</Text>
-                                    </View>
-                                </View>
-                            </View>
-                            <View style={listStyle.Department}>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>审核部门</Text>
-                                    </View>
-                                    <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>财务部</Text>
-                                    </View>
-                                </View>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>审核人</Text>
-                                    </View>
-                                    <TouchableOpacity onPress={()=>{Communications.phonecall('123', true)}}>
-                                        <Image source={require('../../img/椭圆形@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:11/zoomW*2}} resizeMode='contain'/>
-                                    </TouchableOpacity>
-                                    <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>张三</Text>
-                                    </View>
-                                </View>
-                            </View>
-                            <Text style={listStyle.personText}>所属子订单</Text>
-                            <View style={listStyle.order}>
-                                <FlatList
-                                    data={ListStore.orderList}
-                                    extraData={this.state}
-                                    renderItem={this.orderItem.bind(this)}
-                                    keyExtractor={this._keyExtractor}
-                                />
                             </View>
                             <View style={[listStyle.remark,{marginBottom:20}]}>
                                 <View style={{
@@ -292,7 +282,7 @@ class orderDetail extends Component {
                                         <Text style={[listStyle.listTitle,{
                                             color:'#000',
                                             letterSpacing: 0.2
-                                        }]}>备注信息</Text>
+                                        }]}>待定项目</Text>
                                     </View>
                                     <View style={{
                                         width:340/zoomW*2,
@@ -305,6 +295,27 @@ class orderDetail extends Component {
                                     </View>
                                 </View>
                             </View>
+                            <View style={{width:'100%',backgroundColor:'#fff',marginBottom:30}}>
+                                <TouchableOpacity style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>物料配置单</Text>
+                                    </View>
+                                    <View style={{
+
+                                    }}>
+                                        <Text style={{
+                                            fontFamily: 'PingFangSC-Regular',
+                                            fontSize: 14,
+                                            color: '#9B9B9B',
+                                            letterSpacing: 0,
+                                            textAlign: 'right'
+                                        }}>详情</Text>
+                                    </View>
+                                    <View style={listStyle.itemChoose}>
+                                        <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')} resizeMode="contain"/>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
                         </ScrollView>
                     </View>
                 </View>
@@ -313,4 +324,4 @@ class orderDetail extends Component {
 
     }
 }
-export default orderDetail;
+export default childOrderDetail;

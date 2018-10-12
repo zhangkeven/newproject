@@ -57,15 +57,15 @@ class mySample extends Component {
             }
         });
     }
-    //跳转到订单详情
-    toOrderDetail=()=>{
-        this.props.navigation.navigate('OrderDetail',{})
+    //跳转到样品详情
+    toRestore=()=>{
+        this.props.navigation.navigate('Restore',{})
     }
     //历史记录
     _keyExtractor = (item, index) => index;
     historyItem({ item, index }) {
         return (
-            <TouchableOpacity style={styles.main} key={index} onPress={()=>{this.toOrderDetail()}}>
+            <TouchableOpacity style={styles.main} key={index} onPress={()=>{this.toRestore()}}>
                 <View style={{
                     flexDirection:'row',
                     borderBottomColor:'#DADADD',
