@@ -21,13 +21,13 @@ import ImagePicker from "react-native-image-picker";
 import FetchUtil from "../../service/rpc";
 import {NavigationActions} from "react-navigation";
 @observer
-class Lend extends Component {
+class NotExecutable extends Component {
     static navigationOptions = ({navigation, screenProps}) => ({
         title: '样品信息',
         headerLeft: (<View style={{flexDirection: 'row', flex: 1}}>
             <TouchableOpacity
                 style={{flexDirection: 'column', justifyContent: 'center', paddingRight: 15, paddingLeft: 10}} onPress={() => navigation.state.params.operaGoBack()}>
-                <Image style={{width: 25/zoomW*2, height:25}} source={require('../../img/icon_arrow_left_passion_blue_idle_25x25@xhdi.png')}
+                <Image style={{width: 25/zoomW*2, height: 25}} source={require('../../img/icon_arrow_left_passion_blue_idle_25x25@xhdi.png')}
                        resizeMode="contain"/>
             </TouchableOpacity>
         </View>),
@@ -57,13 +57,13 @@ class Lend extends Component {
             }
         });
     }
-    //跳转到样品操作记录页面
-    operatingRecord=()=>{
-        this.props.navigation.navigate('operatingRecord',{});
+    //跳转到移交页面
+    handover=()=>{
+        this.props.navigation.navigate('Handover',{});
     }
-    //跳转到立即借出页面
-    toLend=()=>{
-        this.props.navigation.navigate('ImmediatelyLend',{});
+    //立即归还样品
+    toRestore=()=>{
+        this.props.navigation.navigate('ImmediatelyRestore',{});
     }
     //所属订单
     _keyExtractor = (item, index) => index;
@@ -74,7 +74,7 @@ class Lend extends Component {
                     <Text style={listStyle.listTitle}>{item}</Text>
                 </View>
                 <View style={listStyle.itemChoose}>
-                    <Image style={{width: 25/zoomW*2,height:25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')} resizeMode="contain"/>
+                    <Image style={{width: 8/zoomW*2,height: 12}} source={require('../../img/icon.png')} resizeMode="contain"/>
                 </View>
             </TouchableOpacity>
         );
@@ -115,34 +115,18 @@ class Lend extends Component {
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>库存区域</Text>
-                                    </View>
-                                    <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>c</Text>
-                                    </View>
-                                </View>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>库位编号</Text>
-                                    </View>
-                                    <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>D09-09-03</Text>
-                                    </View>
-                                </View>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>库存数量</Text>
-                                    </View>
-                                    <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>3 套</Text>
-                                    </View>
-                                </View>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
                                         <Text style={listStyle.listTitle}>样品状态</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>活动</Text>
+                                        <Text style={listStyle.listText}>在借</Text>
+                                    </View>
+                                </View>
+                                <View style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>操作时间</Text>
+                                    </View>
+                                    <View style={listStyle. itemDetail}>
+                                        <Text style={listStyle.listText}>2018/09/22 12：22</Text>
                                     </View>
                                 </View>
                             </View>
@@ -172,6 +156,33 @@ class Lend extends Component {
                                     </View>
                                 </View>
                             </View>
+                            <Text style={listStyle.personText}>使用人</Text>
+                            <View style={listStyle.person}>
+                                <View style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>使用部门</Text>
+                                    </View>
+                                    <View style={listStyle.itemDetail}>
+                                        <Text style={listStyle.listText}>1235466</Text>
+                                    </View>
+                                </View>
+                                <View style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>使用责任人</Text>
+                                    </View>
+                                    <View style={listStyle. itemDetail}>
+                                        <Text style={listStyle.listText}>1235466</Text>
+                                    </View>
+                                </View>
+                                <View style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>联系电话</Text>
+                                    </View>
+                                    <View style={listStyle. itemDetail}>
+                                        <Text style={listStyle.listText}>1235466</Text>
+                                    </View>
+                                </View>
+                            </View>
                             <View style={listStyle.remark}>
                                 <View style={{
                                     width:358/zoomW*2,
@@ -197,24 +208,35 @@ class Lend extends Component {
                                     </View>
                                 </View>
                             </View>
-                            <Text style={listStyle.personText}>所属订单</Text>
-                            <View style={listStyle.order}>
-                                <FlatList
-                                    data={ListStore.orderList}
-                                    extraData={this.state}
-                                    renderItem={this.orderItem.bind(this)}
-                                    keyExtractor={this._keyExtractor}
-                                />
-                            </View>
+                            <Text style={listStyle.personText}>执行订单</Text>
+                            {/*<View style={styles.order}>*/}
+                            {/*<FlatList*/}
+                            {/*data={ListStore.orderList}*/}
+                            {/*extraData={this.state}*/}
+                            {/*renderItem={this.orderItem.bind(this)}*/}
+                            {/*keyExtractor={this._keyExtractor}*/}
+                            {/*/>*/}
+                            {/*</View>*/}
                             <View style={listStyle.record}>
-                            <TouchableOpacity style={listStyle.item} onPress={()=>{this.operatingRecord()}}>
-                            <View style={listStyle.itemDesc}>
-                            <Text style={listStyle.listTitle}>样品操作记录</Text>
-                            </View>
-                            <View style={listStyle.itemChoose}>
-                            <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')}/>
-                            </View>
-                            </TouchableOpacity>
+                                <TouchableOpacity style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>DD180908000345-1</Text>
+                                    </View>
+                                    <View style={{
+                                        marginRight:9./zoomW*2
+                                    }}>
+                                        <Text style={{
+                                            fontFamily: 'PingFangSC-Regular',
+                                            fontSize: 14,
+                                            color: '#9B9B9B',
+                                            letterSpacing: 0,
+                                            textAlign: 'right'
+                                        }}>查看详情</Text>
+                                    </View>
+                                    <View style={listStyle.itemChoose}>
+                                        <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon.png')} resizeMode={"contain"}/>
+                                    </View>
+                                </TouchableOpacity>
                             </View>
                             <View style={listStyle.repair}>
                                 <TouchableOpacity style={listStyle.item}>
@@ -222,19 +244,19 @@ class Lend extends Component {
                                         <Text style={listStyle.listTitle}>样品报修</Text>
                                     </View>
                                     <View style={listStyle.itemChoose}>
-                                        <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')}/>
+                                        <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon.png')} resizeMode={"contain"}/>
                                     </View>
                                 </TouchableOpacity>
                             </View>
                         </ScrollView>
                     </View>
-                    <TouchableOpacity style={listStyle.button} onPress={()=>{this.toLend()}}>
-                        <Text style={listStyle.textButton}>借出</Text>
-                    </TouchableOpacity>
+                    <View style={[listStyle.button,{backgroundColor:'#C4C4C9'}]} onPress={()=>{this.toRestore()}}>
+                        <Text style={listStyle.textButton}>不可操作</Text>
+                    </View>
                 </View>
             </View>
         )
 
     }
 }
-export default Lend;
+export default NotExecutable ;

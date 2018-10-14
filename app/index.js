@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavigationActions, StyleSheet, Touch, View} from 'react-native';
+import {NavigationActions, StyleSheet, TouchableOpacity, View} from 'react-native';
 
 import {getHeaderHeight, getHeaderPadding} from "./utils/util";
 import HomeIndex from './pages/HomeIndex';
@@ -15,12 +15,14 @@ import ChildOrderDetail from './pages/order/childrenOrderDetail';
 import storageLocationSearch from './pages/LocationInformation/storageLocationSearch';
 import storageLocationDetail from './pages/LocationInformation/storageLocationDetail';
 import  Choose from  './pages/choose';
-import  Demo from  './pages/demo';
 import Login from './pages/login/login';
 import {StackNavigator} from 'react-navigation';
 import {fromBottomLikeAndroid} from "./utils/NavigationUtil";
 import ImmediatelyRestore from "./pages/sampleInformation/ImmediatelyRestore";
 import Handover from "./pages/sampleInformation/handover";
+import NotExecutable from "./pages/sampleInformation/notExecutable";
+import operatingRecord from "./pages/operatingRecord/operatingRecord";
+import RecordDetail from "./pages/operatingRecord/recordDetail";
 const styles = StyleSheet.create({
     tabIcon: {
         height: 24,
@@ -35,6 +37,7 @@ const Navigator = StackNavigator({
     ImmediatelyRestore:{screen: ImmediatelyRestore},
     Lend:{screen: Lend},
     ImmediatelyLend:{screen: ImmediatelyLend},
+    NotExecutable :{screen: NotExecutable},
     Handover:{screen: Handover},
     Scan:{screen: Scan},
     SearchOrder:{screen: SearchOrder},
@@ -42,6 +45,8 @@ const Navigator = StackNavigator({
     ChildOrderDetail:{screen: ChildOrderDetail},
     storageLocationSearch:{screen: storageLocationSearch},
     storageLocationDetail:{screen: storageLocationDetail},
+    operatingRecord:{screen: operatingRecord},
+    RecordDetail:{screen: RecordDetail},
     Choose:{screen: Choose},
 }, {
     // headerMode: 'none', // 导航栏的显示模式, screen: 有渐变透明效果, float: 无透明效果, none: 隐藏导航栏

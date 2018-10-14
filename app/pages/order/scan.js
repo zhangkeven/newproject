@@ -86,6 +86,15 @@ export default class Scan extends Component<Props> {
                 ]
             })
             this.props.navigation.dispatch(resetAction);
+        }else{
+            this.props.navigation.navigate('NotExecutable',{})
+            const resetAction = NavigationActions.reset({
+                index: 0,
+                actions: [
+                    NavigationActions.navigate({ routeName: 'NotExecutable'})
+                ]
+            })
+            this.props.navigation.dispatch(resetAction);
         }
         // this._barCode.startScan()
     };
