@@ -42,6 +42,7 @@ class orderDetail extends Component {
         }
     }
     componentWillMount() {
+        ListStore.getOrderDetail();
         //路由组件
         this.props.navigation.setParams({
             //返回上一个路由
@@ -60,7 +61,7 @@ class orderDetail extends Component {
         return (
             <TouchableOpacity style={listStyle.item}  key={index} onPress={()=>{this.toChildOrderDetail()}}>
                 <View style={listStyle.itemDesc}>
-                    <Text style={listStyle.listTitle}>{item}</Text>
+                    <Text style={listStyle.listTitle}>{item.id}</Text>
                 </View>
                 <View style={listStyle.itemChoose}>
                     <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')} resizeMode="contain"/>
@@ -80,7 +81,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>订单编号</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>YP180002939-1</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.orderCode}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -88,7 +89,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>客户代码</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>1.08.26</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.customCode}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -96,7 +97,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>订单评级</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>重要</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.orderLevel}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -104,7 +105,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>价格条款</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>FOB支付</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.orderLevel}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -112,7 +113,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>总金额</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>￥72，380.00</Text>
+                                        <Text style={listStyle.listText}>￥{ListStore.orderDetailList.totalPrice}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -120,7 +121,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>付款方式</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>完成70%</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.totalPrice}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -128,7 +129,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>其他费用</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>￥72，380.00</Text>
+                                        <Text style={listStyle.listText}>￥{ListStore.orderDetailList.totalPrice}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -136,7 +137,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>预付款日期</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>2018/09/20</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.payDate}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>

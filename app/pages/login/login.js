@@ -31,24 +31,23 @@ export default class loginView extends Component {
     }
     componentWillMount() {
         ListStore.getList();
-        // const process1 = new Promise((resolve, reject) => {
-        //     let data={};
-        //     FetchUtil.post('http://www.kevenzhang.com/data/index/getUrl.php',data).then(res=>{
-        //         resolve(res);
-        //         //this.ipPath=res.data.result[0].orgName;
-        //     }).catch((error)=>{
-        //         console.warn(error);
-        //     });
-        // })
-        // Promise.all([process1]).then(function (results) {
-        //     console.log(results[0][0].url);
-        //     ListStore.ipPath=results[0][0].url;
-        //     if(results && results.length>0 && ListStore.ipPath){
-        //         // ListStore.getData();
-        //         // ListStore.getProject();
-        //         // ListStore.isLogin();
-        //     }
-        // });
+        const process1 = new Promise((resolve, reject) => {
+            let data={};
+            FetchUtil.post('http://www.kevenzhang.com/data/index/getUrl.php',data).then(res=>{
+                resolve(res);
+            }).catch((error)=>{
+                console.warn(error);
+            });
+        })
+        Promise.all([process1]).then(function (results) {
+            console.log(results[0][0].url);
+            ListStore.ipPath=results[0][0].url;
+            if(results && results.length>0 && ListStore.ipPath){
+                // ListStore.getData();
+                // ListStore.getProject();
+                // ListStore.isLogin();
+            }
+        });
         //路由组件
         this.props.navigation.setParams({
             //返回上一个路由
@@ -59,8 +58,13 @@ export default class loginView extends Component {
         });
     }
     isLogin=()=>{
-        // ListStore.isLogin();
+        let data={
+            "loginNo": ListStore.uName,
+            "password": ListStore.UpWd
+        };
         this.props.navigation.navigate('Index',{})
+        ListStore.uName='' ;
+        ListStore.UpWd='';
         const resetAction = NavigationActions.reset({
             index: 0,
             actions: [
@@ -68,36 +72,43 @@ export default class loginView extends Component {
             ]
         })
         this.props.navigation.dispatch(resetAction);
-        // let data={
-        //     "loginNo": ListStore.uName,
-        //     "password": ListStore.UpWd
-        // };
-        // FetchUtil.post(ListStore.ipPath+'/api/management/app/login',data).then(res=>{
-        //     if(res.errmsg==='成功'){
-        //         Toast.show('登录成功', Toast.SHORT);
-        //         this.props.navigation.navigate('Index',{})
-        //         ListStore.uName='' ;
-        //         ListStore.UpWd='';
-        //         const resetAction = NavigationActions.reset({
-        //             index: 0,
-        //             actions: [
-        //                 NavigationActions.navigate({ routeName: 'Index'})
-        //             ]
-        //         })
-        //         this.props.navigation.dispatch(resetAction);
+
+        // if(loginNo==="" ){
+        //     Toast.show('用户名不能为空', Toast.SHORT);
+        // }else if(password===""){
+        //     Toast.show('密码不能为空', Toast.SHORT);
+        // }else{
+        //     FetchUtil.post(ListStore.ipPath+'/api/management/app/login',data).then(res=>{
+        //         console.log(res);
+        //         if(res.errmsg==='成功'){
+        //             Toast.show('登录成功', Toast.SHORT);
+        //             this.props.navigation.navigate('Index',{})
+        //             ListStore.uName='' ;
+        //             ListStore.UpWd='';
+        //             const resetAction = NavigationActions.reset({
+        //                 index: 0,
+        //                 actions: [
+        //                     NavigationActions.navigate({ routeName: 'Index'})
+        //                 ]
+        //             })
+        //             this.props.navigation.dispatch(resetAction);
         //
-        //     }else{
-        //         Toast.show('账号或密码错误', Toast.SHORT);
-        //     }
-        //     console.log(res.errmsg);
-        //     this.isLogin=res.errmsg;
-        // }).catch((error)=>{
-        //     console.warn(error);
-        // });
+        //         }else{
+        //             Toast.show('账号或密码错误', Toast.SHORT);
+        //             ListStore.uName='';
+        //             ListStore.UpWd='';
+        //         }
+        //         console.log(res.errmsg);
+        //         this.isLogin=res.errmsg;
+        //     }).catch((error)=>{
+        //         console.warn(error);
+        //     });
+        // }
     }
     render() {
         return (
             <View style={styles.container}>
+                <View style={{alignItems:"center",marginTop:ListStore.top,}}>
                 <Image source={require('../../img/brand_cre8_full_colour_logo_450x200@xhdi.png')} style={styles.topImage} resizeMode='contain'/>
                 <View style={styles.nameTextInput}>
                     <View style={styles.textIcon}>
@@ -110,6 +121,7 @@ export default class loginView extends Component {
                                    underlineColorAndroid='transparent'
                                    placeholder={'请输入用户名'}
                                    placeholderTextColor="#C4C4C6"
+                                    onFocus={()=>ListStore.updateTop()}
                                    onChangeText={(newText) => ListStore.updateUName(newText)} maxLength={128}/>
                 </View>
                 <View style={[styles.nameTextInput,{marginBottom:50}]}>
@@ -123,6 +135,7 @@ export default class loginView extends Component {
                                underlineColorAndroid='transparent'
                                placeholder={'请输入密码'}
                                placeholderTextColor="#C4C4C6"
+                               secureTextEntry={true}
                                onChangeText={(newText) => ListStore.updateUpWd(newText)} maxLength={6}/>
                 </View>
                 <TouchableOpacity onPress={()=>{this.isLogin()}}>
@@ -130,6 +143,7 @@ export default class loginView extends Component {
                         <Text style={{color:'white'}}>登录</Text>
                     </View>
                 </TouchableOpacity>
+                </View>
             </View>
         );
     }
@@ -186,7 +200,6 @@ const styles = StyleSheet.create({
     topImage:{
         width:115/zoomW*2,
         height:96,
-        marginTop:133,
         marginBottom:19,
     },
     tgLoginBtnStyle:{

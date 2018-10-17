@@ -58,16 +58,17 @@ class searchOrder extends Component {
         });
     }
     //跳转到订单详情
-    toOrderDetail=()=>{
+    toOrderDetail=(id)=>{
+        ListStore.orderId=id;
         this.props.navigation.navigate('OrderDetail',{})
     }
     //历史记录
     _keyExtractor = (item, index) => index;
     historyItem({ item, index }) {
         return (
-            <TouchableOpacity style={listStyle.item}  key={index} onPress={()=>{this.toOrderDetail()}}>
+            <TouchableOpacity style={listStyle.item}  onPress={()=>{this.toOrderDetail(item.id)}}  key={index}>
                 <View style={listStyle.itemDesc}>
-                    <Text style={listStyle.listTitle}>{item}</Text>
+                    <Text style={listStyle.listTitle}>{item.orderCode}</Text>
                 </View>
                 <View style={listStyle.itemChoose}>
                     <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')}/>
@@ -86,8 +87,9 @@ class searchOrder extends Component {
                                        underlineColorAndroid='transparent'
                                        placeholder='请输入订单编号'
                                        placeholderTextColor="#C4C4C6"
-                                       onChangeText={text => this.setState({searchText: text})}
+                                       onChangeText={text => ListStore.updateSearchText(text)}
                                        onSubmitEditing={() => {
+                                            ListStore.searchOrder()
                                        }}/>
                         </View>
                     </View>

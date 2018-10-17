@@ -4,6 +4,8 @@ import Toast from "react-native-simple-toast";
 let index = 0
 class ObservableListStore {
     @observable
+    top=133;
+    @observable
     uName;
     @observable
     UpWd;
@@ -29,10 +31,18 @@ class ObservableListStore {
     imagePath;
     @observable
     ipPath;
-    @observable
+   @observable
     isLogin;
     @observable
-    orderList=['订单1','订单2','订单3']
+    searchText='';//订单搜索关键字
+    @observable
+    orderList=['订单1','订单2','订单3'] //订单列表
+    @observable
+    orderId="" ;//订单id
+    @observable
+    orderDetailList=[]  ;//订单详情
+    @observable
+    childOrderDetailList=[]  ;//子订单详情
     @action
     getList=()=>{
         this.genderList=['男','女','保密'];
@@ -48,6 +58,10 @@ class ObservableListStore {
         }else if(type==='工作经验'){
             this.work=item;
         }
+    }
+    @action
+    updateTop=()=>{
+        this.top=0;
     }
     @action
     updateUName=(name)=>{
@@ -70,12 +84,41 @@ class ObservableListStore {
         this.upWd=upwd;
     }
     @action
-    getData=()=>{
+    updateSearchText=(text)=>{
+        this.searchText=text;
+    }
+    //搜索订单列表
+    @action
+    searchOrder=()=>{
         let data={
-            "currentPage": "1"};
-        FetchUtil.post(this.ipPath+'/api/management/org/list',data).then(res=>{
-            console.log(res);
-            // this.name=res.data.result[0].orgName;
+            "orderCode": this.searchText};
+        FetchUtil.post(this.ipPath+'/api/management/app/order/list',data).then(res=>{
+            console.log(res.data.order);
+            this.orderList=res.data.order;
+        }).catch((error)=>{
+            console.warn(error);
+        });
+    }
+    //获取订单详情
+    @action
+    getOrderDetail=()=>{
+        let data={
+            "id": this.orderId};
+        FetchUtil.post(this.ipPath+'/api/management/app/order/orderDetail',data).then(res=>{
+            console.log(res.data);
+            this.orderDetailList=res.data;
+        }).catch((error)=>{
+            console.warn(error);
+        });
+    }
+    //获取子订单详情
+    @action
+    getChildOrderDetail=()=>{
+        let data={
+            "id": this.orderId};
+        FetchUtil.post(this.ipPath+'/api/management/app/order/orderDetail',data).then(res=>{
+            console.log(res.data);
+            this.orderDetailList=res.data;
         }).catch((error)=>{
             console.warn(error);
         });
