@@ -52,16 +52,17 @@ class orderDetail extends Component {
             }
         });
     }
-    toChildOrderDetail=()=>{
+    toChildOrderDetail=(id)=>{
+        ListStore.childOrderId=id;
         this.props.navigation.navigate('ChildOrderDetail',{})
     }
     //所属订单
     _keyExtractor = (item, index) => index;
     orderItem({ item, index }) {
         return (
-            <TouchableOpacity style={listStyle.item}  key={index} onPress={()=>{this.toChildOrderDetail()}}>
+            <TouchableOpacity style={listStyle.item}  key={index} onPress={()=>{this.toChildOrderDetail(item.id)}}>
                 <View style={listStyle.itemDesc}>
-                    <Text style={listStyle.listTitle}>{item.id}</Text>
+                    <Text style={listStyle.listTitle}>{item.orderCode}</Text>
                 </View>
                 <View style={listStyle.itemChoose}>
                     <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')} resizeMode="contain"/>
@@ -105,7 +106,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>价格条款</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.orderLevel}</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.priceItems}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -121,7 +122,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>付款方式</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.totalPrice}</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.payType}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -129,7 +130,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>其他费用</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>￥{ListStore.orderDetailList.totalPrice}</Text>
+                                        <Text style={listStyle.listText}>￥{ListStore.orderDetailList.otherExpenses}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -145,7 +146,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>结款日期</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>2018/09/20</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.balanceDate}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -153,7 +154,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>装运港</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>大连港</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.loadPort}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -161,7 +162,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>卸货港</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>北京港</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.unloadPort}</Text>
                                     </View>
                                 </View>
                                 <View style={{
@@ -183,7 +184,7 @@ class orderDetail extends Component {
                                         marginTop:14
                                     }}>
                                         <Text style={listStyle.remarkText}>
-                                            从 2015 年 4 月起，Ant Design 在蚂蚁金服中后台产品线迅速推广，对接多条业务线，覆盖系统 800 个以上。定位于中台业务的 Ant Design 兼顾专业和非专业的设计人员，具有学习成本
+                                            {ListStore.orderDetailList.specificItems}
                                         </Text>
                                     </View>
                                 </View>
@@ -194,18 +195,18 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>客户部门</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>生产一部</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.placeOrderOrgName}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
                                         <Text style={listStyle.listTitle}>客户负责人</Text>
                                     </View>
-                                    <TouchableOpacity onPress={()=>{Communications.phonecall('123', true)}}>
+                                    <TouchableOpacity onPress={()=>{Communications.phonecall(ListStore.orderDetailList.mobile, true)}}>
                                         <Image source={require('../../img/椭圆形@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:11/zoomW*2}} resizeMode='contain'/>
                                     </TouchableOpacity>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>张三</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.placeOrderUserName}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -215,18 +216,18 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>管理部门</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>生产一部</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.managementName}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
                                         <Text style={listStyle.listTitle}>区域经理</Text>
                                     </View>
-                                    <TouchableOpacity onPress={()=>{Communications.phonecall('123', true)}}>
+                                    <TouchableOpacity onPress={()=>{Communications.phonecall(ListStore.orderDetailList.regionalManagerPhone, true)}}>
                                         <Image source={require('../../img/椭圆形@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:11/zoomW*2}} resizeMode='contain'/>
                                     </TouchableOpacity>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>张三</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.regionalManagerName}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -236,18 +237,18 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>财务部门</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>财务部</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.financialOrgName}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
                                         <Text style={listStyle.listTitle}>财务评定员</Text>
                                     </View>
-                                    <TouchableOpacity onPress={()=>{Communications.phonecall('123', true)}}>
+                                    <TouchableOpacity onPress={()=>{Communications.phonecall(ListStore.orderDetailList.financialEvaluationPhone, true)}}>
                                         <Image source={require('../../img/椭圆形@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:11/zoomW*2}} resizeMode='contain'/>
                                     </TouchableOpacity>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>张三</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.financialEvaluationName}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -257,25 +258,25 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>审核部门</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>财务部</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.approvalOrgName}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
                                         <Text style={listStyle.listTitle}>审核人</Text>
                                     </View>
-                                    <TouchableOpacity onPress={()=>{Communications.phonecall('123', true)}}>
+                                    <TouchableOpacity onPress={()=>{Communications.phonecall(ListStore.orderDetailList.approvalUserPhone, true)}}>
                                         <Image source={require('../../img/椭圆形@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:11/zoomW*2}} resizeMode='contain'/>
                                     </TouchableOpacity>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>张三</Text>
+                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.approvalUserName}</Text>
                                     </View>
                                 </View>
                             </View>
                             <Text style={listStyle.personText}>所属子订单</Text>
                             <View style={listStyle.order}>
                                 <FlatList
-                                    data={ListStore.orderList}
+                                    data={ListStore.childOrderList}
                                     extraData={this.state}
                                     renderItem={this.orderItem.bind(this)}
                                     keyExtractor={this._keyExtractor}
@@ -301,7 +302,7 @@ class orderDetail extends Component {
                                         marginTop:14
                                     }}>
                                         <Text style={listStyle.remarkText}>
-                                            从 2015 年 4 月起，Ant Design 在蚂蚁金服中后台产品线迅速推广，对接多条业务线，覆盖系统 800 个以上。定位于中台业务的 Ant Design 兼顾专业和非专业的设计人员，具有学习成本低、上手速度快、实现效果好等特点，并且提供从界面设计到前端开发的全链路生态，可以大大提升设计和开发的效率。
+                                            {ListStore.orderDetailList.remark}
                                         </Text>
                                     </View>
                                 </View>

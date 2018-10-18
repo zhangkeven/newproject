@@ -58,57 +58,55 @@ export default class loginView extends Component {
         });
     }
     isLogin=()=>{
-        let data={
-            "loginNo": ListStore.uName,
-            "password": ListStore.UpWd
-        };
-        this.props.navigation.navigate('Index',{})
-        ListStore.uName='' ;
-        ListStore.UpWd='';
-        const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({ routeName: 'Index'})
-            ]
-        })
-        this.props.navigation.dispatch(resetAction);
+        if(ListStore.uName==="" ){
+            Toast.show('用户名不能为空', Toast.SHORT);
+        }else if(ListStore.UpWd===""){
+            Toast.show('密码不能为空', Toast.SHORT);
+        }else{
+            let data={
+                "loginNo": ListStore.uName,
+                "password": ListStore.UpWd
+            };
+            FetchUtil.post(ListStore.ipPath+'/api/management/app/login',data).then(res=>{
+                console.log(res);
+                if(res.errmsg==='成功'){
+                    Toast.show('登录成功', Toast.SHORT);
+                    this.props.navigation.navigate('Index',{})
+                    ListStore.uName='' ;
+                    ListStore.UpWd='';
+                    const resetAction = NavigationActions.reset({
+                        index: 0,
+                        actions: [
+                            NavigationActions.navigate({ routeName: 'Index'})
+                        ]
+                    })
+                    this.props.navigation.dispatch(resetAction);
 
-        // if(loginNo==="" ){
-        //     Toast.show('用户名不能为空', Toast.SHORT);
-        // }else if(password===""){
-        //     Toast.show('密码不能为空', Toast.SHORT);
-        // }else{
-        //     FetchUtil.post(ListStore.ipPath+'/api/management/app/login',data).then(res=>{
-        //         console.log(res);
-        //         if(res.errmsg==='成功'){
-        //             Toast.show('登录成功', Toast.SHORT);
-        //             this.props.navigation.navigate('Index',{})
-        //             ListStore.uName='' ;
-        //             ListStore.UpWd='';
-        //             const resetAction = NavigationActions.reset({
-        //                 index: 0,
-        //                 actions: [
-        //                     NavigationActions.navigate({ routeName: 'Index'})
-        //                 ]
-        //             })
-        //             this.props.navigation.dispatch(resetAction);
-        //
-        //         }else{
-        //             Toast.show('账号或密码错误', Toast.SHORT);
-        //             ListStore.uName='';
-        //             ListStore.UpWd='';
-        //         }
-        //         console.log(res.errmsg);
-        //         this.isLogin=res.errmsg;
-        //     }).catch((error)=>{
-        //         console.warn(error);
-        //     });
-        // }
+                }else{
+                    ListStore.uName='';
+                    ListStore.UpWd='';
+                    Toast.show('账号或密码错误', Toast.SHORT);
+                    this.props.navigation.navigate('Login',{})
+                    const resetAction = NavigationActions.reset({
+                        index: 0,
+                        actions: [
+                            NavigationActions.navigate({ routeName: 'Login'})
+                        ]
+                    })
+                    this.props.navigation.dispatch(resetAction);
+
+                }
+                console.log(res.errmsg);
+                this.isLogin=res.errmsg;
+            }).catch((error)=>{
+                console.warn(error);
+            });
+        }
     }
     render() {
         return (
             <View style={styles.container}>
-                <View style={{alignItems:"center",marginTop:ListStore.top,}}>
+                <View style={{alignItems:"center",marginTop:90}}>
                 <Image source={require('../../img/brand_cre8_full_colour_logo_450x200@xhdi.png')} style={styles.topImage} resizeMode='contain'/>
                 <View style={styles.nameTextInput}>
                     <View style={styles.textIcon}>
@@ -121,7 +119,6 @@ export default class loginView extends Component {
                                    underlineColorAndroid='transparent'
                                    placeholder={'请输入用户名'}
                                    placeholderTextColor="#C4C4C6"
-                                    onFocus={()=>ListStore.updateTop()}
                                    onChangeText={(newText) => ListStore.updateUName(newText)} maxLength={128}/>
                 </View>
                 <View style={[styles.nameTextInput,{marginBottom:50}]}>

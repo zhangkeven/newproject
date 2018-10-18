@@ -6,9 +6,9 @@ class ObservableListStore {
     @observable
     top=133;
     @observable
-    uName;
+    uName="";//用户名
     @observable
-    UpWd;
+    UpWd="";//用户密码
     @observable
     name;
     @observable
@@ -41,6 +41,10 @@ class ObservableListStore {
     orderId="" ;//订单id
     @observable
     orderDetailList=[]  ;//订单详情
+    @observable
+    childOrderList=[]  ;//子订单列表
+    @observable
+    childOrderId="" ;//子订单id
     @observable
     childOrderDetailList=[]  ;//子订单详情
     @action
@@ -107,6 +111,7 @@ class ObservableListStore {
         FetchUtil.post(this.ipPath+'/api/management/app/order/orderDetail',data).then(res=>{
             console.log(res.data);
             this.orderDetailList=res.data;
+            this.childOrderList=res.data.subOrderListDTOList;
         }).catch((error)=>{
             console.warn(error);
         });
@@ -115,10 +120,10 @@ class ObservableListStore {
     @action
     getChildOrderDetail=()=>{
         let data={
-            "id": this.orderId};
-        FetchUtil.post(this.ipPath+'/api/management/app/order/orderDetail',data).then(res=>{
-            console.log(res.data);
-            this.orderDetailList=res.data;
+            "id": this.childOrderId};
+        FetchUtil.post(this.ipPath+'/api/management/app/order/subOrderDetail',data).then(res=>{
+            console.log(res);
+            this.childOrderDetailList=res.data;
         }).catch((error)=>{
             console.warn(error);
         });

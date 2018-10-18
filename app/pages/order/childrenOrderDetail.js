@@ -42,6 +42,7 @@ class childOrderDetail extends Component {
         }
     }
     componentWillMount() {
+       ListStore.getChildOrderDetail();
         //路由组件
         this.props.navigation.setParams({
             //返回上一个路由
@@ -50,20 +51,6 @@ class childOrderDetail extends Component {
                 goBack();
             }
         });
-    }
-    //所属订单
-    _keyExtractor = (item, index) => index;
-    orderItem({ item, index }) {
-        return (
-            <TouchableOpacity style={listStyle.item}  key={index}>
-                <View style={listStyle.itemDesc}>
-                    <Text style={listStyle.listTitle}>{item}</Text>
-                </View>
-                <View style={listStyle.itemChoose}>
-                    <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')} resizeMode="contain"/>
-                </View>
-            </TouchableOpacity>
-        );
     }
     render () {
         return (
@@ -77,7 +64,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>母订单编号</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>YP180002939-1</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.orderCode}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -85,7 +72,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>子订单编号</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>YP180002939-2</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.subOrderCode}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -93,7 +80,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>返或意向编号</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>YP180002939-3</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.intentOrder}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -101,7 +88,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>HS编码</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>666888</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.hsCode}</Text>
                                     </View>
                                 </View>
                                 <TouchableOpacity style={listStyle.item}>
@@ -117,7 +104,7 @@ class childOrderDetail extends Component {
                                             color: '#9B9B9B',
                                             letterSpacing: 0,
                                             textAlign: 'right'
-                                        }}>Ysdsad123132</Text>
+                                        }}>{ListStore.childOrderDetailList.sampleCode}</Text>
                                     </View>
                                     <View style={listStyle.itemChoose}>
                                         <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')} resizeMode="contain"/>
@@ -128,7 +115,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>样品名称</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>金砖</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.sampleName}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -136,7 +123,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>订单数量</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>11233</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.totalCount}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -144,7 +131,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>大货留样</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>89件</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.sampleCount}件</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -152,7 +139,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>大货留样时间</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>2018/8/8</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.sampleTime}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -160,7 +147,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>研发留样</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>89件</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.researchCount}件</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -168,7 +155,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>FOB单价</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>20元</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.fobPrice}元</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -176,7 +163,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>子订单金额</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>￥768884</Text>
+                                        <Text style={listStyle.listText}>￥{ListStore.childOrderDetailList.subOrderTotal}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -184,7 +171,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>单位料</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>8.9</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.unitMaterial}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -192,7 +179,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>单位工</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>1.08</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.perHours}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -200,7 +187,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>价格条款</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>FOB支付</Text>
+                                        <Text style={listStyle.listText}>缺少参数！！！！</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -208,7 +195,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>模型加成</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>8.9</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.modelAddition}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -216,7 +203,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>模型差异</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>8.9</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.modelDifference}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -224,7 +211,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>有效产出率</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>8.9</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.effectiveOutputRate}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -234,18 +221,18 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>生产部门</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>生产一部</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.productionOrgName}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
                                         <Text style={listStyle.listTitle}>生产负责人</Text>
                                     </View>
-                                    <TouchableOpacity onPress={()=>{Communications.phonecall('123', true)}}>
+                                    <TouchableOpacity onPress={()=>{Communications.phonecall(ListStore.childOrderDetailList.productionMobile, true)}}>
                                         <Image source={require('../../img/椭圆形@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:11/zoomW*2}} resizeMode='contain'/>
                                     </TouchableOpacity>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>张三</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.productionLeaderName}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -255,18 +242,18 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>品控部门</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>生产一部</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.qaOrgName}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
                                         <Text style={listStyle.listTitle}>品控负责人</Text>
                                     </View>
-                                    <TouchableOpacity onPress={()=>{Communications.phonecall('123', true)}}>
+                                    <TouchableOpacity onPress={()=>{Communications.phonecall(ListStore.childOrderDetailList.qaMobile, true)}}>
                                         <Image source={require('../../img/椭圆形@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:11/zoomW*2}} resizeMode='contain'/>
                                     </TouchableOpacity>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>张三</Text>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.qaLeaderName}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -290,7 +277,7 @@ class childOrderDetail extends Component {
                                         marginTop:14
                                     }}>
                                         <Text style={listStyle.remarkText}>
-                                            从 2015 年 4 月起，Ant Design 在蚂蚁金服中后台产品线迅速推广，对接多条业务线，覆盖系统 800 个以上。定位于中台业务的 Ant Design 兼顾专业和非专业的设计人员，具有学习成本低、上手速度快、实现效果好等特点，并且提供从界面设计到前端开发的全链路生态，可以大大提升设计和开发的效率。
+                                            {ListStore.childOrderDetailList.subOrderCode}
                                         </Text>
                                     </View>
                                 </View>
