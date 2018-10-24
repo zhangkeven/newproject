@@ -184,14 +184,6 @@ class childOrderDetail extends Component {
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>价格条款</Text>
-                                    </View>
-                                    <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>缺少参数！！！！</Text>
-                                    </View>
-                                </View>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
                                         <Text style={listStyle.listTitle}>模型加成</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
@@ -277,7 +269,7 @@ class childOrderDetail extends Component {
                                         marginTop:14
                                     }}>
                                         <Text style={listStyle.remarkText}>
-                                            {ListStore.childOrderDetailList.subOrderCode}
+                                            {ListStore.childOrderDetailList.undeterminedProject}
                                         </Text>
                                     </View>
                                 </View>
@@ -285,7 +277,7 @@ class childOrderDetail extends Component {
                             <View style={{width:'100%',backgroundColor:'#fff',marginBottom:30}}>
                                 <TouchableOpacity style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>物料配置单</Text>
+                                        <Text style={listStyle.listTitle}>大货留样</Text>
                                     </View>
                                     <View style={{
 
@@ -296,7 +288,28 @@ class childOrderDetail extends Component {
                                             color: '#9B9B9B',
                                             letterSpacing: 0,
                                             textAlign: 'right'
-                                        }}>详情</Text>
+                                        }}>{ListStore.childOrderDetailList.retentionSampleCount}</Text>
+                                    </View>
+                                    <View style={listStyle.itemChoose}>
+                                        <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')} resizeMode="contain"/>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={listStyle.item}>
+                                    <View style={listStyle.itemDesc}>
+                                        <Text style={listStyle.listTitle}>印刷样品</Text>
+                                    </View>
+                                    <View style={{
+
+                                    }}>
+                                        <Text style={{
+                                            fontFamily: 'PingFangSC-Regular',
+                                            fontSize: 14,
+                                            color: '#9B9B9B',
+                                            letterSpacing: 0,
+                                            textAlign: 'right'
+                                        }}>
+
+                                        </Text>
                                     </View>
                                     <View style={listStyle.itemChoose}>
                                         <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')} resizeMode="contain"/>

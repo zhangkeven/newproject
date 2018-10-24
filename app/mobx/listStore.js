@@ -47,6 +47,14 @@ class ObservableListStore {
     childOrderId="" ;//子订单id
     @observable
     childOrderDetailList=[]  ;//子订单详情
+    @observable
+    searchStoreText="" ;//库位搜索关键字
+    @observable
+    storeList=[] ;//库位列表
+    @observable
+    storeId="" ;//库位id
+    @observable
+    storeDetailList=[];//库位详情
     @action
     getList=()=>{
         this.genderList=['男','女','保密'];
@@ -124,6 +132,33 @@ class ObservableListStore {
         FetchUtil.post(this.ipPath+'/api/management/app/order/subOrderDetail',data).then(res=>{
             console.log(res);
             this.childOrderDetailList=res.data;
+        }).catch((error)=>{
+            console.warn(error);
+        });
+    }
+    //获取库位搜索框字段
+    @action
+    updateSearchStore=(text)=>{
+        this.searchStoreText=text;
+    }
+    //搜索库位
+    @action
+    searchStoreLocation=()=>{
+        let data={
+            "warehouseNo":this.searchStoreText };
+        FetchUtil.post(this.ipPath+'/api/management/app/warehouse/list',data).then(res=>{
+            console.log(res);
+            this.storeList=res.data;
+        }).catch((error)=>{
+            console.warn(error);
+        });
+    }
+    //获取库位详情
+    getStoreDetail=()=>{
+        let data={
+            "id":this.storeId };
+        FetchUtil.post(this.ipPath+'/api/management/app/warehouse/detail',data).then(res=>{
+            console.log(res);
         }).catch((error)=>{
             console.warn(error);
         });

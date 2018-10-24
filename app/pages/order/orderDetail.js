@@ -62,7 +62,7 @@ class orderDetail extends Component {
         return (
             <TouchableOpacity style={listStyle.item}  key={index} onPress={()=>{this.toChildOrderDetail(item.id)}}>
                 <View style={listStyle.itemDesc}>
-                    <Text style={listStyle.listTitle}>{item.orderCode}</Text>
+                    <Text style={listStyle.listTitle}>{item.subOrderCode}</Text>
                 </View>
                 <View style={listStyle.itemChoose}>
                     <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')} resizeMode="contain"/>

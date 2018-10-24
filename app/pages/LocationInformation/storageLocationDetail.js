@@ -50,6 +50,8 @@ class storageLocationDetail extends Component {
                 goBack();
             }
         });
+        //获取库位详情
+        ListStore.getStoreDetail();
     }
     //所属订单
     _keyExtractor = (item, index) => index;
