@@ -4,12 +4,14 @@ import {
     StyleSheet,
     Text,
     View,
-    Alert, TouchableOpacity, Image
+    Alert,
+    TouchableOpacity,
+    Image
 } from 'react-native';
 import Barcode from 'react-native-smart-barcode'
 import {zoomW} from "../../utils/util";
 import {NavigationActions} from "react-navigation";
-
+import ListStore from '../../mobx/listStore'
 type Props = {};
 export default class Scan extends Component<Props> {
     static navigationOptions = ({navigation, screenProps}) => ({
@@ -68,8 +70,9 @@ export default class Scan extends Component<Props> {
     };
 
     _startScan = (e) => {
-        if(e==='借出'){
-            this.props.navigation.navigate('Lend',{})
+        console.log(e);
+        ListStore.sampleId=e;
+        this.props.navigation.navigate('Lend')
             const resetAction = NavigationActions.reset({
                 index: 0,
                 actions: [
@@ -77,26 +80,8 @@ export default class Scan extends Component<Props> {
                 ]
             })
             this.props.navigation.dispatch(resetAction);
-        }else if(e==='归还'){
-            this.props.navigation.navigate('Restore',{})
-            const resetAction = NavigationActions.reset({
-                index: 0,
-                actions: [
-                    NavigationActions.navigate({ routeName: 'Restore'})
-                ]
-            })
-            this.props.navigation.dispatch(resetAction);
-        }else{
-            this.props.navigation.navigate('NotExecutable',{})
-            const resetAction = NavigationActions.reset({
-                index: 0,
-                actions: [
-                    NavigationActions.navigate({ routeName: 'NotExecutable'})
-                ]
-            })
-            this.props.navigation.dispatch(resetAction);
-        }
         // this._barCode.startScan()
+        ListStore.getSampleDetail();
     };
 
     _stopScan = (e) => {

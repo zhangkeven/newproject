@@ -20,6 +20,7 @@ import {observer} from "mobx-react/native";
 import ImagePicker from "react-native-image-picker";
 import FetchUtil from "../../service/rpc";
 import {NavigationActions} from "react-navigation";
+import Communications from "react-native-communications";
 @observer
 class Lend extends Component {
     static navigationOptions = ({navigation, screenProps}) => ({
@@ -91,7 +92,7 @@ class Lend extends Component {
                                         <Text style={listStyle.listTitle}>样品编号</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>YP180002939-1</Text>
+                                        <Text style={listStyle.listText}>{ListStore.sampleDetailList.sampleDetail.sampleNo}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -159,16 +160,11 @@ class Lend extends Component {
                                     <View style={listStyle.itemDesc}>
                                         <Text style={listStyle.listTitle}>保管责任人</Text>
                                     </View>
+                                    <TouchableOpacity onPress={()=>{Communications.phonecall('123', true)}}>
+                                        <Image source={require('../../img/椭圆形@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:11/zoomW*2}} resizeMode='contain'/>
+                                    </TouchableOpacity>
                                     <View style={listStyle. itemDetail}>
                                         <Text style={listStyle.listText}>张三</Text>
-                                    </View>
-                                </View>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>联系电话</Text>
-                                    </View>
-                                    <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>177179340987</Text>
                                     </View>
                                 </View>
                             </View>

@@ -34,9 +34,13 @@ class ObservableListStore {
    @observable
     isLogin;
     @observable
+    sampleId;//样品id
+    @observable
+    sampleDetailList=[];//样品详情
+    @observable
     searchText='';//订单搜索关键字
     @observable
-    orderList=['订单1','订单2','订单3'] //订单列表
+    orderList=[] //订单列表
     @observable
     orderId="" ;//订单id
     @observable
@@ -154,11 +158,25 @@ class ObservableListStore {
         });
     }
     //获取库位详情
+    @action
     getStoreDetail=()=>{
         let data={
             "id":this.storeId };
         FetchUtil.post(this.ipPath+'/api/management/app/warehouse/detail',data).then(res=>{
             console.log(res);
+        }).catch((error)=>{
+            console.warn(error);
+        });
+    }
+    //获取样品详情
+    @action
+    getSampleDetail=()=>{
+        let data={
+           "id":this.sampleId
+        };
+        FetchUtil.post(this.ipPath+'/api/management/app/sample/detail',data).then(res=>{
+            console.log(res);
+            this.sampleDetailList=res.data;
         }).catch((error)=>{
             console.warn(error);
         });
