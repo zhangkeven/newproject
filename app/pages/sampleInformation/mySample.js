@@ -42,6 +42,7 @@ class mySample extends Component {
         }
     }
     componentWillMount() {
+        ListStore.getMySample();
         //路由组件
         this.props.navigation.setParams({
             //返回上一个路由
@@ -97,7 +98,8 @@ class mySample extends Component {
                     <View style={styles.search}>
                         <View style={styles.bgTextInput}>
                             <Image source={require('../../img/Icon_搜索25x25@xhdi.png')} style={styles.searchIcon} resizeMode='contain'/>
-                            <TextInput style={styles.textInput} keyboardType='web-search'
+                            <TextInput style={styles.textInput}
+                                       keyboardType='web-search'
                                        underlineColorAndroid='transparent'
                                        placeholder='请输入样品编号或名称'
                                        placeholderTextColor="#C4C4C6"

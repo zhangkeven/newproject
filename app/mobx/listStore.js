@@ -30,9 +30,11 @@ class ObservableListStore {
     @observable
     imagePath;
     @observable
-    ipPath;
+    ipPath;//接口地址
    @observable
     isLogin;
+    @observable
+    MySampleList=[];//我的样品列表
     @observable
     sampleId;//样品id
     @observable
@@ -177,6 +179,18 @@ class ObservableListStore {
         FetchUtil.post(this.ipPath+'/api/management/app/sample/detail',data).then(res=>{
             console.log(res);
             this.sampleDetailList=res.data;
+        }).catch((error)=>{
+            console.warn(error);
+        });
+    }
+    //获取我的样品列表
+    @action
+    getMySample=()=>{
+        let data={
+            "id":this.sampleId
+        };
+        FetchUtil.post(this.ipPath+'/api/management/app/user/mySample',data).then(res=>{
+            console.log(res);
         }).catch((error)=>{
             console.warn(error);
         });
