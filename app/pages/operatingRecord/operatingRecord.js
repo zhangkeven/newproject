@@ -50,6 +50,7 @@ class operatingRecord extends Component {
                 goBack();
             }
         });
+        ListStore.getOperatingRecord();
     }
     //跳转到操作记录详情
     recordDetail=()=>{
@@ -61,9 +62,9 @@ class operatingRecord extends Component {
         return (
             <TouchableOpacity style={listStyle.item}  key={index} onPress={()=>{this.recordDetail()}}>
                 <View style={listStyle.itemDesc}>
-                    <Text style={listStyle.listTitle}>在借</Text>
+                    <Text style={listStyle.listTitle}>{item.operateAction}</Text>
                 </View>
-                <Text>2018/09/09 12:09</Text>
+                <Text>{item.operateTime}</Text>
                 <View style={listStyle.itemChoose}>
                     <Image style={{width: 25/zoomW*2,height:25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')} resizeMode="contain"/>
                 </View>
@@ -75,7 +76,7 @@ class operatingRecord extends Component {
             <View style={{flex:1}}>
                 <View style={listStyle.order}>
                     <FlatList
-                        data={ListStore.orderList}
+                        data={ListStore.operatingRecord}
                         extraData={this.state}
                         renderItem={this.recordItem.bind(this)}
                         keyExtractor={this._keyExtractor}

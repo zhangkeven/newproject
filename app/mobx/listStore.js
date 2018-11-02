@@ -36,7 +36,13 @@ class ObservableListStore {
     @observable
     MySampleList=[];//我的样品列表
     @observable
-    sampleId;//样品id
+    MySampleId='';//我的样品id
+    @observable
+    MySampleDetail=[];//我的样品详情
+    @observable
+    sampleId="71b4af20a5c94b47bdbe6325922e7857";//样品id
+    @observable
+    operatingRecord =[];//操作记录
     @observable
     sampleDetailList=[];//样品详情
     @observable
@@ -49,6 +55,8 @@ class ObservableListStore {
     orderDetailList=[]  ;//订单详情
     @observable
     childOrderList=[]  ;//子订单列表
+    @observable
+    childOrderAllList=[]  ;//所属子订单列表
     @observable
     childOrderId="" ;//子订单id
     @observable
@@ -130,6 +138,19 @@ class ObservableListStore {
             console.warn(error);
         });
     }
+    //获取操作记录
+    @action
+    getOperatingRecord=()=>{
+        let data={
+            "id": this.sampleId
+        };
+        FetchUtil.post(this.ipPath+'/api/management/app/sample/oprList',data).then(res=>{
+            console.log(res);
+            this.operatingRecord=res.data;
+        }).catch((error)=>{
+            console.warn(error);
+        });
+    }
     //获取子订单详情
     @action
     getChildOrderDetail=()=>{
@@ -177,8 +198,9 @@ class ObservableListStore {
            "id":this.sampleId
         };
         FetchUtil.post(this.ipPath+'/api/management/app/sample/detail',data).then(res=>{
-            console.log(res);
-            this.sampleDetailList=res.data;
+            console.log(res.data.sampleDetail);
+            this.sampleDetailList=res.data.sampleDetail;
+            this.childOrderAllList=res.data.belongOrder;
         }).catch((error)=>{
             console.warn(error);
         });
@@ -187,10 +209,24 @@ class ObservableListStore {
     @action
     getMySample=()=>{
         let data={
-            "id":this.sampleId
+
         };
         FetchUtil.post(this.ipPath+'/api/management/app/user/mySample',data).then(res=>{
             console.log(res);
+            this.MySampleList=res.data;
+        }).catch((error)=>{
+            console.warn(error);
+        });
+    }
+    //获取我的样品详情
+    @action
+    getMySampleDetail=()=>{
+        let data={
+            "id":this.MySampleId
+        };
+        FetchUtil.post(this.ipPath+'/api/management/app/proof/detail',data).then(res=>{
+            console.log(res);
+            this.MySampleDetail=res.data.sampleDetail;
         }).catch((error)=>{
             console.warn(error);
         });

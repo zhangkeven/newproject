@@ -59,14 +59,15 @@ class mySample extends Component {
         });
     }
     //跳转到样品详情
-    toRestore=()=>{
+    toRestore=(id)=>{
+        ListStore.MySampleId=id;
         this.props.navigation.navigate('Restore',{})
     }
     //历史记录
     _keyExtractor = (item, index) => index;
     historyItem({ item, index }) {
         return (
-            <TouchableOpacity style={styles.main} key={index} onPress={()=>{this.toRestore()}}>
+            <TouchableOpacity style={styles.main} key={index} onPress={()=>{this.toRestore(item.id)}}>
                 <View style={{
                     flexDirection:'row',
                     borderBottomColor:'#DADADD',
@@ -75,16 +76,16 @@ class mySample extends Component {
                     height:30,
                     alignItems:'center'
                 }}>
-                    <Text style={styles.number}>样品编号：YP18090200098</Text>
-                    <Text style={styles.status}>在借</Text>
+                    <Text style={styles.number}>样品编号：{item.sampleNo}</Text>
+                    <Text style={styles.status}>{item.status}</Text>
                 </View>
                 <View style={{alignItems:'center',width:'100%',height:70,justifyContent:'flex-end',flexDirection:'row'}}>
                     <View style={{width:78/zoomW*2,height:78,justifyContent:'center',alignItems:'center'}}>
                         <Text>图片</Text>
                     </View>
                     <View style={{marginRight:136/zoomW*2}}>
-                        <Text style={styles.title}>HJ 笔记本</Text>
-                        <Text style={[styles.number,{marginLeft:0}]}>库位编号 D09-09-09</Text>
+                        <Text style={styles.title}>{item.sampleName}</Text>
+                        <Text style={[styles.number,{marginLeft:0}]}>库位编号 {item.warehouseNo}</Text>
                     </View>
                     <Image style={{width: 25/zoomW*2,height: 25,marginRight: 23/zoomW*2}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')}/>
                 </View>
@@ -110,7 +111,7 @@ class mySample extends Component {
                     </View>
                     <View style={{width:'100%'}}>
                         <FlatList
-                            data={ListStore.orderList}
+                            data={ListStore.MySampleList}
                             extraData={this.state}
                             renderItem={this.historyItem.bind(this)}
                             keyExtractor={this._keyExtractor}

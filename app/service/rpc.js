@@ -18,7 +18,7 @@ export default class FetchUtil {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=UTF-8 ',
-                    'ticket':'962a57e7e081472f899c3305aa030c0f'
+                    'ticket':'016f9ffec43e43a58aaaf44d8ba41d32'
                 },
                 body: JSON.stringify(data)
             })

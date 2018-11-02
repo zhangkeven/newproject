@@ -57,6 +57,7 @@ class Lend extends Component {
                 this.props.navigation.dispatch(resetAction);
             }
         });
+        ListStore.getSampleDetail();
     }
     //跳转到样品操作记录页面
     operatingRecord=()=>{
@@ -72,7 +73,7 @@ class Lend extends Component {
         return (
             <TouchableOpacity style={listStyle.item}  key={index}>
                 <View style={listStyle.itemDesc}>
-                    <Text style={listStyle.listTitle}>{item}</Text>
+                    <Text style={listStyle.listTitle}>{item.orderNo}</Text>
                 </View>
                 <View style={listStyle.itemChoose}>
                     <Image style={{width: 25/zoomW*2,height:25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')} resizeMode="contain"/>
@@ -92,7 +93,7 @@ class Lend extends Component {
                                         <Text style={listStyle.listTitle}>样品编号</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>{ListStore.sampleDetailList.sampleDetail.sampleNo}</Text>
+                                        <Text style={listStyle.listText}>{ListStore.sampleDetailList.sampleNo}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -100,7 +101,7 @@ class Lend extends Component {
                                         <Text style={listStyle.listTitle}>样品名称</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>YJ笔记本</Text>
+                                        <Text style={listStyle.listText}>{ListStore.sampleDetailList.sampleName}</Text>
                                     </View>
                                 </View>
                                 <View style={[listStyle.item,{height:70}]}>
@@ -111,7 +112,7 @@ class Lend extends Component {
                                         <Text style={listStyle.listTitle}>样品类型</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>客供样品</Text>
+                                        <Text style={listStyle.listText}>{ListStore.sampleDetailList.sampleType}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -119,7 +120,7 @@ class Lend extends Component {
                                         <Text style={listStyle.listTitle}>库存区域</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>c</Text>
+                                        <Text style={listStyle.listText}>{ListStore.sampleDetailList.warehouseArea}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -127,7 +128,7 @@ class Lend extends Component {
                                         <Text style={listStyle.listTitle}>库位编号</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>D09-09-03</Text>
+                                        <Text style={listStyle.listText}>{ListStore.sampleDetailList.warehouseNo}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -135,7 +136,7 @@ class Lend extends Component {
                                         <Text style={listStyle.listTitle}>库存数量</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>3 套</Text>
+                                        <Text style={listStyle.listText}>暂无参数</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -143,7 +144,7 @@ class Lend extends Component {
                                         <Text style={listStyle.listTitle}>样品状态</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>活动</Text>
+                                        <Text style={listStyle.listText}>{ListStore.sampleDetailList.status}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -153,18 +154,18 @@ class Lend extends Component {
                                         <Text style={listStyle.listTitle}>保管部门</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>生产一部</Text>
+                                        <Text style={listStyle.listText}>{ListStore.sampleDetailList.manageOrg}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
                                         <Text style={listStyle.listTitle}>保管责任人</Text>
                                     </View>
-                                    <TouchableOpacity onPress={()=>{Communications.phonecall('123', true)}}>
+                                    <TouchableOpacity onPress={()=>{Communications.phonecall(ListStore.sampleDetailList.mobile, true)}}>
                                         <Image source={require('../../img/椭圆形@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:11/zoomW*2}} resizeMode='contain'/>
                                     </TouchableOpacity>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>张三</Text>
+                                        <Text style={listStyle.listText}>{ListStore.sampleDetailList.manageUser}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -188,7 +189,7 @@ class Lend extends Component {
                                         marginTop:14
                                     }}>
                                         <Text style={listStyle.remarkText}>
-                                            从 2015 年 4 月起，Ant Design 在蚂蚁金服中后台产品线迅速推广，对接多条业务线，覆盖系统 800 个以上。定位于中台业务的 Ant Design 兼顾专业和非专业的设计人员，具有学习成本低、上手速度快、实现效果好等特点，并且提供从界面设计到前端开发的全链路生态，可以大大提升设计和开发的效率。
+                                            {ListStore.sampleDetailList.remark}
                                         </Text>
                                     </View>
                                 </View>
@@ -196,7 +197,7 @@ class Lend extends Component {
                             <Text style={listStyle.personText}>所属订单</Text>
                             <View style={listStyle.order}>
                                 <FlatList
-                                    data={ListStore.orderList}
+                                    data={ListStore.childOrderAllList}
                                     extraData={this.state}
                                     renderItem={this.orderItem.bind(this)}
                                     keyExtractor={this._keyExtractor}

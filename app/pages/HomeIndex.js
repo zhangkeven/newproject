@@ -163,6 +163,9 @@ class Index extends Component {
             })
         }
     }
+    goLend=()=>{
+        this.props.navigation.navigate('Lend',{})
+    }
     selectImage() {
         const that = this;
         ImagePicker.showImagePicker(options, (response) => {
@@ -246,7 +249,7 @@ class Index extends Component {
                     <Image source={require('../img/icon_home_kucun_40x40.png')} style={styles.navIcon} resizeMode='contain'/>
                     <Text style={styles.navText}>库位查询</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{position:'absolute',left:60/zoomW*2,top:360,justifyContent:'center',alignItems:'center'}} onPress={()=>{}}>
+                <TouchableOpacity style={{position:'absolute',left:60/zoomW*2,top:360,justifyContent:'center',alignItems:'center'}} onPress={()=>{this.goLend() }}>
                     <Image source={require('../img/icon_help_40x40.png')} style={styles.navIcon} resizeMode='contain'/>
                     <Text style={styles.navText}>使用帮助</Text>
                 </TouchableOpacity>
