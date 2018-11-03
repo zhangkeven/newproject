@@ -56,6 +56,37 @@ class Restore extends Component {
                 this.props.navigation.dispatch(resetAction);
             }
         });
+        //获取我的样品详情
+        ListStore.getMySampleDetail();
+    }
+    //把返回的状态翻译成中文
+    setStatus = (status) => {
+        switch (status) {
+            case "1":
+                return "正常";
+            case "2":
+                return "在借";
+            case "3":
+                return "报修";
+            case "4":
+                return "报废";
+            case "5":
+                return "归档";
+        }
+    }
+    add0(m) {
+        return m < 10 ? `0${m}` : m;
+    }
+    // 时间戳转换成年月日时分
+    formatDateSec(needTime) {
+        const time = new Date(needTime);
+        const y = time.getFullYear();
+        const m = time.getMonth() + 1;
+        const d = time.getDate();
+        const h = time.getHours();
+        const mm = time.getMinutes();
+        const s = time.getSeconds();
+        return `${y}/${this.add0(m)}/${this.add0(d)}`;
     }
     //跳转到移交页面
     handover=()=>{
@@ -91,7 +122,7 @@ class Restore extends Component {
                                     <Text style={listStyle.listTitle}>样品编号</Text>
                                 </View>
                                 <View style={listStyle. itemDetail}>
-                                   <Text style={listStyle.listText}>YP180002939-1</Text>
+                                   <Text style={listStyle.listText}>{ListStore.MySampleDetail.sampleNo}</Text>
                                 </View>
                             </View>
                             <View style={listStyle.item}>
@@ -99,7 +130,7 @@ class Restore extends Component {
                                     <Text style={listStyle.listTitle}>样品名称</Text>
                                 </View>
                                 <View style={listStyle. itemDetail}>
-                                    <Text style={listStyle.listText}>YJ笔记本</Text>
+                                    <Text style={listStyle.listText}>{ListStore.MySampleDetail.sampleName}</Text>
                                 </View>
                             </View>
                             <View style={[listStyle.item,{height:70}]}>
@@ -110,7 +141,7 @@ class Restore extends Component {
                                     <Text style={listStyle.listTitle}>样品类型</Text>
                                 </View>
                                 <View style={listStyle. itemDetail}>
-                                    <Text style={listStyle.listText}>客供样品</Text>
+                                    <Text style={listStyle.listText}>{ListStore.MySampleDetail.sampleType}</Text>
                                 </View>
                             </View>
                             <View style={listStyle.item}>
@@ -118,7 +149,7 @@ class Restore extends Component {
                                     <Text style={listStyle.listTitle}>样品状态</Text>
                                 </View>
                                 <View style={listStyle. itemDetail}>
-                                    <Text style={listStyle.listText}>在借</Text>
+                                    <Text style={listStyle.listText}>{this.setStatus(ListStore.MySampleDetail.status)}</Text>
                                 </View>
                             </View>
                             <View style={listStyle.item}>
@@ -126,7 +157,7 @@ class Restore extends Component {
                                     <Text style={listStyle.listTitle}>操作时间</Text>
                                 </View>
                                 <View style={listStyle. itemDetail}>
-                                    <Text style={listStyle.listText}>2018/09/22 12：22</Text>
+                                    <Text style={listStyle.listText}> </Text>
                                 </View>
                             </View>
                         </View>

@@ -52,6 +52,20 @@ class childOrderDetail extends Component {
             }
         });
     }
+    add0(m) {
+        return m < 10 ? `0${m}` : m;
+    }
+    // 时间戳转换成年月日时分
+    formatDateSec(needTime) {
+        const time = new Date(needTime);
+        const y = time.getFullYear();
+        const m = time.getMonth() + 1;
+        const d = time.getDate();
+        const h = time.getHours();
+        const mm = time.getMinutes();
+        const s = time.getSeconds();
+        return `${y}/${this.add0(m)}/${this.add0(d)}`;
+    }
     render () {
         return (
             <View style={{flex:1}}>
@@ -139,7 +153,7 @@ class childOrderDetail extends Component {
                                         <Text style={listStyle.listTitle}>大货留样时间</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>{ListStore.childOrderDetailList.sampleTime}</Text>
+                                        <Text style={listStyle.listText}>{this.formatDateSec(ListStore.childOrderDetailList.sampleTime)}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>

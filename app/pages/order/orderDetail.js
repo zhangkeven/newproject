@@ -52,6 +52,20 @@ class orderDetail extends Component {
             }
         });
     }
+    add0(m) {
+        return m < 10 ? `0${m}` : m;
+    }
+    // 时间戳转换成年月日时分
+    formatDateSec(needTime) {
+        const time = new Date(needTime);
+        const y = time.getFullYear();
+        const m = time.getMonth() + 1;
+        const d = time.getDate();
+        const h = time.getHours();
+        const mm = time.getMinutes();
+        const s = time.getSeconds();
+        return `${y}/${this.add0(m)}/${this.add0(d)}`;
+    }
     toChildOrderDetail=(id)=>{
         ListStore.childOrderId=id;
         this.props.navigation.navigate('ChildOrderDetail',{})
@@ -138,7 +152,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>预付款日期</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.payDate}</Text>
+                                        <Text style={listStyle.listText}>{this.formatDateSec(ListStore.orderDetailList.payDate)}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -146,7 +160,7 @@ class orderDetail extends Component {
                                         <Text style={listStyle.listTitle}>结款日期</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>{ListStore.orderDetailList.balanceDate}</Text>
+                                        <Text style={listStyle.listText}>{this.formatDateSec(ListStore.orderDetailList.balanceDate)}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>

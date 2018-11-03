@@ -58,6 +58,21 @@ class mySample extends Component {
             }
         });
     }
+    //把返回的状态翻译成中文
+    setStatus = (status) => {
+        switch (status) {
+            case "1":
+                return "正常";
+            case "2":
+                return "在借";
+            case "3":
+                return "报修";
+            case "4":
+                return "报废";
+            case "5":
+                return "归档";
+        }
+    }
     //跳转到样品详情
     toRestore=(id)=>{
         ListStore.MySampleId=id;
@@ -77,13 +92,15 @@ class mySample extends Component {
                     alignItems:'center'
                 }}>
                     <Text style={styles.number}>样品编号：{item.sampleNo}</Text>
-                    <Text style={styles.status}>{item.status}</Text>
+                    <Text style={styles.status}>{this.setStatus(item.status)}</Text>
                 </View>
-                <View style={{alignItems:'center',width:'100%',height:70,justifyContent:'flex-end',flexDirection:'row'}}>
-                    <View style={{width:78/zoomW*2,height:78,justifyContent:'center',alignItems:'center'}}>
-                        <Text>图片</Text>
-                    </View>
-                    <View style={{marginRight:136/zoomW*2}}>
+                <View style={{alignItems:'center',width:'100%',height:70,justifyContent:'space-around',flexDirection:'row'}}>
+                        <Image
+                            style={{marginLeft:20/zoomW*2,width:78/zoomW*2,height:78}}
+                            source={{uri:item.img }}
+                            resizeMode='contain'
+                        />
+                    <View style={{marginRight:80/zoomW*2}}>
                         <Text style={styles.title}>{item.sampleName}</Text>
                         <Text style={[styles.number,{marginLeft:0}]}>库位编号 {item.warehouseNo}</Text>
                     </View>
@@ -109,14 +126,14 @@ class mySample extends Component {
                                        }}/>
                         </View>
                     </View>
-                    <View style={{width:'100%'}}>
+
                         <FlatList
                             data={ListStore.MySampleList}
                             extraData={this.state}
                             renderItem={this.historyItem.bind(this)}
                             keyExtractor={this._keyExtractor}
                         />
-                    </View>
+
                 </View>
             </View>
         )

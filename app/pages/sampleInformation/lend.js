@@ -59,6 +59,21 @@ class Lend extends Component {
         });
         ListStore.getSampleDetail();
     }
+    //把返回的状态翻译成中文
+    setStatus = (status) => {
+        switch (status) {
+            case "1":
+                return "正常";
+            case "2":
+                return "在借";
+            case "3":
+                return "报修";
+            case "4":
+                return "报废";
+            case "5":
+                return "归档";
+        }
+    }
     //跳转到样品操作记录页面
     operatingRecord=()=>{
         this.props.navigation.navigate('operatingRecord',{});
@@ -79,6 +94,15 @@ class Lend extends Component {
                     <Image style={{width: 25/zoomW*2,height:25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')} resizeMode="contain"/>
                 </View>
             </TouchableOpacity>
+        );
+    }
+    //所属订单
+    _keyExtractor = (item, index) => index;
+    imgItem({ item, index }) {
+        return (
+            <View>
+                <Image style={{width: 48/zoomW*2,height:48}} source={{uri:item}} resizeMode="contain"/>
+            </View>
         );
     }
     render () {
@@ -104,9 +128,14 @@ class Lend extends Component {
                                         <Text style={listStyle.listText}>{ListStore.sampleDetailList.sampleName}</Text>
                                     </View>
                                 </View>
-                                <View style={[listStyle.item,{height:70}]}>
-                                    <View></View>
-                                </View>
+                                <FlatList
+                                    data={ListStore.sampleDetailList.imgs}
+                                    extraData={this.state}
+                                    renderItem={this.imgItem.bind(this)}
+                                    keyExtractor={this._keyExtractor}
+                                    horizontal={true}
+                                    showsHorizontalScrollIndicator={false}
+                                />
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
                                         <Text style={listStyle.listTitle}>样品类型</Text>
@@ -144,7 +173,7 @@ class Lend extends Component {
                                         <Text style={listStyle.listTitle}>样品状态</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>{ListStore.sampleDetailList.status}</Text>
+                                        <Text style={listStyle.listText}>{this.setStatus(ListStore.sampleDetailList.status)}</Text>
                                     </View>
                                 </View>
                             </View>

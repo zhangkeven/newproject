@@ -52,6 +52,7 @@ class operatingRecord extends Component {
         });
         ListStore.getOperatingRecord();
     }
+
     //跳转到操作记录详情
     recordDetail=()=>{
         this.props.navigation.navigate('RecordDetail',{});

@@ -30,13 +30,13 @@ class ObservableListStore {
     @observable
     imagePath;
     @observable
-    ipPath;//接口地址
+    ipPath="http://192.168.1.40:8087";//接口地址
    @observable
     isLogin;
     @observable
     MySampleList=[];//我的样品列表
     @observable
-    MySampleId='';//我的样品id
+    MySampleId='71b4af20a5c94b47bdbe6325922e7857';//我的样品id
     @observable
     MySampleDetail=[];//我的样品详情
     @observable
@@ -224,9 +224,9 @@ class ObservableListStore {
         let data={
             "id":this.MySampleId
         };
-        FetchUtil.post(this.ipPath+'/api/management/app/proof/detail',data).then(res=>{
+        FetchUtil.post(this.ipPath+'/api/management/app/sample/detail',data).then(res=>{
             console.log(res);
-            this.MySampleDetail=res.data.sampleDetail;
+                this.MySampleDetail=res.data.sampleDetail;
         }).catch((error)=>{
             console.warn(error);
         });
