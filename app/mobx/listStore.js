@@ -31,7 +31,7 @@ class ObservableListStore {
     @observable
     imagePath;
     @observable
-    ipPath="http://192.168.1.40:8087";//接口地址
+    ipPath="";//接口地址
    @observable
     isLogin;
     @observable
@@ -41,7 +41,7 @@ class ObservableListStore {
     @observable
     MySampleDetail=[];//我的样品详情
     @observable
-    sampleId="1e025fe5e2ee460e81291b6df86a0f98";//样品id
+    sampleId="";//样品id
     @observable
     operatingRecord =[];//操作记录
     @observable
