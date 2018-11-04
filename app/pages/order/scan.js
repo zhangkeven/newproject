@@ -12,6 +12,7 @@ import Barcode from 'react-native-smart-barcode'
 import {zoomW} from "../../utils/util";
 import {NavigationActions} from "react-navigation";
 import ListStore from '../../mobx/listStore'
+import FetchUtil from "../../service/rpc";
 type Props = {};
 export default class Scan extends Component<Props> {
     static navigationOptions = ({navigation, screenProps}) => ({
@@ -31,7 +32,8 @@ export default class Scan extends Component<Props> {
         this.state = {
             viewAppear: false,
         };
-    } componentWillMount() {
+    }
+    componentWillMount() {
         //路由组件
         this.props.navigation.setParams({
             //返回上一个路由
@@ -71,17 +73,41 @@ export default class Scan extends Component<Props> {
 
     _startScan = (e) => {
         console.log(e);
-        ListStore.sampleId=e;
-        this.props.navigation.navigate('Lend')
-            const resetAction = NavigationActions.reset({
-                index: 0,
-                actions: [
-                    NavigationActions.navigate({ routeName: 'Lend'})
-                ]
-            })
-            this.props.navigation.dispatch(resetAction);
+        console.log(e.slice(1,-1));
+        var str =e.slice(1,-1);
+        status= str.split(',')[0];
+        id=str.split(',')[1];
+        console.log(status);
+        console.log(id);
+         ListStore.sampleId=id;
+         ListStore.getSampleDetail();
+            let data={
+                "id":id
+            };
+            FetchUtil.post(ListStore.ipPath+'/api/management/app/sample/detail',data).then(res=>{
+                if(res.data.sampleDetail.status==1){
+                    this.props.navigation.navigate('Lend')
+                    const resetAction = NavigationActions.reset({
+                        index: 0,
+                        actions: [
+                            NavigationActions.navigate({ routeName: 'Lend'})
+                        ]
+                    })
+                    this.props.navigation.dispatch(resetAction);
+                }else{
+                    this.props.navigation.navigate('NotExecutable')
+                    const resetAction = NavigationActions.reset({
+                        index: 0,
+                        actions: [
+                            NavigationActions.navigate({ routeName: 'NotExecutable'})
+                        ]
+                    })
+                    this.props.navigation.dispatch(resetAction);
+                }
+            }).catch((error)=>{
+                console.warn(error);
+            });
         // this._barCode.startScan()
-        ListStore.getSampleDetail();
     };
 
     _stopScan = (e) => {

@@ -22,6 +22,7 @@ import ImmediatelyRestore from "./pages/sampleInformation/ImmediatelyRestore";
 import Handover from "./pages/sampleInformation/handover";
 import NotExecutable from "./pages/sampleInformation/notExecutable";
 import operatingRecord from "./pages/operatingRecord/operatingRecord";
+import ChooseExecutionOrderModal from "./pages/order/ChooseExecutionOrderModal";
 import RecordDetail from "./pages/operatingRecord/recordDetail";
 const styles = StyleSheet.create({
     tabIcon: {
@@ -72,8 +73,8 @@ const Navigator = StackNavigator({
             fontWeight: "bold",
             textAlign: 'center',
         },
-        headerLeft: (<View style={{flexDirection: 'row', flex: 1}}/>),
-        headerRight: (<View style={{flexDirection: 'row', flex: 1}}/>)
+        headerLeft: (<View style={{flexDirection: 'row', flex: 1}}> </View>),
+        headerRight: (<View style={{flexDirection: 'row', flex: 1}}> </View>)
     }
 });
 export const BottomModal = StackNavigator({
@@ -81,6 +82,7 @@ export const BottomModal = StackNavigator({
     Login:{screen:Login},
     Index: {screen: HomeIndex},
     Navigator: {screen: Navigator},
+    ChooseExecutionOrderModal: {screen: ChooseExecutionOrderModal},
 }, {
     // mode: 'modal',
     headerMode: 'none',

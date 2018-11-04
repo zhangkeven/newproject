@@ -40,6 +40,7 @@ export default class loginView extends Component {
             });
         })
         Promise.all([process1]).then(function (results) {
+            console.log(results[0]);
             console.log(results[0][0].url);
             ListStore.ipPath=results[0][0].url;
             if(results && results.length>0 && ListStore.ipPath){

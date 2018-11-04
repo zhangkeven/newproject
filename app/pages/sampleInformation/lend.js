@@ -80,13 +80,19 @@ class Lend extends Component {
     }
     //跳转到立即借出页面
     toLend=()=>{
+        ListStore.sampleId=ListStore.sampleDetailList.id;
         this.props.navigation.navigate('ImmediatelyLend',{});
+    }
+    //跳转到子订单详情
+    toChildOrderDetail=(id)=>{
+        ListStore.childOrderId=id;
+        this.props.navigation.navigate('ChildOrderDetail',{})
     }
     //所属订单
     _keyExtractor = (item, index) => index;
     orderItem({ item, index }) {
         return (
-            <TouchableOpacity style={listStyle.item}  key={index}>
+            <TouchableOpacity style={listStyle.item}  key={index} onPress={()=>{this.toChildOrderDetail(item.id)}}>
                 <View style={listStyle.itemDesc}>
                     <Text style={listStyle.listTitle}>{item.orderNo}</Text>
                 </View>
@@ -136,6 +142,7 @@ class Lend extends Component {
                                     horizontal={true}
                                     showsHorizontalScrollIndicator={false}
                                 />
+
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
                                         <Text style={listStyle.listTitle}>样品类型</Text>
@@ -160,14 +167,14 @@ class Lend extends Component {
                                         <Text style={listStyle.listText}>{ListStore.sampleDetailList.warehouseNo}</Text>
                                     </View>
                                 </View>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>库存数量</Text>
-                                    </View>
-                                    <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>暂无参数</Text>
-                                    </View>
-                                </View>
+                                {/*<View style={listStyle.item}>*/}
+                                    {/*<View style={listStyle.itemDesc}>*/}
+                                        {/*<Text style={listStyle.listTitle}>库存数量</Text>*/}
+                                    {/*</View>*/}
+                                    {/*<View style={listStyle. itemDetail}>*/}
+                                        {/*<Text style={listStyle.listText}>暂无参数</Text>*/}
+                                    {/*</View>*/}
+                                {/*</View>*/}
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
                                         <Text style={listStyle.listTitle}>样品状态</Text>

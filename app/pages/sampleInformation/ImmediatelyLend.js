@@ -12,7 +12,9 @@ import {
     View,
     Alert,
     Platform,
-    ScrollView
+    ScrollView,
+    ActivityIndicator,
+    Modal
 } from 'react-native'
 import {Navigator} from 'react-native-deprecated-custom-components';
 import {line, publicStyle, height,width,NoDoublePress,zoomW,zoomH,getHeaderPadding, getHeaderHeight,} from "../../utils/util";
@@ -20,6 +22,7 @@ import {observer} from "mobx-react/native";
 import ImagePicker from "react-native-image-picker";
 import FetchUtil from "../../service/rpc";
 import {NavigationActions} from "react-navigation";
+import Toast from 'react-native-simple-toast';
 const options = {
     title: '请选择上传图片方式',
     storageOptions: {
@@ -56,6 +59,10 @@ class ImmediatelyLend extends Component {
         this.state = {
             text: '',
             showInput: false,
+            designStyleHeight:0,
+            designStyle:'',
+            loading:false
+
         }
     }
     componentWillMount() {
@@ -67,6 +74,41 @@ class ImmediatelyLend extends Component {
                 goBack();
             }
         });
+        ListStore.lendOrderName='';
+        ListStore.lendOrderId='';
+        ListStore.lendImgList=[];
+    }
+    //借出图片
+    lendImage( item, i ) {
+        return (
+            <View style={{marginRight:20/zoomW*2}} key={i}>
+                <Image style={{width: 60/zoomW*2,height:60}} source={{uri:item}} resizeMode="contain"/>
+            </View>
+        );
+    }
+    //选择执行订单
+    goExecutionOrder() {
+        this.props.navigation.navigate("ChooseExecutionOrderModal", {height:this.state.designStyleHeight, designStyle:this.state.designStyle,callback:(name,id,i)=>{
+                if(i>2 && i!==3){
+                    this.setState({
+                        designStyleHeight:i-1//跳到指定位置
+                    })
+                    ListStore.lendOrderName=name;
+                    ListStore.lendOrderId=id;
+                }else if(i===3){
+                    this.setState({
+                        designStyleHeight:i-2//跳到指定位置
+                    })
+                    ListStore.lendOrderName=name;
+                    ListStore.lendOrderId=id;
+                }else{
+                    this.setState({
+                        designStyleHeight:0//跳到指定位置
+                    })
+                    ListStore.lendOrderName=name;
+                    ListStore.lendOrderId=id;
+                }
+            }});
     }
     // 上传图片
     selectImage() {
@@ -121,46 +163,42 @@ class ImmediatelyLend extends Component {
                 } else {
                     file.uri = response.uri.replace('file://', '');
                 }
-                //if (global.isConnected) {
-                that.setState({
-                    loading: true,
-                });
-//          AppService.uploadImage(file, '1032140237171724288').then((response) => {
-                AppService.uploadImage(file, global.passportId).then((response) => {
-                    const rep = response;
-                    if (!!rep.url && rep.url.length > 0) {
-                        AppService.uploadbyfileid({
-                            fileId: rep.id,
-                            businessId: this.state.processId,
-                            businessType: 'ONEKEYSPACE',
-                            businessCategory: 'PROJECTPROCESS',
-                        }).then((response) => {
-                            that.state.uploadImageList.push(rep);
-                            that.setState({
-                                //imageList: that.state.imageList.concat(that.state.uploadImageList),
-                                imageList: that.state.uploadImageList,
-                                loading: false,
-                            });
-                        }).catch((error) => {
-                            that.setState({
-                                loading: false,
-                            });
-                            Toast.show(error);
-                        });
-                    } else {
-                        that.setState({
-                            loading: false,
-                        });
-                    }
-                }).catch((error) => {
-                    that.setState({
-                        loading: false,
-                    });
-                    Toast.show(error);
-                });
-                /*} else {
-                  Toast.show('网络异常');
-                }*/
+
+               var imgList =ListStore.lendImgList;
+                    imgList.push(file.uri);
+                console.log(ListStore.lendImgList);
+//                 AppService.uploadImage(file, global.passportId).then((response) => {
+//                     const rep = response;
+//                     if (!!rep.url && rep.url.length > 0) {
+//                         AppService.uploadbyfileid({
+//                             fileId: rep.id,
+//                             businessId: this.state.processId,
+//                             businessType: 'ONEKEYSPACE',
+//                             businessCategory: 'PROJECTPROCESS',
+//                         }).then((response) => {
+//                             that.state.uploadImageList.push(rep);
+//                             that.setState({
+//                                 //imageList: that.state.imageList.concat(that.state.uploadImageList),
+//                                 imageList: that.state.uploadImageList,
+//                                 loading: false,
+//                             });
+//                         }).catch((error) => {
+//                             that.setState({
+//                                 loading: false,
+//                             });
+//                             Toast.show(error);
+//                         });
+//                     } else {
+//                         that.setState({
+//                             loading: false,
+//                         });
+//                     }
+//                 }).catch((error) => {
+//                     that.setState({
+//                         loading: false,
+//                     });
+//                     Toast.show(error);
+//                 });
             }
         });
     }
@@ -209,6 +247,50 @@ class ImmediatelyLend extends Component {
             Toast.show('网络异常');
           }*/
     }
+    //借出样品
+    lendSample=()=>{
+        // ListStore.lendSample();
+        if(ListStore.lendOrderName==''){
+            Toast.show('请选择执行订单', Toast.SHORT);
+        }else{
+            this.setState({
+                loading:true
+            })
+            let data={
+                "sampleId":ListStore.sampleId,
+                "exeOrder":ListStore.lendOrderName,
+                "orderId":ListStore.lendOrderId,
+                "remark":ListStore.lendRemark
+            };
+            FetchUtil.post(ListStore.ipPath+'/api/management/app/sample/out',data).then(res=>{
+                console.log(res);
+                this.setState({
+                    loading:false
+                })
+                if(res.errmsg==='成功'){
+                    Toast.show('成功借出样品', Toast.SHORT);
+                    this.props.navigation.navigate('mySample',{})
+                    const resetAction = NavigationActions.reset({
+                        index: 0,
+                        actions: [
+                            NavigationActions.navigate({ routeName: 'mySample'})
+                        ]
+                    })
+                    this.props.navigation.dispatch(resetAction);
+                    ListStore.lendOrderName='';
+                    ListStore.lendOrderId='';
+                }else{
+                    Toast.show('借出样品失败', Toast.SHORT);
+                    ListStore.lendOrderName='';
+                    ListStore.lendOrderId='';
+                }
+
+            }).catch((error)=>{
+                console.warn(error);
+            });
+        }
+    }
+
     //所属订单
     _keyExtractor = (item, index) => index;
     orderItem({ item, index }) {
@@ -226,6 +308,16 @@ class ImmediatelyLend extends Component {
     render () {
         return (
             <View style={{flex:1}}>
+                <Modal
+                    animationType="none"
+                    transparent
+                    visible={this.state.loading}
+                    onRequestClose={() => {}}
+                >
+                    <View style={styles.loadingBg}>
+                        <ActivityIndicator size="large" />
+                    </View>
+                </Modal>
                 <View style={listStyle.container}>
                     <ScrollView style={listStyle.content}>
                         <View>
@@ -235,7 +327,7 @@ class ImmediatelyLend extends Component {
                                         <Text style={listStyle.listTitle}>Label</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>YP180002939</Text>
+                                        <Text style={listStyle.listText}>{ListStore.sampleDetailList.sampleNo}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -243,18 +335,20 @@ class ImmediatelyLend extends Component {
                                         <Text style={listStyle.listTitle}>样品名称</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>YJ笔记本</Text>
+                                        <Text style={listStyle.listText}>{ListStore.sampleDetailList.sampleName}</Text>
                                     </View>
                                 </View>
-                                <View style={listStyle.item}>
+                                <TouchableOpacity style={listStyle.item} onPress={()=>{this.goExecutionOrder()}}>
                                     <View style={listStyle.itemDesc}>
                                         <Text style={listStyle.listTitle}>执行订单</Text>
                                     </View>
                                     <View style={[listStyle. itemDetail,{marginRight:3/zoomW*2}]}>
-                                        <Text style={listStyle.listText}>DD180908000345-1</Text>
+                                        {ListStore.lendOrderName==''?<Text style={listStyle.listText}>请选择执行订单</Text>
+                                            :<Text style={listStyle.listText}>{ListStore.lendOrderName}</Text>
+                                        }
                                     </View>
                                     <Image source={require('../../img/icon_arrow_down_passion_blue_idle_25x25@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:20/zoomW*2}} resizeMode='contain'/>
-                                </View>
+                                </TouchableOpacity>
                             </View>
                             <View style={listStyle.remark}>
                                 <View style={{
@@ -294,7 +388,8 @@ class ImmediatelyLend extends Component {
                                                 multiline={true}
                                                 ref={'content'}
                                                 textAlignVertical="top"
-                                                onChangeText={(newText) => this.setState({other: newText})}/>
+                                                onChangeText={(newText) =>{ListStore.updateLendRemark(newText)}}
+                                            />
                                                 <Text
                                                 style={{
                                                     opacity: 0.5,
@@ -316,9 +411,9 @@ class ImmediatelyLend extends Component {
                                     <Text style={styles.formRepairTitleRemarks}>（选项，最多4张）</Text>
                                 </View>
                                 <View style={styles.formView}>
-                                    {/*{this.state.imageList.map((v, i) => this.renderImage(v, i))}*/}
+                                    {ListStore.lendImgList.length>0 && ListStore.lendImgList.map((item, index) => this.lendImage(item, index))}
                                     {/*{this.state.imageList.length<6&&*/}
-                                    <TouchableOpacity activeOpacity={0.8} onPress={() => NoDoublePress.onPress(() => { this.selectImage(); })}>
+                                        <TouchableOpacity activeOpacity={0.8} onPress={() => NoDoublePress.onPress(() => { this.selectImage(); })}>
                                         <Image style={{width: 60/zoomW*2,height:60}} source={require('../../img/icon_add_pic_60x60@xhdi.png')} resizeMode="contain"/>
                                     </TouchableOpacity>
                                     {/*}*/}
@@ -326,7 +421,7 @@ class ImmediatelyLend extends Component {
                             </View>
                         </View>
                     </ScrollView>
-                    <TouchableOpacity style={listStyle.button}>
+                    <TouchableOpacity style={listStyle.button} onPress={()=>{this.lendSample()}}>
                         <Text style={listStyle.textButton}>立即借出</Text>
                     </TouchableOpacity>
                 </View>
@@ -394,6 +489,14 @@ const styles = StyleSheet.create({
     formUploadsText: {
         fontSize: 20,
         color: '#666666'
+    },
+    loadingBg: {
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });
 export default ImmediatelyLend;

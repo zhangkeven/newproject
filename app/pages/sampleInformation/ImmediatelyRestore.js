@@ -21,6 +21,7 @@ import ImagePicker from "react-native-image-picker";
 import FetchUtil from "../../service/rpc";
 import {NavigationActions} from "react-navigation";
 import Communications from "react-native-communications";
+import Toast from "react-native-simple-toast";
 const options = {
     title: '请选择上传图片方式',
     storageOptions: {
@@ -68,6 +69,7 @@ class ImmediatelyRestore extends Component {
                 goBack();
             }
         });
+        ListStore.lendImgList=[];
     }
     // 上传图片
     selectImage() {
@@ -122,46 +124,42 @@ class ImmediatelyRestore extends Component {
                 } else {
                     file.uri = response.uri.replace('file://', '');
                 }
-                //if (global.isConnected) {
-                that.setState({
-                    loading: true,
-                });
-//          AppService.uploadImage(file, '1032140237171724288').then((response) => {
-                AppService.uploadImage(file, global.passportId).then((response) => {
-                    const rep = response;
-                    if (!!rep.url && rep.url.length > 0) {
-                        AppService.uploadbyfileid({
-                            fileId: rep.id,
-                            businessId: this.state.processId,
-                            businessType: 'ONEKEYSPACE',
-                            businessCategory: 'PROJECTPROCESS',
-                        }).then((response) => {
-                            that.state.uploadImageList.push(rep);
-                            that.setState({
-                                //imageList: that.state.imageList.concat(that.state.uploadImageList),
-                                imageList: that.state.uploadImageList,
-                                loading: false,
-                            });
-                        }).catch((error) => {
-                            that.setState({
-                                loading: false,
-                            });
-                            Toast.show(error);
-                        });
-                    } else {
-                        that.setState({
-                            loading: false,
-                        });
-                    }
-                }).catch((error) => {
-                    that.setState({
-                        loading: false,
-                    });
-                    Toast.show(error);
-                });
-                /*} else {
-                  Toast.show('网络异常');
-                }*/
+
+                var imgList =ListStore.lendImgList;
+                imgList.push(file.uri);
+                console.log(ListStore.lendImgList);
+//                 AppService.uploadImage(file, global.passportId).then((response) => {
+//                     const rep = response;
+//                     if (!!rep.url && rep.url.length > 0) {
+//                         AppService.uploadbyfileid({
+//                             fileId: rep.id,
+//                             businessId: this.state.processId,
+//                             businessType: 'ONEKEYSPACE',
+//                             businessCategory: 'PROJECTPROCESS',
+//                         }).then((response) => {
+//                             that.state.uploadImageList.push(rep);
+//                             that.setState({
+//                                 //imageList: that.state.imageList.concat(that.state.uploadImageList),
+//                                 imageList: that.state.uploadImageList,
+//                                 loading: false,
+//                             });
+//                         }).catch((error) => {
+//                             that.setState({
+//                                 loading: false,
+//                             });
+//                             Toast.show(error);
+//                         });
+//                     } else {
+//                         that.setState({
+//                             loading: false,
+//                         });
+//                     }
+//                 }).catch((error) => {
+//                     that.setState({
+//                         loading: false,
+//                     });
+//                     Toast.show(error);
+//                 });
             }
         });
     }
@@ -210,6 +208,32 @@ class ImmediatelyRestore extends Component {
             Toast.show('网络异常');
           }*/
     }
+    //归还样品
+    restoreSample=()=>{
+        // ListStore.restoreSample();
+        let data={
+            "sampleId":ListStore.MySampleId
+        };
+        FetchUtil.post(ListStore.ipPath+'/api/management/app/sample/in',data).then(res=>{
+            console.log(res);
+            if(res.errmsg==='成功'){
+                Toast.show('成功归还样品', Toast.SHORT);
+                this.props.navigation.navigate('mySample',{})
+                const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: 'mySample'})
+                    ]
+                })
+                this.props.navigation.dispatch(resetAction);
+            }else{
+                Toast.show('归还样品失败', Toast.SHORT);
+            }
+
+        }).catch((error)=>{
+            console.warn(error);
+        });
+    }
     //所属订单
     _keyExtractor = (item, index) => index;
     orderItem({ item, index }) {
@@ -224,6 +248,14 @@ class ImmediatelyRestore extends Component {
             </TouchableOpacity>
         );
     }
+    //归还图片
+    restoreImage( item, i ) {
+        return (
+            <View style={{marginRight:20/zoomW*2}} key={i}>
+                <Image style={{width: 60/zoomW*2,height:60}} source={{uri:item}} resizeMode="contain"/>
+            </View>
+        );
+    }
     render () {
         return (
             <View style={{flex:1}}>
@@ -236,7 +268,7 @@ class ImmediatelyRestore extends Component {
                                         <Text style={listStyle.listTitle}>Label</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>YP180002939</Text>
+                                        <Text style={listStyle.listText}>{ListStore.MySampleDetail.sampleNo}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -244,17 +276,17 @@ class ImmediatelyRestore extends Component {
                                         <Text style={listStyle.listTitle}>样品名称</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>YJ笔记本</Text>
+                                        <Text style={listStyle.listText}>{ListStore.MySampleDetail.sampleName}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
                                     <View style={listStyle.itemDesc}>
                                         <Text style={listStyle.listTitle}>执行订单</Text>
                                     </View>
-                                    <View style={[listStyle. itemDetail,{marginRight:3/zoomW*2}]}>
-                                        <Text style={listStyle.listText}>DD180908000345-1</Text>
+                                    <View style={[listStyle. itemDetail]}>
+                                        <Text style={listStyle.listText}>{ListStore.childOrderAllList[0].orderNo}</Text>
                                     </View>
-                                    <Image source={require('../../img/icon_arrow_down_passion_blue_idle_25x25@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:20/zoomW*2}} resizeMode='contain'/>
+                                    {/*<Image source={require('../../img/icon_arrow_down_passion_blue_idle_25x25@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:20/zoomW*2}} resizeMode='contain'/>*/}
                                 </View>
                             </View>
                             <View style={[listStyle.Department,{marginBottom:17}]}>
@@ -263,7 +295,7 @@ class ImmediatelyRestore extends Component {
                                         <Text style={listStyle.listTitle}>库存区域</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>D区</Text>
+                                        <Text style={listStyle.listText}>{ListStore.MySampleDetail.warehouseArea}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -271,7 +303,7 @@ class ImmediatelyRestore extends Component {
                                         <Text style={listStyle.listTitle}>库位编号</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>D09-09-09</Text>
+                                        <Text style={listStyle.listText}>{ListStore.MySampleDetail.warehouseNo}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -313,7 +345,7 @@ class ImmediatelyRestore extends Component {
                                                 multiline={true}
                                                 ref={'content'}
                                                 textAlignVertical="top"
-                                                onChangeText={(newText) => this.setState({other: newText})}/>
+                                                onChangeText={(newText) =>{ListStore.updateRetoreRemark(newText)}}/>
                                             <Text
                                                 style={{
                                                     opacity: 0.5,
@@ -335,8 +367,7 @@ class ImmediatelyRestore extends Component {
                                     <Text style={styles.formRepairTitleRemarks}>（选项，最多4张）</Text>
                                 </View>
                                 <View style={styles.formView}>
-                                    {/*{this.state.imageList.map((v, i) => this.renderImage(v, i))}*/}
-                                    {/*{this.state.imageList.length<6&&*/}
+                                    {ListStore.lendImgList.length>0&& ListStore.lendImgList.map((item, index) => this.restoreImage(item, index))}
                                     <TouchableOpacity activeOpacity={0.8} onPress={() => NoDoublePress.onPress(() => { this.selectImage(); })}>
                                         <Image style={{width: 60/zoomW*2,height:60}} source={require('../../img/icon_add_pic_60x60@xhdi.png')} resizeMode="contain"/>
                                     </TouchableOpacity>
@@ -345,7 +376,7 @@ class ImmediatelyRestore extends Component {
                             </View>
                         </View>
                     </ScrollView>
-                    <TouchableOpacity style={listStyle.button}>
+                    <TouchableOpacity style={listStyle.button} onPress={()=>{this.restoreSample()}}>
                         <Text style={listStyle.textButton}>立即归还</Text>
                     </TouchableOpacity>
                 </View>

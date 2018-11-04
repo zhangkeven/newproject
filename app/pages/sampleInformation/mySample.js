@@ -76,6 +76,7 @@ class mySample extends Component {
     //跳转到样品详情
     toRestore=(id)=>{
         ListStore.MySampleId=id;
+        console.log(ListStore.MySampleId);
         this.props.navigation.navigate('Restore',{})
     }
     //历史记录

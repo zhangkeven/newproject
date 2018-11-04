@@ -1,6 +1,7 @@
 import {observable,action} from 'mobx'
 import FetchUtil from "../service/rpc";
 import Toast from "react-native-simple-toast";
+import {NavigationActions} from "react-navigation";
 let index = 0
 class ObservableListStore {
     @observable
@@ -36,19 +37,29 @@ class ObservableListStore {
     @observable
     MySampleList=[];//我的样品列表
     @observable
-    MySampleId='71b4af20a5c94b47bdbe6325922e7857';//我的样品id
+    MySampleId='';//我的样品id
     @observable
     MySampleDetail=[];//我的样品详情
     @observable
-    sampleId="71b4af20a5c94b47bdbe6325922e7857";//样品id
+    sampleId="1e025fe5e2ee460e81291b6df86a0f98";//样品id
     @observable
     operatingRecord =[];//操作记录
     @observable
     sampleDetailList=[];//样品详情
     @observable
+    lendImgList=[];//借出样品图片列表
+    @observable
+    lendOrderName="";//执行订单名称
+    @observable
+    lendOrderId="";//执行订单id
+    @observable
+    isLendSuccess="";//是否借出成功
+    @observable
+    isRestoreSuccess="";//是否归还成功
+    @observable
     searchText='';//订单搜索关键字
     @observable
-    orderList=[] //订单列表
+    orderList=[] ;//订单列表
     @observable
     orderId="" ;//订单id
     @observable
@@ -56,11 +67,19 @@ class ObservableListStore {
     @observable
     childOrderList=[]  ;//子订单列表
     @observable
+    childOrderName=[]  ;//所属订单名称
+    @observable
+    childOrderUid=[]  ;//所属订单id
+    @observable
     childOrderAllList=[]  ;//所属子订单列表
     @observable
     childOrderId="" ;//子订单id
     @observable
     childOrderDetailList=[]  ;//子订单详情
+    @observable
+    lendRemark="" ;//立即借出备注
+    @observable
+    retoreRemark="" ;//立即归还备注
     @observable
     searchStoreText="" ;//库位搜索关键字
     @observable
@@ -69,6 +88,14 @@ class ObservableListStore {
     storeId="" ;//库位id
     @observable
     storeDetailList=[];//库位详情
+    @action
+    updateLendRemark=(text)=>{
+        this.lendRemark=text;
+    }
+    @action
+    updateRetoreRemark=(text)=>{
+        this.retoreRemark=text;
+    }
     @action
     getList=()=>{
         this.genderList=['男','女','保密'];
@@ -199,6 +226,7 @@ class ObservableListStore {
         };
         FetchUtil.post(this.ipPath+'/api/management/app/sample/detail',data).then(res=>{
             console.log(res.data.sampleDetail);
+            console.log(res.data.belongOrder);
             this.sampleDetailList=res.data.sampleDetail;
             this.childOrderAllList=res.data.belongOrder;
         }).catch((error)=>{
@@ -227,6 +255,62 @@ class ObservableListStore {
         FetchUtil.post(this.ipPath+'/api/management/app/sample/detail',data).then(res=>{
             console.log(res);
                 this.MySampleDetail=res.data.sampleDetail;
+                this.childOrderAllList=res.data.belongOrder;
+                this.childOrderName=res.data.belongOrder[0].orderNo;
+            this.childOrderId=res.data.belongOrder[0].id;
+                console.log(this.childOrderName);
+        }).catch((error)=>{
+            console.warn(error);
+        });
+    }
+    //立即借出
+    @action
+    lendSample=()=>{
+        // let data={
+        //     "sampleId":this.sampleId,
+        //     "exeOrder":this.lendOrderName,
+        //     "orderId":this.lendOrderId
+        // };
+        // FetchUtil.post(this.ipPath+'/api/management/app/sample/out',data).then(res=>{
+        //     console.log(res);
+        //     if(res.errmsg==='成功'){
+        //         Toast.show('成功借出样品', Toast.SHORT);
+        //         this.props.navigation.navigate('mySample',{})
+        //         const resetAction = NavigationActions.reset({
+        //             index: 0,
+        //             actions: [
+        //                 NavigationActions.navigate({ routeName: 'mySample'})
+        //             ]
+        //         })
+        //         this.props.navigation.dispatch(resetAction);
+        //     }
+        //
+        // }).catch((error)=>{
+        //     console.warn(error);
+        // });
+    }
+    //立即归还
+    @action
+    restoreSample=()=>{
+        let data={
+            "sampleId":this.MySampleId,
+            "remark":this.retoreRemark
+
+        };
+        FetchUtil.post(this.ipPath+'/api/management/app/sample/in',data).then(res=>{
+            console.log(res);
+            if(res.errmsg==='成功'){
+                Toast.show('成功归还样品', Toast.SHORT);
+                this.props.navigation.navigate('mySample',{})
+                const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: 'mySample'})
+                    ]
+                })
+                this.props.navigation.dispatch(resetAction);
+            }
+
         }).catch((error)=>{
             console.warn(error);
         });

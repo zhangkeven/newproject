@@ -20,6 +20,7 @@ import {observer} from "mobx-react/native";
 import ImagePicker from "react-native-image-picker";
 import FetchUtil from "../../service/rpc";
 import {NavigationActions} from "react-navigation";
+import Communications from "react-native-communications";
 @observer
 class Restore extends Component {
     static navigationOptions = ({navigation, screenProps}) => ({
@@ -59,6 +60,15 @@ class Restore extends Component {
         //获取我的样品详情
         ListStore.getMySampleDetail();
     }
+    //所属订单
+    _keyExtractor = (item, index) => index;
+    imgItem({ item, index }) {
+        return (
+            <View>
+                <Image style={{width: 48/zoomW*2,height:48}} source={{uri:item}} resizeMode="contain"/>
+            </View>
+        );
+    }
     //把返回的状态翻译成中文
     setStatus = (status) => {
         switch (status) {
@@ -95,6 +105,10 @@ class Restore extends Component {
     //立即归还样品
     toRestore=()=>{
         this.props.navigation.navigate('ImmediatelyRestore',{});
+    }
+    //跳转到子订单详情
+    toChildOrderDetail=()=>{
+        this.props.navigation.navigate('ChildOrderDetail',{})
     }
     //所属订单
     _keyExtractor = (item, index) => index;
@@ -133,9 +147,14 @@ class Restore extends Component {
                                     <Text style={listStyle.listText}>{ListStore.MySampleDetail.sampleName}</Text>
                                 </View>
                             </View>
-                            <View style={[listStyle.item,{height:70}]}>
-                               <View></View>
-                            </View>
+                            <FlatList
+                                data={ListStore.MySampleDetail.imgs}
+                                extraData={this.state}
+                                renderItem={this.imgItem.bind(this)}
+                                keyExtractor={this._keyExtractor}
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}
+                            />
                             <View style={listStyle.item}>
                                 <View style={listStyle.itemDesc}>
                                     <Text style={listStyle.listTitle}>样品类型</Text>
@@ -152,14 +171,14 @@ class Restore extends Component {
                                     <Text style={listStyle.listText}>{this.setStatus(ListStore.MySampleDetail.status)}</Text>
                                 </View>
                             </View>
-                            <View style={listStyle.item}>
-                                <View style={listStyle.itemDesc}>
-                                    <Text style={listStyle.listTitle}>操作时间</Text>
-                                </View>
-                                <View style={listStyle. itemDetail}>
-                                    <Text style={listStyle.listText}> </Text>
-                                </View>
-                            </View>
+                            {/*<View style={listStyle.item}>*/}
+                                {/*<View style={listStyle.itemDesc}>*/}
+                                    {/*<Text style={listStyle.listTitle}>操作时间</Text>*/}
+                                {/*</View>*/}
+                                {/*<View style={listStyle. itemDetail}>*/}
+                                    {/*<Text style={listStyle.listText}> </Text>*/}
+                                {/*</View>*/}
+                            {/*</View>*/}
                         </View>
                         <View style={listStyle.Department}>
                             <View style={listStyle.item}>
@@ -167,53 +186,43 @@ class Restore extends Component {
                                     <Text style={listStyle.listTitle}>保管部门</Text>
                                 </View>
                                 <View style={listStyle. itemDetail}>
-                                    <Text style={listStyle.listText}>生产一部</Text>
+                                    <Text style={listStyle.listText}>{ListStore.MySampleDetail.manageOrg}</Text>
                                 </View>
                             </View>
                             <View style={listStyle.item}>
                                 <View style={listStyle.itemDesc}>
                                     <Text style={listStyle.listTitle}>保管责任人</Text>
                                 </View>
+                                <TouchableOpacity onPress={()=>{Communications.phonecall(ListStore.MySampleDetail.mobile, true)}}>
+                                    <Image source={require('../../img/椭圆形@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:11/zoomW*2}} resizeMode='contain'/>
+                                </TouchableOpacity>
                                 <View style={listStyle. itemDetail}>
-                                    <Text style={listStyle.listText}>张三</Text>
-                                </View>
-                            </View>
-                            <View style={listStyle.item}>
-                                <View style={listStyle.itemDesc}>
-                                    <Text style={listStyle.listTitle}>联系电话</Text>
-                                </View>
-                                <View style={listStyle. itemDetail}>
-                                    <Text style={listStyle.listText}>177179340987</Text>
+                                    <Text style={listStyle.listText}>{ListStore.MySampleDetail.manageUser}</Text>
                                 </View>
                             </View>
                         </View>
-                            <Text style={listStyle.personText}>使用人</Text>
-                            <View style={listStyle.person}>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>使用部门</Text>
-                                    </View>
-                                    <View style={listStyle.itemDetail}>
-                                        <Text style={listStyle.listText}>1235466</Text>
-                                    </View>
-                                </View>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>使用责任人</Text>
-                                    </View>
-                                    <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>1235466</Text>
-                                    </View>
-                                </View>
-                                <View style={listStyle.item}>
-                                    <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>联系电话</Text>
-                                    </View>
-                                    <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>1235466</Text>
-                                    </View>
-                                </View>
-                            </View>
+                            {/*<Text style={listStyle.personText}>使用人</Text>*/}
+                            {/*<View style={listStyle.person}>*/}
+                                {/*<View style={listStyle.item}>*/}
+                                    {/*<View style={listStyle.itemDesc}>*/}
+                                        {/*<Text style={listStyle.listTitle}>使用部门</Text>*/}
+                                    {/*</View>*/}
+                                    {/*<View style={listStyle.itemDetail}>*/}
+                                        {/*<Text style={listStyle.listText}>{ListStore.MySampleDetail.mobile}</Text>*/}
+                                    {/*</View>*/}
+                                {/*</View>*/}
+                                {/*<View style={listStyle.item}>*/}
+                                    {/*<View style={listStyle.itemDesc}>*/}
+                                        {/*<Text style={listStyle.listTitle}>使用责任人</Text>*/}
+                                    {/*</View>*/}
+                                    {/*<TouchableOpacity onPress={()=>{Communications.phonecall(ListStore.MySampleDetail.mobile, true)}}>*/}
+                                        {/*<Image source={require('../../img/椭圆形@xhdi.png')} style={{width:25/zoomW*2,height:25,marginRight:11/zoomW*2}} resizeMode='contain'/>*/}
+                                    {/*</TouchableOpacity>*/}
+                                    {/*<View style={listStyle. itemDetail}>*/}
+                                        {/*<Text style={listStyle.listText}>{ListStore.MySampleDetail.manageUser}</Text>*/}
+                                    {/*</View>*/}
+                                {/*</View>*/}
+                            {/*</View>*/}
                         <View style={listStyle.remark}>
                             <View style={{
                                 width:358/zoomW*2,
@@ -234,7 +243,7 @@ class Restore extends Component {
                                     marginTop:14
                                 }}>
                                     <Text style={listStyle.remarkText}>
-                                        从 2015 年 4 月起，Ant Design 在蚂蚁金服中后台产品线迅速推广，对接多条业务线，覆盖系统 800 个以上。定位于中台业务的 Ant Design 兼顾专业和非专业的设计人员，具有学习成本低、上手速度快、实现效果好等特点，并且提供从界面设计到前端开发的全链路生态，可以大大提升设计和开发的效率。
+                                        {ListStore.MySampleDetail.remark}
                                     </Text>
                                 </View>
                             </View>
@@ -249,9 +258,11 @@ class Restore extends Component {
                             {/*/>*/}
                         {/*</View>*/}
                             <View style={listStyle.record}>
-                                <TouchableOpacity style={listStyle.item}>
+                                <TouchableOpacity style={listStyle.item} onPress={()=>{this.toChildOrderDetail()}}>
                                     <View style={listStyle.itemDesc}>
-                                        <Text style={listStyle.listTitle}>DD180908000345-1</Text>
+                                        <Text style={listStyle.listTitle}>
+                                            {ListStore.childOrderName}
+                                        </Text>
                                     </View>
                                     <View style={{
                                         marginRight:9./zoomW*2
