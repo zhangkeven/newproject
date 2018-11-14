@@ -12,7 +12,7 @@ import {
     View,
     Alert,
     Platform,
-    ScrollView
+    ScrollView, NetInfo
 } from 'react-native'
 import {Navigator} from 'react-native-deprecated-custom-components';
 import {line, publicStyle, height,width,NoDoublePress,zoomW,zoomH,getHeaderPadding, getHeaderHeight,} from "../../utils/util";
@@ -21,6 +21,7 @@ import ImagePicker from "react-native-image-picker";
 import FetchUtil from "../../service/rpc";
 import {NavigationActions} from "react-navigation";
 import Communications from "react-native-communications";
+import Toast from "react-native-simple-toast";
 @observer
 class Lend extends Component {
     static navigationOptions = ({navigation, screenProps}) => ({
@@ -57,7 +58,14 @@ class Lend extends Component {
                 this.props.navigation.dispatch(resetAction);
             }
         });
-        ListStore.getSampleDetail();
+        NetInfo.fetch().done((connectionInfo) => {
+            if (connectionInfo.toLowerCase() === 'none') {
+                Toast.show('网络异常,请检查手机网络', Toast.SHORT);
+            } else {
+                ListStore.getSampleDetail();
+            }
+        });
+
     }
     //把返回的状态翻译成中文
     setStatus = (status) => {

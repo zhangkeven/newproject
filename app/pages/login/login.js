@@ -12,6 +12,8 @@ import {
     TextInput,
     TouchableOpacity,
     BackHandler,
+    AsyncStorage,
+    NetInfo
 } from 'react-native';
 import ListStore from "../../mobx/listStore";
 import Toast from "react-native-simple-toast";
@@ -30,51 +32,165 @@ export default class loginView extends Component {
         }
     }
     componentWillMount() {
-        ListStore.getList();
-        const process1 = new Promise((resolve, reject) => {
-            let data={};
-            FetchUtil.post('http://www.kevenzhang.com/data/index/getUrl.php',data).then(res=>{
-                resolve(res);
-            }).catch((error)=>{
-                console.warn(error);
-            });
-        })
-        Promise.all([process1]).then(function (results) {
-            console.log(results[0]);
-            console.log(results[0][0].url);
-            ListStore.ipPath=results[0][0].url;
-            if(results && results.length>0 && ListStore.ipPath){
-                // ListStore.getData();
-                // ListStore.getProject();
-                // ListStore.isLogin();
+        // 获取网络状态
+        NetInfo.fetch().done((connectionInfo) => {
+            if (connectionInfo.toLowerCase() === 'none') {
+                Toast.show('网络异常，请检查手机是否联网', Toast.SHORT);
+            } else {
+                this._retrieveData();
+                ListStore.getList();
+                const process1 = new Promise((resolve, reject) => {
+                    let data={};
+                    FetchUtil.post('http://www.kevenzhang.com/data/index/getUrl.php',data).then(res=>{
+                        resolve(res);
+                    }).catch((error)=>{
+                        console.warn(error);
+                    });
+                })
+                Promise.all([process1]).then(function (results) {
+                    console.log(results[0]);
+                    console.log(results[0][0].url);
+                    ListStore.ipPath=results[0][0].url;
+                    if(results && results.length>0 && ListStore.ipPath){
+                        // ListStore.getData();
+                        // ListStore.getProject();
+                        // ListStore.isLogin();
+                    }
+                });
+                //路由组件
+                this.props.navigation.setParams({
+                    //返回上一个路由
+                    operaGoBack: () => {
+                        const { goBack } = this.props.navigation;
+                        goBack();
+                    }
+                });
             }
         });
-        //路由组件
-        this.props.navigation.setParams({
-            //返回上一个路由
-            operaGoBack: () => {
-                const { goBack } = this.props.navigation;
-                goBack();
+
+    }
+    _storeData = async () => {
+        try {
+            await AsyncStorage.setItem('uname', ListStore.uName);
+            await AsyncStorage.setItem('upwd', ListStore.UpWd);
+        } catch (error) {
+            // Error saving data
+        }
+    }
+    _retrieveData = async () => {
+        try {
+            const uname = await AsyncStorage.getItem('uname');
+            const upwd = await AsyncStorage.getItem('upwd');
+            if (uname !== null && upwd!==null) {
+                // We have data!!
+                console.log(value);
+                // 获取网络状态
+                NetInfo.fetch().done((connectionInfo) => {
+                    if (connectionInfo.toLowerCase() === 'none') {
+                        Toast.show('网络异常,请检查手机是否联网', Toast.SHORT);
+                    } else {
+                        let data={
+                            "loginNo": uname,
+                            "password": upwd
+                        };
+                        FetchUtil.post(ListStore.ipPath+'/api/management/app/login',data).then(res=>{
+                            console.log(res);
+                            if(res.errmsg==='成功'){
+                                ListStore.ticked=res.data;
+                                Toast.show('登录成功', Toast.SHORT);
+                                this.props.navigation.navigate('Index',{})
+                                ListStore.uName='' ;
+                                ListStore.UpWd='';
+                                const resetAction = NavigationActions.reset({
+                                    index: 0,
+                                    actions: [
+                                        NavigationActions.navigate({ routeName: 'Index'})
+                                    ]
+                                })
+                                this.props.navigation.dispatch(resetAction);
+
+                            }else{
+                                ListStore.uName='';
+                                ListStore.UpWd='';
+                                Toast.show('账号或密码错误', Toast.SHORT);
+                                this.props.navigation.navigate('Login',{})
+                                const resetAction = NavigationActions.reset({
+                                    index: 0,
+                                    actions: [
+                                        NavigationActions.navigate({ routeName: 'Login'})
+                                    ]
+                                })
+                                this.props.navigation.dispatch(resetAction);
+
+                            }
+                            console.log(res.errmsg);
+                            this.isLogin=res.errmsg;
+                        }).catch((error)=>{
+                            console.warn(error);
+                        });
+                    }
+                });
             }
-        });
+        } catch (error) {
+            // Error retrieving data
+        }
     }
     isLogin=()=>{
-        // if(ListStore.uName==="" ){
-        //     Toast.show('用户名不能为空', Toast.SHORT);
-        // }else if(ListStore.UpWd===""){
-        //     Toast.show('密码不能为空', Toast.SHORT);
-        // }else{
-        //     let data={
-        //         "loginNo": ListStore.uName,
-        //         "password": ListStore.UpWd
-        //     };
-        //     FetchUtil.post(ListStore.ipPath+'/api/management/app/login',data).then(res=>{
-        //         console.log(res);
-        //         if(res.errmsg==='成功'){
-        //             Toast.show('登录成功', Toast.SHORT);
-        //             this.props.navigation.navigate('Index',{})
-        //             ListStore.uName='' ;
-        //             ListStore.UpWd='';
+        if(ListStore.uName==="" ){
+            Toast.show('用户名不能为空', Toast.SHORT);
+        }else if(ListStore.UpWd===""){
+            Toast.show('密码不能为空', Toast.SHORT);
+        }else{
+            // 获取网络状态
+            NetInfo.fetch().done((connectionInfo) => {
+                if (connectionInfo.toLowerCase() === 'none') {
+                    Toast.show('网络异常,请检查手机是否联网', Toast.SHORT);
+                } else {
+                    let data={
+                        "loginNo": ListStore.uName,
+                        "password": ListStore.UpWd
+                    };
+                    FetchUtil.post(ListStore.ipPath+'/api/management/app/login',data).then(res=>{
+                        console.log(res);
+                        if(res.errmsg==='成功'){
+                            ListStore.ticked=res.data;
+                            this._storeData();
+                            Toast.show('登录成功', Toast.SHORT);
+                            this.props.navigation.navigate('Index',{})
+                            ListStore.uName='' ;
+                            ListStore.UpWd='';
+                            const resetAction = NavigationActions.reset({
+                                index: 0,
+                                actions: [
+                                    NavigationActions.navigate({ routeName: 'Index'})
+                                ]
+                            })
+                            this.props.navigation.dispatch(resetAction);
+
+                        }else{
+                            ListStore.uName='';
+                            ListStore.UpWd='';
+                            Toast.show('账号或密码错误', Toast.SHORT);
+                            this.props.navigation.navigate('Login',{})
+                            const resetAction = NavigationActions.reset({
+                                index: 0,
+                                actions: [
+                                    NavigationActions.navigate({ routeName: 'Login'})
+                                ]
+                            })
+                            this.props.navigation.dispatch(resetAction);
+
+                        }
+                        console.log(res.errmsg);
+                        this.isLogin=res.errmsg;
+                    }).catch((error)=>{
+                        console.warn(error);
+                    });
+                }
+            });
+        }
+        // this._storeData();
+        // this.props.navigation.navigate('Index',{})
         //             const resetAction = NavigationActions.reset({
         //                 index: 0,
         //                 actions: [
@@ -82,35 +198,6 @@ export default class loginView extends Component {
         //                 ]
         //             })
         //             this.props.navigation.dispatch(resetAction);
-        //
-        //         }else{
-        //             ListStore.uName='';
-        //             ListStore.UpWd='';
-        //             Toast.show('账号或密码错误', Toast.SHORT);
-        //             this.props.navigation.navigate('Login',{})
-        //             const resetAction = NavigationActions.reset({
-        //                 index: 0,
-        //                 actions: [
-        //                     NavigationActions.navigate({ routeName: 'Login'})
-        //                 ]
-        //             })
-        //             this.props.navigation.dispatch(resetAction);
-        //
-        //         }
-        //         console.log(res.errmsg);
-        //         this.isLogin=res.errmsg;
-        //     }).catch((error)=>{
-        //         console.warn(error);
-        //     });
-        // }
-        this.props.navigation.navigate('Index',{})
-                    const resetAction = NavigationActions.reset({
-                        index: 0,
-                        actions: [
-                            NavigationActions.navigate({ routeName: 'Index'})
-                        ]
-                    })
-                    this.props.navigation.dispatch(resetAction);
 
     }
     render() {

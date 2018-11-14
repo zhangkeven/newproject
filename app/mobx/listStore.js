@@ -7,9 +7,13 @@ class ObservableListStore {
     @observable
     top=133;
     @observable
+    uid="";
+    @observable
     uName="";//用户名
     @observable
     UpWd="";//用户密码
+    @observable
+    ticked="";//请求头
     @observable
     name;
     @observable
@@ -32,6 +36,8 @@ class ObservableListStore {
     imagePath;
     @observable
     ipPath="";//接口地址
+    @observable
+    imgIp='http://192.168.1.59:8080';//图片域名
    @observable
     isLogin;
     @observable
@@ -87,7 +93,9 @@ class ObservableListStore {
     @observable
     storeId="" ;//库位id
     @observable
-    storeDetailList=[];//库位详情
+    storeDetailList=[];//库位信息
+    @observable
+    sampleInList=[];//在库样品信息
     @action
     updateLendRemark=(text)=>{
         this.lendRemark=text;
@@ -214,6 +222,8 @@ class ObservableListStore {
             "id":this.storeId };
         FetchUtil.post(this.ipPath+'/api/management/app/warehouse/detail',data).then(res=>{
             console.log(res);
+            this.storeDetailList=res.data.warehouse;
+            this.sampleInList=res.data.sampleIn;
         }).catch((error)=>{
             console.warn(error);
         });

@@ -11,7 +11,8 @@ import {
     View,
     Alert,
     Platform,
-    BackHandler
+    BackHandler,
+    NetInfo
 } from 'react-native'
 import {Navigator} from 'react-native-deprecated-custom-components';
 import {line, publicStyle, height,width,NoDoublePress,zoomW,zoomH,getHeaderPadding, getHeaderHeight,} from "../utils/util";
@@ -37,25 +38,34 @@ class Index extends Component {
         }
     }
     componentWillMount() {
-        ListStore.getList();
-        let data={};
-        FetchUtil.post('http://www.kevenzhang.com/data/index/getUrl.php',data).then(res=>{
-            ListStore.name=res[0].cid;
-            if(res[0].cid==='404'){
-                this.props.navigation.navigate('Login',{})
-                ListStore.uName='' ;
-                ListStore.UpWd='';
-                const resetAction = NavigationActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({ routeName: 'Login'})
-                    ]
-                })
-                this.props.navigation.dispatch(resetAction);
+
+        // 获取网络状态
+        NetInfo.fetch().done((connectionInfo) => {
+            if (connectionInfo.toLowerCase() === 'none') {
+                Toast.show('网络异常,请检查手机网络', Toast.SHORT);
+            } else {
+                ListStore.getList();
+                let data={};
+                FetchUtil.post('http://www.kevenzhang.com/data/index/getUrl.php',data).then(res=>{
+                    ListStore.name=res[0].cid;
+                    if(res[0].cid==='404'){
+                        this.props.navigation.navigate('Login',{})
+                        ListStore.uName='' ;
+                        ListStore.UpWd='';
+                        const resetAction = NavigationActions.reset({
+                            index: 0,
+                            actions: [
+                                NavigationActions.navigate({ routeName: 'Login'})
+                            ]
+                        })
+                        this.props.navigation.dispatch(resetAction);
+                    }
+                }).catch((error)=>{
+                    console.warn(error);
+                });
             }
-        }).catch((error)=>{
-            console.warn(error);
         });
+
         //路由组件
         this.props.navigation.setParams({
             //返回上一个路由
@@ -249,7 +259,7 @@ class Index extends Component {
                     <Image source={require('../img/icon_home_kucun_40x40.png')} style={styles.navIcon} resizeMode='contain'/>
                     <Text style={styles.navText}>库位查询</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{position:'absolute',left:60/zoomW*2,top:360,justifyContent:'center',alignItems:'center'}} onPress={()=>{this.goLend() }}>
+                <TouchableOpacity style={{position:'absolute',left:60/zoomW*2,top:360,justifyContent:'center',alignItems:'center'}}>
                     <Image source={require('../img/icon_help_40x40.png')} style={styles.navIcon} resizeMode='contain'/>
                     <Text style={styles.navText}>使用帮助</Text>
                 </TouchableOpacity>

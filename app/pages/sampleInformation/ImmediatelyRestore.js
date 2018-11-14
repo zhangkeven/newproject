@@ -12,7 +12,7 @@ import {
     View,
     Alert,
     Platform,
-    ScrollView
+    ScrollView, NetInfo
 } from 'react-native'
 import {Navigator} from 'react-native-deprecated-custom-components';
 import {line, publicStyle, height,width,NoDoublePress,zoomW,zoomH,getHeaderPadding, getHeaderHeight,} from "../../utils/util";
@@ -119,6 +119,8 @@ class ImmediatelyRestore extends Component {
                     name: 'photo',
                     type: 'image/jpeg',
                 };
+                let formData = new FormData();
+                let files = {uri: response.uri, type: 'multipart/form-data', name: 'a.jpg'};
                 if (Platform.OS === 'android') {
                     file.uri = response.uri;
                 } else {
@@ -128,6 +130,27 @@ class ImmediatelyRestore extends Component {
                 var imgList =ListStore.lendImgList;
                 imgList.push(file.uri);
                 console.log(ListStore.lendImgList);
+                NetInfo.fetch().done((connectionInfo) => {
+                    if (connectionInfo.toLowerCase() === 'none') {
+                        Toast.show('网络异常,请检查手机网络', Toast.SHORT);
+                    } else {
+                        formData.append("file",files);
+
+                        fetch('http://192.168.1.59:8086/api/management/file/fileUpload',{
+                            method:'POST',
+                            headers:{
+                                'Content-Type':'multipart/form-data',
+                            },
+                            body:formData,
+                        })
+                            .then((response) => response.text() )
+                            .then((responseData)=>{
+
+                                console.log('responseData',responseData);
+                            })
+                            .catch((error)=>{console.error('error',error)});
+                    }
+                });
 //                 AppService.uploadImage(file, global.passportId).then((response) => {
 //                     const rep = response;
 //                     if (!!rep.url && rep.url.length > 0) {

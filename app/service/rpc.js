@@ -1,3 +1,4 @@
+import ListStore from '../mobx/listStore'
 export default class FetchUtil {
     static get(url) {
         return new Promise((resolve, reject) => {
@@ -18,7 +19,7 @@ export default class FetchUtil {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=UTF-8 ',
-                    'ticket':'016f9ffec43e43a58aaaf44d8ba41d32'
+                    'ticket':ListStore.ticked
                 },
                 body: JSON.stringify(data)
             })

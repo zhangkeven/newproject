@@ -14,7 +14,8 @@ import {
     Platform,
     ScrollView,
     ActivityIndicator,
-    Modal
+    Modal,
+    NetInfo
 } from 'react-native'
 import {Navigator} from 'react-native-deprecated-custom-components';
 import {line, publicStyle, height,width,NoDoublePress,zoomW,zoomH,getHeaderPadding, getHeaderHeight,} from "../../utils/util";
@@ -156,8 +157,10 @@ class ImmediatelyLend extends Component {
                 const file = {
                     uri: '',
                     name: 'photo',
-                    type: 'image/jpeg',
+                    type: 'multipart/form-data',
                 };
+                let formData = new FormData();
+                let files = {uri: response.uri, type: 'multipart/form-data', name: 'a.jpg'};
                 if (Platform.OS === 'android') {
                     file.uri = response.uri;
                 } else {
@@ -167,39 +170,37 @@ class ImmediatelyLend extends Component {
                var imgList =ListStore.lendImgList;
                     imgList.push(file.uri);
                 console.log(ListStore.lendImgList);
-//                 AppService.uploadImage(file, global.passportId).then((response) => {
-//                     const rep = response;
-//                     if (!!rep.url && rep.url.length > 0) {
-//                         AppService.uploadbyfileid({
-//                             fileId: rep.id,
-//                             businessId: this.state.processId,
-//                             businessType: 'ONEKEYSPACE',
-//                             businessCategory: 'PROJECTPROCESS',
-//                         }).then((response) => {
-//                             that.state.uploadImageList.push(rep);
-//                             that.setState({
-//                                 //imageList: that.state.imageList.concat(that.state.uploadImageList),
-//                                 imageList: that.state.uploadImageList,
-//                                 loading: false,
-//                             });
-//                         }).catch((error) => {
-//                             that.setState({
-//                                 loading: false,
-//                             });
-//                             Toast.show(error);
-//                         });
-//                     } else {
-//                         that.setState({
-//                             loading: false,
-//                         });
-//                     }
-//                 }).catch((error) => {
-//                     that.setState({
-//                         loading: false,
-//                     });
-//                     Toast.show(error);
-//                 });
+
+                NetInfo.fetch().done((connectionInfo) => {
+                    if (connectionInfo.toLowerCase() === 'none') {
+                        Toast.show('网络异常,请检查手机网络', Toast.SHORT);
+                    } else {
+                        formData.append("file",files);
+
+                        fetch('http://192.168.1.59:8086/api/management/file/fileUpload',{
+                            method:'POST',
+                            headers:{
+                                'Content-Type':'multipart/form-data',
+                            },
+                            body:formData,
+                        })
+                            .then((response) => response.text() )
+                            .then((responseData)=>{
+
+                                console.log('responseData',responseData);
+                            })
+                            .catch((error)=>{console.error('error',error)});
+                    }
+                });
+
+
             }
+                // FetchUtil.post('http://192.168.1.59:8086/api/management/file/fileUpload',file).then(res=>{
+                //         console.log(res);
+                //     }).catch((error)=>{
+                //         console.warn(error);
+                //     });
+            // }
         });
     }
     // 删除图片
@@ -253,41 +254,46 @@ class ImmediatelyLend extends Component {
         if(ListStore.lendOrderName==''){
             Toast.show('请选择执行订单', Toast.SHORT);
         }else{
-            this.setState({
-                loading:true
-            })
-            let data={
-                "sampleId":ListStore.sampleId,
-                "exeOrder":ListStore.lendOrderName,
-                "orderId":ListStore.lendOrderId,
-                "remark":ListStore.lendRemark
-            };
-            FetchUtil.post(ListStore.ipPath+'/api/management/app/sample/out',data).then(res=>{
-                console.log(res);
-                this.setState({
-                    loading:false
-                })
-                if(res.errmsg==='成功'){
-                    Toast.show('成功借出样品', Toast.SHORT);
-                    this.props.navigation.navigate('mySample',{})
-                    const resetAction = NavigationActions.reset({
-                        index: 0,
-                        actions: [
-                            NavigationActions.navigate({ routeName: 'mySample'})
-                        ]
-                    })
-                    this.props.navigation.dispatch(resetAction);
-                    ListStore.lendOrderName='';
-                    ListStore.lendOrderId='';
-                }else{
-                    Toast.show('借出样品失败', Toast.SHORT);
-                    ListStore.lendOrderName='';
-                    ListStore.lendOrderId='';
-                }
+            NetInfo.fetch().done((connectionInfo) => {
+                if (connectionInfo.toLowerCase() === 'none') {
+                    Toast.show('网络异常,请检查手机网络', Toast.SHORT);
+                } else {
+                    let data={
+                        "sampleId":ListStore.sampleId,
+                        "exeOrder":ListStore.lendOrderName,
+                        "orderId":ListStore.lendOrderId,
+                        "remark":ListStore.lendRemark
+                    };
+                    FetchUtil.post(ListStore.ipPath+'/api/management/app/sample/out',data).then(res=>{
+                        console.log(res);
+                        this.setState({
+                            loading:false
+                        })
+                        if(res.errmsg==='成功'){
+                            Toast.show('成功借出样品', Toast.SHORT);
+                            this.props.navigation.navigate('mySample',{})
+                            const resetAction = NavigationActions.reset({
+                                index: 0,
+                                actions: [
+                                    NavigationActions.navigate({ routeName: 'mySample'})
+                                ]
+                            })
+                            this.props.navigation.dispatch(resetAction);
+                            ListStore.lendOrderName='';
+                            ListStore.lendOrderId='';
+                        }else{
+                            Toast.show('借出样品失败', Toast.SHORT);
+                            ListStore.lendOrderName='';
+                            ListStore.lendOrderId='';
+                        }
 
-            }).catch((error)=>{
-                console.warn(error);
+                    }).catch((error)=>{
+                        console.warn(error);
+                    });
+                }
             });
+
+
         }
     }
 

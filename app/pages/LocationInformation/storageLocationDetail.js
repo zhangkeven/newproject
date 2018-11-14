@@ -12,7 +12,7 @@ import {
     View,
     Alert,
     Platform,
-    ScrollView
+    ScrollView, NetInfo
 } from 'react-native'
 import {Navigator} from 'react-native-deprecated-custom-components';
 import {line, publicStyle, height,width,NoDoublePress,zoomW,zoomH,getHeaderPadding, getHeaderHeight,} from "../../utils/util";
@@ -21,6 +21,7 @@ import Communications from 'react-native-communications';
 import ImagePicker from "react-native-image-picker";
 import FetchUtil from "../../service/rpc";
 import {NavigationActions} from "react-navigation";
+import Toast from "react-native-simple-toast";
 @observer
 class storageLocationDetail extends Component {
     static navigationOptions = ({navigation, screenProps}) => ({
@@ -50,16 +51,24 @@ class storageLocationDetail extends Component {
                 goBack();
             }
         });
-        //获取库位详情
-        ListStore.getStoreDetail();
+
+        // 获取网络状态
+        NetInfo.fetch().done((connectionInfo) => {
+            if (connectionInfo.toLowerCase() === 'none') {
+                Toast.show('网络异常,请检查手机网络', Toast.SHORT);
+            } else {
+                //获取库位详情
+                ListStore.getStoreDetail();
+            }
+        });
     }
-    //所属订单
+    //在库样品
     _keyExtractor = (item, index) => index;
-    orderItem({ item, index }) {
+    sampleInItem({ item, index }) {
         return (
             <TouchableOpacity style={listStyle.item}  key={index}>
                 <View style={listStyle.itemDesc}>
-                    <Text style={listStyle.listTitle}>{item}</Text>
+                    <Text style={listStyle.listTitle}>{item.code}</Text>
                 </View>
                 <View style={{
 
@@ -70,7 +79,7 @@ class storageLocationDetail extends Component {
                         color: '#9B9B9B',
                         letterSpacing: 0,
                         textAlign: 'right'
-                    }}>HJ笔记本</Text>
+                    }}>{item.sampleName}</Text>
                 </View>
                 <View style={listStyle.itemChoose}>
                     <Image style={{width: 25/zoomW*2,height: 25}} source={require('../../img/icon_arrow_right_warm_gray_idle_25x25@xhdi.png')} resizeMode="contain"/>
@@ -90,7 +99,7 @@ class storageLocationDetail extends Component {
                                         <Text style={listStyle.listTitle}>库存区域</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>D区</Text>
+                                        <Text style={listStyle.listText}>{ListStore.storeDetailList.warehouseArea}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -98,7 +107,7 @@ class storageLocationDetail extends Component {
                                         <Text style={listStyle.listTitle}>库位编号</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>D09-09-09</Text>
+                                        <Text style={listStyle.listText}>{ListStore.storeDetailList.warehouseNo}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -106,7 +115,7 @@ class storageLocationDetail extends Component {
                                         <Text style={listStyle.listTitle}>库位类型</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>生产库位</Text>
+                                        <Text style={listStyle.listText}>{ListStore.storeDetailList.inventoryType}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -114,7 +123,7 @@ class storageLocationDetail extends Component {
                                         <Text style={listStyle.listTitle}>库位状态</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>活动</Text>
+                                        <Text style={listStyle.listText}>{ListStore.storeDetailList.status}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -125,7 +134,7 @@ class storageLocationDetail extends Component {
                                         <Text style={listStyle.listTitle}>所属部门</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>生产一部</Text>
+                                        <Text style={listStyle.listText}>{ListStore.storeDetailList.orgName}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -133,7 +142,7 @@ class storageLocationDetail extends Component {
                                         <Text style={listStyle.listTitle}>负责人</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <Text style={listStyle.listText}>张三</Text>
+                                        <Text style={listStyle.listText}>{ListStore.storeDetailList.userName}</Text>
                                     </View>
                                 </View>
                                 <View style={listStyle.item}>
@@ -141,8 +150,8 @@ class storageLocationDetail extends Component {
                                         <Text style={listStyle.listTitle}>联系电话</Text>
                                     </View>
                                     <View style={listStyle. itemDetail}>
-                                        <TouchableOpacity onPress={()=>{Communications.phonecall('177179340987', true)}}>
-                                            <Text style={listStyle.listText}>177179340987</Text>
+                                        <TouchableOpacity onPress={()=>{Communications.phonecall(ListStore.storeDetailList.mobile, true)}}>
+                                            <Text style={listStyle.listText}>{ListStore.storeDetailList.mobile}</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
@@ -150,9 +159,9 @@ class storageLocationDetail extends Component {
                                 <Text style={listStyle.personText}>在库样品</Text>
                                 <View style={listStyle.Department}>
                                     <FlatList
-                                        data={ListStore.orderList}
+                                        data={ListStore.sampleInList}
                                         extraData={this.state}
-                                        renderItem={this.orderItem.bind(this)}
+                                        renderItem={this.sampleInItem.bind(this)}
                                         keyExtractor={this._keyExtractor}
                                     />
                                 </View>

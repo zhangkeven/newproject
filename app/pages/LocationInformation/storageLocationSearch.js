@@ -12,7 +12,7 @@ import {
     View,
     Alert,
     Platform,
-    ScrollView
+    ScrollView, NetInfo
 } from 'react-native'
 import {Navigator} from 'react-native-deprecated-custom-components';
 import {line, publicStyle, height,width,NoDoublePress,zoomW,zoomH,getHeaderPadding, getHeaderHeight,} from "../../utils/util";
@@ -20,6 +20,7 @@ import {observer} from "mobx-react/native";
 import ImagePicker from "react-native-image-picker";
 import FetchUtil from "../../service/rpc";
 import {NavigationActions} from "react-navigation";
+import Toast from "react-native-simple-toast";
 @observer
 class storageLocationSearch extends Component {
     static navigationOptions = ({navigation, screenProps}) => ({
@@ -57,6 +58,17 @@ class storageLocationSearch extends Component {
             }
         });
     }
+    //搜索库位
+    toSearch=()=>{
+        // 获取网络状态
+        NetInfo.fetch().done((connectionInfo) => {
+            if (connectionInfo.toLowerCase() === 'none') {
+                Toast.show('网络异常,请检查手机网络', Toast.SHORT);
+            } else {
+                ListStore.searchStoreLocation()
+            }
+        });
+    }
     //跳转到订单详情
     toStoreDetail=(id)=>{
         ListStore.storeId=id;
@@ -89,7 +101,7 @@ class storageLocationSearch extends Component {
                                        placeholderTextColor="#C4C4C6"
                                        onChangeText={text => ListStore.updateSearchStore(text)}
                                        onSubmitEditing={() => {
-                                       ListStore.searchStoreLocation();
+                                        this.toSearch()
                                        }}/>
                         </View>
                     </View>

@@ -12,7 +12,7 @@ import {
     View,
     Alert,
     Platform,
-    ScrollView
+    ScrollView, NetInfo
 } from 'react-native'
 import {Navigator} from 'react-native-deprecated-custom-components';
 import {line, publicStyle, height,width,NoDoublePress,zoomW,zoomH,getHeaderPadding, getHeaderHeight,} from "../../utils/util";
@@ -21,6 +21,7 @@ import ImagePicker from "react-native-image-picker";
 import FetchUtil from "../../service/rpc";
 import {NavigationActions} from "react-navigation";
 import Communications from "react-native-communications";
+import Toast from "react-native-simple-toast";
 @observer
 class Restore extends Component {
     static navigationOptions = ({navigation, screenProps}) => ({
@@ -57,8 +58,15 @@ class Restore extends Component {
                 this.props.navigation.dispatch(resetAction);
             }
         });
-        //获取我的样品详情
-        ListStore.getMySampleDetail();
+        NetInfo.fetch().done((connectionInfo) => {
+            if (connectionInfo.toLowerCase() === 'none') {
+                Toast.show('网络异常,请检查手机网络', Toast.SHORT);
+            } else {
+                //获取我的样品详情
+                ListStore.getMySampleDetail();
+            }
+        });
+
     }
     //所属订单
     _keyExtractor = (item, index) => index;
